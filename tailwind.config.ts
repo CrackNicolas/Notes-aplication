@@ -12,6 +12,8 @@ const config: Config = {
         "primary": "#000000",
         "secondary": "#00ffff",
         "tertiary": "#ffffff",
+        "room": "#141313",
+        "fifth":"#808080"
       }
     }
   },

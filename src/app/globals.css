@@ -2,11 +2,28 @@
 @tailwind components;
 @tailwind utilities;
 
-*{
+* {
   margin: 0px;
   padding: 0px;
 }
 
-html,body{
+html,
+body {
+  width: 100%;
+  overflow-x: hidden;
+  user-select: none;
   background: theme("colors.primary");
+}
+
+body::-webkit-scrollbar {
+  overflow-y: scroll;
+  width: 5px;
+}
+
+body::-webkit-scrollbar-thumb {
+  background: theme("colors.secondary");
+}
+
+body::-webkit-scrollbar-thumb:hover {
+  border-radius: 10px;
 }

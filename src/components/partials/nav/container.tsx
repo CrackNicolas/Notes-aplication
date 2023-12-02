@@ -1,61 +1,74 @@
+'use client'
+
+import { useState } from "react";
+
+import ComponentIcon from "../icon";
+
 export default function ComponentNav() {
+    const [view_toggle, setView_toggle] = useState<boolean>(false);
+    const [view_options, setView_options] = useState<boolean>(false);
+
+    const view_navs = (name: string) => {
+        switch (name) {
+            case 'toogle':
+                setView_toggle(!view_toggle);
+                setView_options(false);
+                break;
+            case 'options':
+                setView_options(!view_options);
+                setView_toggle(false);
+                break;
+        }
+    }
+
     return (
-        <header className="fixed inset-x-0 top-0 z-50">
-            <nav className="flex items-center justify-between p-6 lg:px-8">
-                <div className="flex lg:flex-1">
-                    <a href="#" className="-m-1.5 p-1.5">
-                        <span className="sr-only">Your Company</span>
-                        <img width={1} height={1} className="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="" />
-                    </a>
-                </div>
-                <div className="flex lg:hidden">
-                    <button type="button" className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700">
-                        <span className="sr-only">Open main menu</span>
-                        <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-                        </svg>
-                    </button>
-                </div>
-                <div className="hidden lg:flex lg:gap-x-12">
-                    <a href="#" className="text-sm font-semibold leading-6 text-gray-900">Product</a>
-                    <a href="#" className="text-sm font-semibold leading-6 text-gray-900">Features</a>
-                    <a href="#" className="text-sm font-semibold leading-6 text-gray-900">Marketplace</a>
-                    <a href="#" className="text-sm font-semibold leading-6 text-gray-900">Company</a>
-                </div>
-                <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-                    <a href="#" className="text-sm font-semibold leading-6 text-gray-900">Log in <span aria-hidden="true">&rarr;</span></a>
-                </div>
-            </nav>
-            <div className="lg:hidden" role="dialog" aria-modal="true">
-                <div className="fixed inset-0 z-50"></div>
-                <div className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
-                    <div className="flex items-center justify-between">
-                        <a href="#" className="-m-1.5 p-1.5">
-                            <span className="sr-only">Your Company</span>
-                            <img className="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="" />
-                        </a>
-                        <button type="button" className="-m-2.5 rounded-md p-2.5 text-gray-700">
-                            <span className="sr-only">Close menu</span>
-                            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                            </svg>
+        <nav className="fixed w-full bg-primary">
+            <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+                <div className="relative flex h-16 items-center justify-between">
+                    <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
+                        <button type="button" onClick={() => view_navs('toogle')} className="relative inline-flex items-center justify-center rounded-md p-2 outline-none">
+                            <ComponentIcon name="toogle" size={27} view_box="0 0 16 16" description_class="hover:text-secondary text-fifth"/>
                         </button>
                     </div>
-                    <div className="mt-6 flow-root">
-                        <div className="-my-6 divide-y divide-gray-500/10">
-                            <div className="space-y-2 py-6">
-                                <a href="#" className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Product</a>
-                                <a href="#" className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Features</a>
-                                <a href="#" className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Marketplace</a>
-                                <a href="#" className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Company</a>
+                    <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+                        <div className="flex flex-shrink-0 items-center">
+                            <ComponentIcon name="logo" size={27} description_class="text-secondary" />
+                        </div>
+                        <div className="hidden sm:ml-6 sm:block">
+                            <div className="flex space-x-4">
+                                <a href="#" className="hover:text-secondary text-fifth px-3 py-2 text-md font-normal">Panel</a>
+                                <a href="#" className="hover:text-secondary text-fifth px-3 py-2 text-md font-normal">Equipo</a>
+                                <a href="#" className="hover:text-secondary text-fifth px-3 py-2 text-md font-normal">Proyectos</a>
+                                <a href="#" className="hover:text-secondary text-fifth px-3 py-2 text-md font-normal">Calendario</a>
                             </div>
-                            <div className="py-6">
-                                <a href="#" className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Log in</a>
+                        </div>
+                    </div>
+                    <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+                        <button type="button" className="relative rounded-full p-1 outline-none">
+                            <ComponentIcon name="notification" size={20} description_class="hover:text-secondary text-fifth"/>
+                        </button>
+                        <div className="relative ml-3">
+                            <button type="button" onClick={() => view_navs('options')} className="relative flex rounded-full outline-none">
+                                <img className="h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" />
+                            </button>
+                            <div className={`${!view_options && 'hidden'} bg-room absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none`}>
+                                <a href="#" className="block px-4 py-2 text-sm text-fifth hover:text-secondary">Ver perfil</a>
+                                <a href="#" className="block px-4 py-2 text-sm text-fifth hover:text-secondary">Configuracion</a>
+                                <a href="#" className="block px-4 py-2 text-sm text-fifth hover:text-secondary">Cerrar session</a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </header>
+            <div className={` bg-room ${view_toggle ? 'visible' : 'hidden'} sm:hidden`}>
+                <div className="space-y-1 px-2 pb-3 pt-2">
+                    <a href="#" className="hover:text-secondary text-fifth block px-3 py-2 text-md font-normal">Panel</a>
+                    <a href="#" className="hover:text-secondary text-fifth block px-3 py-2 text-md font-normal">Equipo</a>
+                    <a href="#" className="hover:text-secondary text-fifth block px-3 py-2 text-md font-normal">Proyectos</a>
+                    <a href="#" className="hover:text-secondary text-fifth block px-3 py-2 text-md font-normal">Calendario</a>
+                </div>
+            </div>
+        </nav>
+
     )
 }
