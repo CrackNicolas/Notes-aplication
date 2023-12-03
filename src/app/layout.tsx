@@ -1,9 +1,11 @@
+import { ClerkProvider } from '@clerk/nextjs'
+
 import { Metadata } from 'next/types'
 import { Roboto } from 'next/font/google'
 
-import ComponentNav from '@/components/partials/nav/container'
+import ComponentNav from '@/frontend/components/partials/nav/container'
 
-import { Props_layouts } from '@/types/props'
+import { Props_layouts } from '@/frontend/types/props'
 
 import './globals.css'
 
@@ -17,13 +19,15 @@ export const metadata: Metadata = {
   description: 'Create by Beltran Ricardo Nicolas Alejo',
 }
 
-export default function RootLayout({children}:Props_layouts){
+export default function RootLayout({ children }: Props_layouts) {
   return (
-    <html lang="en">
-      <body className={roboto.className}>
-        <ComponentNav/>
-        {children}
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en">
+        <body className={roboto.className}>
+          <ComponentNav />
+          {children}
+        </body>
+      </html>
+    </ClerkProvider>
   )
 }

@@ -24,7 +24,6 @@ export default function ComponentHome() {
             </div>
         </div>
     */
-    
     return (
         <></>
     )

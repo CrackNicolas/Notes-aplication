@@ -1,4 +1,4 @@
-import ComponentHome from "@/components/layouts/home/container";
+import ComponentHome from "@/frontend/components/layouts/home/container";
 
 export default function Home() {
   return (

@@ -11,7 +11,7 @@ export default function NotFound() {
                 <p className="mt-6 text-sm leading-7 text-tertiary">
                     Lo sentimos, no pudimos encontrar la página que estás buscando.
                 </p>
-                <Link href="/" className="rounded-md px-3.5 py-2.5 text-sm font-normal text-blue-500 hover:text-secondary outline-none">
+                <Link href="/" className="text-sm font-normal text-blue-500 hover:text-secondary outline-none">
                     Volver a la página de inicio
                 </Link>
             </div>
