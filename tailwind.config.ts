@@ -14,7 +14,7 @@ const config: Config = {
         "tertiary": "#ffffff",
         "room": "#141313",
         "fifth":"#808080",
-        "sixth":"#141313dc"
+        "sixth":"#141313a4"
       }
     }
   },
