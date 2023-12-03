@@ -4,7 +4,7 @@ import { UserButton, useUser } from "@clerk/nextjs";
 
 import Link from "next/link";
 
-import { Fragment, useState } from "react";
+import { useState } from "react";
 
 import ComponentIcon from "../icon";
 
@@ -41,7 +41,7 @@ export default function ComponentNav() {
                                     <button type="button" className="relative rounded-full p-1 outline-none">
                                         <ComponentIcon name="notification" size={20} description_class="hover:text-secondary text-fifth" />
                                     </button>
-                                    <UserButton/>
+                                    <UserButton afterSignOutUrl="/"/>
                                 </div>
                                 :
                                 <div className="flex gap-x-3">
