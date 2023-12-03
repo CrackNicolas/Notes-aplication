@@ -4,6 +4,8 @@ import { dark } from '@clerk/themes'
 import { Metadata } from 'next/types'
 import { Roboto } from 'next/font/google'
 
+import Provider from '@/context/provider'
+
 import ComponentNav from '@/frontend/components/partials/nav/container'
 
 import { Props_layouts } from '@/frontend/types/props'
@@ -25,8 +27,10 @@ export default function RootLayout({ children }: Props_layouts) {
     <ClerkProvider appearance={{ baseTheme: dark }}>
       <html lang="en">
         <body className={roboto.className}>
-          <ComponentNav />
-          {children}
+          <Provider>
+            <ComponentNav />
+            {children}
+          </Provider>
         </body>
       </html>
     </ClerkProvider>

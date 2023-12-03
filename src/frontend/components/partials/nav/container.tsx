@@ -13,8 +13,8 @@ export default function ComponentNav() {
     const [view_toggle, setView_toggle] = useState<boolean>(false);
 
     return (
-        <nav className="fixed w-full bg-primary">
-            <div className="mx-auto max-w-7xl px-2 sm:px-6">
+        <nav className="fixed w-full bg-primary mt-[-7px]">
+            <div className="mx-auto max-w-7xl px-2 sm:px-10">
                 <div className="relative flex h-16 items-center justify-between">
                     <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                         <button type="button" onClick={() => setView_toggle(!view_toggle)} className="relative inline-flex items-center justify-center rounded-md p-2 outline-none">
@@ -44,12 +44,12 @@ export default function ComponentNav() {
                                     <UserButton afterSignOutUrl="/"/>
                                 </div>
                                 :
-                                <div className="flex gap-x-3">
+                                <div className="flex gap-x-4">
                                     <Link href="/sign-in" className="group flex px-[1.5px] py-[2.5px] outline-none">
                                         <span className="group-hover:text-secondary text-md tracking-wider text-tertiary">Login</span>
                                     </Link>
-                                    <Link href="/sign-up" className="group hover:bg-secondary flex rounded-lg px-[7px] py-[2.5px] border-[0.1px] border-secondary outline-none transition duration-500">
-                                        <span className="group-hover:text-primary text-md tracking-wider text-secondary">Registro</span>
+                                    <Link href="/sign-up" className="group flex px-[1.5px] py-[2.5px] outline-none">
+                                        <span className="group-hover:text-secondary text-md tracking-wider text-tertiary">Registrar</span>
                                     </Link>
                                 </div>
                         }
@@ -65,6 +65,5 @@ export default function ComponentNav() {
                 </div>
             </div>
         </nav>
-
     )
 }
