@@ -1,50 +1,23 @@
 'use client'
 
-import { useUser } from "@clerk/nextjs";
+import { UserButton, useUser } from "@clerk/nextjs";
 
 import Link from "next/link";
 
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useState } from "react";
 
 import ComponentIcon from "../icon";
 
-import { Sesion } from "@/frontend/interfaces/sesion";
-
 export default function ComponentNav() {
-    const [sesion, setSesion] = useState<Sesion | any>(null);
+    const {user} = useUser();
     const [view_toggle, setView_toggle] = useState<boolean>(false);
-    const [view_options, setView_options] = useState<boolean>(false);
-
-    const user_session = useUser();
-    console.log(user_session.user);
-
-    const view_navs = (name: string) => {
-        switch (name) {
-            case 'toogle':
-                setView_toggle(!view_toggle);
-                setView_options(false);
-                break;
-            case 'options':
-                setView_options(!view_options);
-                setView_toggle(false);
-                break;
-        }
-    }
-
-    useEffect(() => {
-        setSesion({
-            id: user_session.user?.id,
-            name: user_session.user?.fullName,
-            image: user_session.user?.imageUrl
-        });
-    }, [user_session]);
 
     return (
         <nav className="fixed w-full bg-primary">
             <div className="mx-auto max-w-7xl px-2 sm:px-6">
                 <div className="relative flex h-16 items-center justify-between">
                     <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
-                        <button type="button" onClick={() => view_navs('toogle')} className="relative inline-flex items-center justify-center rounded-md p-2 outline-none">
+                        <button type="button" onClick={() => setView_toggle(!view_toggle)} className="relative inline-flex items-center justify-center rounded-md p-2 outline-none">
                             <ComponentIcon name="toogle" size={27} view_box="0 0 16 16" description_class="hover:text-secondary text-fifth" />
                         </button>
                     </div>
@@ -63,22 +36,13 @@ export default function ComponentNav() {
                     </div>
                     <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                         {
-                            (sesion !== null) ?
-                                <Fragment>
+                            (user) ?
+                                <div className="flex gap-x-4">
                                     <button type="button" className="relative rounded-full p-1 outline-none">
                                         <ComponentIcon name="notification" size={20} description_class="hover:text-secondary text-fifth" />
                                     </button>
-                                    <div className="relative ml-3">
-                                        <button type="button" onClick={() => view_navs('options')} className="flex rounded-full outline-none">
-                                            <img className="h-8 w-8 rounded-full" src={sesion.image} alt={sesion.name} />
-                                        </button>
-                                        <div className={`${!view_options && 'hidden'} bg-room absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none`}>
-                                            <a href="#" className="block px-4 py-2 tracking-wider text-sm text-fifth hover:text-secondary transition duration-500">Ver perfil</a>
-                                            <a href="#" className="block px-4 py-2 tracking-wider text-sm text-fifth hover:text-secondary transition duration-500">Configuracion</a>
-                                            <a href="#" className="block px-4 py-2 tracking-wider text-sm text-fifth hover:text-secondary transition duration-500">Cerrar sesion</a>
-                                        </div>
-                                    </div>
-                                </Fragment>
+                                    <UserButton/>
+                                </div>
                                 :
                                 <div className="flex gap-x-3">
                                     <Link href="/sign-in" className="group flex px-[1.5px] py-[2.5px] outline-none">

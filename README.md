@@ -64,3 +64,6 @@
     - JavaScript
     - Tailwind
     - Redux
+
+## External authentication services
+  * Access the url ["http://clerk.com/"]
