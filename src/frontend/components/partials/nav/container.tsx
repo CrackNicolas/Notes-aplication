@@ -13,7 +13,7 @@ export default function ComponentNav() {
     const [view_toggle, setView_toggle] = useState<boolean>(false);
 
     return (
-        <nav className="fixed w-full bg-primary mt-[-7px]">
+        <nav className="fixed w-full bg-primary mt-[-7px] z-50">
             <div className="mx-auto max-w-7xl px-2 sm:px-10">
                 <div className="relative flex h-16 items-center justify-between">
                     <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
@@ -27,10 +27,10 @@ export default function ComponentNav() {
                         </Link>
                         <div className="hidden sm:ml-6 sm:block">
                             <div className="flex space-x-1">
-                                <a href="#" className="hover:text-secondary tracking-wider text-fifth px-3 py-2 text-md font-normal transition duration-500">Panel</a>
-                                <a href="#" className="hover:text-secondary tracking-wider text-fifth px-3 py-2 text-md font-normal transition duration-500">Equipo</a>
-                                <a href="#" className="hover:text-secondary tracking-wider text-fifth px-3 py-2 text-md font-normal transition duration-500">Proyectos</a>
-                                <a href="#" className="hover:text-secondary tracking-wider text-fifth px-3 py-2 text-md font-normal transition duration-500">Calendario</a>
+                                <Link href="/dashboard" className="hover:text-secondary tracking-wider text-fifth px-3 py-2 text-md font-normal transition duration-500">Panel</Link>
+                                <Link href="#" className="hover:text-secondary tracking-wider text-fifth px-3 py-2 text-md font-normal transition duration-500">Notas</Link>
+                                <Link href="#" className="hover:text-secondary tracking-wider text-fifth px-3 py-2 text-md font-normal transition duration-500">Busquedas</Link>
+                                <Link href="#" className="hover:text-secondary tracking-wider text-fifth px-3 py-2 text-md font-normal transition duration-500">Configuracion</Link>
                             </div>
                         </div>
                     </div>
