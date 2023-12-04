@@ -15,15 +15,15 @@ body {
   background: theme("colors.primary");
 }
 
-body::-webkit-scrollbar {
+body::-webkit-scrollbar, .scroll::-webkit-scrollbar {
   overflow-y: scroll;
-  width: 5px;
+  width: 6px;
 }
 
-body::-webkit-scrollbar-thumb {
+body::-webkit-scrollbar-thumb, .scroll::-webkit-scrollbar-thumb  {
   background: theme("colors.secondary");
 }
 
-body::-webkit-scrollbar-thumb:hover {
+body::-webkit-scrollbar-thumb:hover, .scroll::-webkit-scrollbar-thumb  {
   border-radius: 10px;
 }
