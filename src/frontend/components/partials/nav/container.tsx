@@ -3,14 +3,19 @@
 import { UserButton, useUser } from "@clerk/nextjs";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 import { useState } from "react";
 
 import ComponentIcon from "../icon";
 
 export default function ComponentNav() {
-    const {user} = useUser();
+    const { user } = useUser();
+
+    const section = usePathname().substring(1);
+
     const [view_toggle, setView_toggle] = useState<boolean>(false);
+    const [focus, setFocus] = useState<boolean>(false);
 
     return (
         <nav className="fixed w-full bg-primary mt-[-7px] z-50">
@@ -22,15 +27,15 @@ export default function ComponentNav() {
                         </button>
                     </div>
                     <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-                        <Link href="/" className="sm:flex hidden flex-shrink-0 items-center">
-                            <ComponentIcon name="logo" size={27} description_class="text-secondary" />
+                        <Link href="/" className="sm:flex hidden flex-shrink-0 items-center" onMouseOver={() => setFocus(true)} onMouseLeave={() => setFocus(false)}>
+                            <ComponentIcon name={`${focus ? 'logo-fill' : 'logo'}`} size={27} description_class="text-secondary" />
                         </Link>
-                        <div className="hidden sm:ml-6 sm:block">
+                        <div className="hidden sm:ml-4 sm:block">
                             <div className="flex space-x-1">
-                                <Link href="/dashboard" className="hover:text-secondary tracking-wider text-fifth px-3 py-2 text-md font-normal transition duration-500">Panel</Link>
-                                <Link href="#" className="hover:text-secondary tracking-wider text-fifth px-3 py-2 text-md font-normal transition duration-500">Notas</Link>
-                                <Link href="#" className="hover:text-secondary tracking-wider text-fifth px-3 py-2 text-md font-normal transition duration-500">Busquedas</Link>
-                                <Link href="#" className="hover:text-secondary tracking-wider text-fifth px-3 py-2 text-md font-normal transition duration-500">Configuracion</Link>
+                                <Link href="/dashboard" className={`${(section === "dashboard") && 'text-secondary'} hover:text-secondary tracking-wider text-fifth px-1 py-2 text-md font-normal transition duration-500`}>Panel</Link>
+                                <Link href="/notes" className={`${(section === "notes" && "text-secondary")} hover:text-secondary tracking-wider text-fifth px-1 py-2 text-md font-normal transition duration-500`}>Notas</Link>
+                                <Link href="#" className={`${(section === "b")} hover:text-secondary tracking-wider text-fifth px-1 py-2 text-md font-normal transition duration-500`}>Busquedas</Link>
+                                <Link href="#" className={`${(section === "c")} hover:text-secondary tracking-wider text-fifth px-1 py-2 text-md font-normal transition duration-500`}>Configuracion</Link>
                             </div>
                         </div>
                     </div>
@@ -41,10 +46,10 @@ export default function ComponentNav() {
                                     <button type="button" className="relative rounded-full p-1 outline-none">
                                         <ComponentIcon name="notification" size={20} description_class="hover:text-secondary text-fifth" />
                                     </button>
-                                    <UserButton afterSignOutUrl="/"/>
+                                    <UserButton afterSignOutUrl="/" />
                                 </div>
                                 :
-                                <div className="flex gap-x-4">
+                                <div className="flex gap-x-3">
                                     <Link href="/sign-in" className="group flex px-[1.5px] py-[2.5px] outline-none">
                                         <span className="group-hover:text-secondary text-md tracking-wider text-tertiary">Login</span>
                                     </Link>
