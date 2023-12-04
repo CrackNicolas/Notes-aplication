@@ -16,8 +16,8 @@ export default function ComponentHome() {
                     </span>
                 </div>
                 <div className="mt-3 flex items-center justify-center gap-x-6">
-                    <Link href="/dashboard" className="rounded-md border-[1px] border-secondary text-secondary hover:bg-gradient-to-r from-secondary vie-secondary px-3.5 py-2.5 text-sm font-normal hover:font-semibold hover:text-primary tracking-wider transition duration-500 cursor-pointer">
-                        Get started
+                    <Link href="/dashboard" title="Empezar" className="rounded-md border-[1px] border-secondary text-secondary hover:bg-gradient-to-r from-secondary vie-secondary px-3.5 py-2.5 text-sm font-normal hover:font-semibold hover:text-primary tracking-wider transition duration-500 cursor-pointer">
+                        Empezar
                     </Link>
                 </div>
             </div>
