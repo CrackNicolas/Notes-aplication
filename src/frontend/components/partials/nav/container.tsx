@@ -64,9 +64,9 @@ export default function ComponentNav() {
             <div className={` bg-room ${view_toggle ? 'visible' : 'hidden'} sm:hidden`}>
                 <div className="space-y-1 px-2 pb-3 pt-2">
                     <a href="#" className="hover:text-secondary tracking-wider text-fifth block px-3 py-2 text-md font-normal transition duration-500">Panel</a>
-                    <a href="#" className="hover:text-secondary tracking-wider text-fifth block px-3 py-2 text-md font-normal transition duration-500">Equipo</a>
-                    <a href="#" className="hover:text-secondary tracking-wider text-fifth block px-3 py-2 text-md font-normal transition duration-500">Proyectos</a>
-                    <a href="#" className="hover:text-secondary tracking-wider text-fifth block px-3 py-2 text-md font-normal transition duration-500">Calendario</a>
+                    <a href="#" className="hover:text-secondary tracking-wider text-fifth block px-3 py-2 text-md font-normal transition duration-500">Notas</a>
+                    <a href="#" className="hover:text-secondary tracking-wider text-fifth block px-3 py-2 text-md font-normal transition duration-500">Busquedaz</a>
+                    <a href="#" className="hover:text-secondary tracking-wider text-fifth block px-3 py-2 text-md font-normal transition duration-500">Configuracion</a>
                 </div>
             </div>
         </nav>

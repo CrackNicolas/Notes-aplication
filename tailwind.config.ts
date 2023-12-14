@@ -13,8 +13,9 @@ const config: Config = {
         "secondary": "#00ffff",
         "tertiary": "#ffffff",
         "room": "#141313",
-        "fifth":"#808080",
-        "sixth":"#141313a4"
+        "fifth": "#808080",
+        "sixth": "#141313a4",
+        "error": "#ff0000"
       }
     }
   },

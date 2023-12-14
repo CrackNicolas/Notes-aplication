@@ -1,16 +1,19 @@
-import { useRef } from 'react';
+'use client'
+
 import { useForm } from 'react-hook-form';
+import { useRef } from 'react';
+
+import ComponentLabel from './label';
 
 import { validation } from '@/frontend/validations/form';
-import ComponentLabel from './label';
 
 export default function ComponentForm() {
     const { register, handleSubmit, formState: { errors } } = useForm();
 
-    const ref_form = useRef<null>(null);
+    const ref_form = useRef<any>(null);
 
     const onSubmit = () => {
-
+        console.log(ref_form.current.title.value)
     }
 
     return (
@@ -21,25 +24,23 @@ export default function ComponentForm() {
             <form method="POST" onSubmit={handleSubmit(onSubmit)} ref={ref_form} className="flex flex-col gap-y-7">
                 <div className="flex flex-col gap-y-3">
                     <div className="flex flex-col gap-y-0.5">
-                        <ComponentLabel title="Titulo" html_for="title" errors={errors} />
+                        <ComponentLabel title="Titulo" html_for="title" error={errors.title?.type} />
                         <input
-                            {...register('name', validation('name'))}
+                            {...register('title', validation('title'))}
                             type="text"
                             id="title"
                             placeholder="Escriba el titulo..."
-                            className="bg-primary w-full rounded-md border-[0.1px] border-secondary border-opacity-50 py-1.5 px-2 outline-none text-secondary tracking-wide placeholder:text-secondary placeholder:opacity-70 sm:text-md"
+                            className={`${(errors.title?.type===undefined)?'border-secondary text-secondary placeholder:text-secondary':'border-error text-error placeholder:text-error'} border-opacity-50 bg-primary w-full rounded-md border-[0.1px]  py-1.5 px-2 outline-none tracking-wide placeholder:opacity-70 sm:text-md`}
                         />
                     </div>
                     <div className="flex flex-col gap-y-0.5">
-                        <label htmlFor="description" className="text-sm font-normal text-secondary tracking-wider">
-                            Descripcion
-                        </label>
+                        <ComponentLabel title="Descripcion" html_for="description" error={errors.description?.type} />
                         <textarea
                             {...register('description', validation('description'))}
                             rows={3}
                             id="description"
                             placeholder="Escriba la descripcion..."
-                            className="bg-primary w-full rounded-md border-[0.1px] min-h-[80px] scroll border-secondary border-opacity-50 py-1.5 px-2 outline-none text-secondary tracking-wide placeholder:text-secondary placeholder:opacity-70 sm:text-md"
+                            className={`${(errors.description?.type===undefined)?'border-secondary text-secondary placeholder:text-secondary':'border-error text-error placeholder:text-error'} border-opacity-50 bg-primary w-full rounded-md border-[0.1px] min-h-[80px] scroll py-1.5 px-2 outline-none text-secondary tracking-wide placeholder:text-secondary placeholder:opacity-70 sm:text-md`}
                         />
                     </div>
                 </div>

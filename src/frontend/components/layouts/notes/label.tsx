@@ -1,18 +1,27 @@
-import { FieldErrors, FieldValues } from "react-hook-form";
+import { FieldError, FieldErrorsImpl, LiteralUnion, Merge } from "react-hook-form";
 
 type Props = {
     title: string,
     html_for: string,
-    errors: FieldErrors<FieldValues>
+    error: FieldError | Merge<FieldError, FieldErrorsImpl<any>> | LiteralUnion<"required" | "pattern" | "maxLength" | "minLength", string> | undefined
 }
 
 export default function ComponentLabel(props: Props) {
-    const { title, html_for, errors } = props;
+    const { title, html_for, error } = props;
+
+    const message = () => {
+        switch (error) {
+            case 'required':
+                return `${title} requerid${(title === "Descripcion") ? 'a' : 'o'}`;
+            default:
+                return title;
+        }
+    }
 
     return (
-        <label htmlFor={html_for} className="text-sm font-normal text-secondary tracking-wider">
+        <label htmlFor={html_for} className={`text-sm font-normal ${(error === undefined) ? 'text-secondary' : 'text-error'} tracking-wider`}>
             {
-                (errors.name?.type) ? 'error' : title
+                message()
             }
         </label>
     )
