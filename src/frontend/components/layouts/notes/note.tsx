@@ -1,19 +1,27 @@
 import ComponentIcon from "../../partials/icon";
 
-export default function ComponentNote() {
+import { Props_note } from "@/frontend/types/props";
+
+type Props = {
+    note: Props_note
+}
+
+export default function ComponentNote({ note }: Props) {
+    const { id, title, description, creation_date } = note;
+
     return (
-        <div className="group grid grid-cols-9 w-full bg-sixth pl-2.5 py-2 cursor-pointer rounded-md border-[0.1px] border-secondary border-opacity-20 hover:border-opacity-100">
+        <div key={id} className="group grid grid-cols-9 w-full bg-sixth pl-2.5 py-2 cursor-pointer rounded-md border-[0.1px] border-secondary border-opacity-20 hover:border-opacity-100">
             <div className="col-span-8 flex flex-col">
                 <span className="text-md font-normal group-hover:font-semibold tracking-wide text-secondary">
-                    Titulo
+                    {title}
                 </span>
                 <p className="line-clamp-1 text-sm text-tertiary opacity-50">
-                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quod, sunt natus, officiis vitae consectetur, labore reiciendis impedit totam sed porro excepturi! Eius esse itaque aliquid neque repellendus suscipit cum architecto?
+                    {description}
                 </p>
             </div>
             <div className="col-span-1 flex flex-col place-items-center gap-y-2">
                 <span className="text-tertiary text-[11px] opacity-50 px-1.5">
-                    Hace 1 min
+                    {creation_date}
                 </span>
                 <div className="flex gap-x-2">
                     <button type="button" title="Eliminar" className="outline-none border-none cursor-pointer">

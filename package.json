@@ -15,7 +15,8 @@
     "next": "14.0.3",
     "next-nprogress-bar": "^2.1.2",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "react-hook-form": "^7.49.2"
   },
   "devDependencies": {
     "@types/node": "^20",
