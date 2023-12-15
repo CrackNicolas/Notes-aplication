@@ -3,6 +3,8 @@
 import { useForm } from 'react-hook-form';
 import { useRef } from 'react';
 
+import axios from 'axios';
+
 import ComponentLabel from './label';
 
 import { validation } from '@/frontend/validations/form';
@@ -12,8 +14,13 @@ export default function ComponentForm() {
 
     const ref_form = useRef<any>(null);
 
-    const onSubmit = () => {
-        console.log(ref_form.current.title.value)
+    const onSubmit = async () => {
+        const { data } = await axios.post("api/notes", {
+            title: ref_form.current.title.value,
+            description: ref_form.current.description.value
+        });
+
+        console.log(data);
     }
 
     return (
@@ -30,7 +37,7 @@ export default function ComponentForm() {
                             type="text"
                             id="title"
                             placeholder="Escriba el titulo..."
-                            className={`${(errors.title?.type===undefined)?'border-secondary text-secondary placeholder:text-secondary':'border-error text-error placeholder:text-error'} border-opacity-50 bg-primary w-full rounded-md border-[0.1px]  py-1.5 px-2 outline-none tracking-wide placeholder:opacity-70 sm:text-md`}
+                            className={`${(errors.title?.type === undefined) ? 'border-secondary text-secondary placeholder:text-secondary' : 'border-error text-error placeholder:text-error'} border-opacity-50 bg-primary w-full rounded-md border-[0.1px]  py-1.5 px-2 outline-none tracking-wide placeholder:opacity-70 sm:text-md`}
                         />
                     </div>
                     <div className="flex flex-col gap-y-0.5">
@@ -40,7 +47,7 @@ export default function ComponentForm() {
                             rows={3}
                             id="description"
                             placeholder="Escriba la descripcion..."
-                            className={`${(errors.description?.type===undefined)?'border-secondary text-secondary placeholder:text-secondary':'border-error text-error placeholder:text-error'} border-opacity-50 bg-primary w-full rounded-md border-[0.1px] min-h-[80px] scroll py-1.5 px-2 outline-none text-secondary tracking-wide placeholder:text-secondary placeholder:opacity-70 sm:text-md`}
+                            className={`${(errors.description?.type === undefined) ? 'border-secondary text-secondary placeholder:text-secondary' : 'border-error text-error placeholder:text-error'} border-opacity-50 bg-primary w-full rounded-md border-[0.1px] min-h-[80px] scroll py-1.5 px-2 outline-none tracking-wide placeholder:opacity-70 sm:text-md`}
                         />
                     </div>
                 </div>
