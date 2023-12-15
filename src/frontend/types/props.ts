@@ -4,8 +4,8 @@ export type Props_layouts = {
     children: ReactNode
 }
 export type Props_note = {
-    id: string,
+    _id: string,
     title: string,
     description: string,
-    creation_date: string
+    createdAt: string
 }

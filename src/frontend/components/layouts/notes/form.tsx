@@ -12,21 +12,22 @@ import { Props_note } from '@/frontend/types/props';
 
 type Props = {
     setSelected: Dispatch<SetStateAction<Props_note | undefined>>,
-    selected: Props_note | undefined
+    selected: Props_note | undefined,
+    setRefresh: () => void
 }
 
-export default function ComponentForm({ setSelected, selected }: Props) {
+export default function ComponentForm({ setSelected, selected, setRefresh }: Props) {
     const { register, handleSubmit, formState: { errors }, setValue, reset } = useForm();
 
     const ref_form = useRef<any>(null);
 
     const onSubmit = async () => {
-        const { data } = await axios.post("api/notes", {
+        console.log("gato");
+        await axios.post("api/notes", {
             title: ref_form.current.title.value,
             description: ref_form.current.description.value
         });
-
-        console.log(data);
+        setRefresh();
         reset();
         setSelected(undefined)
     }
@@ -69,13 +70,13 @@ export default function ComponentForm({ setSelected, selected }: Props) {
                         />
                     </div>
                 </div>
-                <div className="flex gap-x-2">
+                <div className="flex gap-x-10">
                     <button type="submit" title="Crear nota" className="flex w-full justify-center rounded-md text-secondary border-[0.1px] border-secondary border-opacity-80 px-3 py-1.5 text-md font-normal hover:font-semibold bg-primary tracking-wider hover:bg-sixth outline-none">
                         {
                             (selected === undefined) ? 'Crear nota' : 'Editar nota'
                         }
                     </button>
-                    <button onClick={() => setSelected(undefined)} title="Reiniciar" className="flex w-full justify-center rounded-md text-error border-[0.1px] border-error border-opacity-80 px-3 py-1.5 text-md font-normal hover:font-semibold bg-primary tracking-wider hover:bg-sixth outline-none">
+                    <button onClick={() => setSelected(undefined)} type="button" title="Reiniciar" className="flex w-full justify-center rounded-md text-error border-[0.1px] border-error border-opacity-80 px-3 py-1.5 text-md font-normal hover:font-semibold bg-primary tracking-wider hover:bg-sixth outline-none">
                         Deshacer
                     </button>
                 </div>

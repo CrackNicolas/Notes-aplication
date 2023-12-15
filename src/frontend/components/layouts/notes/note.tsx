@@ -1,9 +1,15 @@
+import axios from "axios";
 import ComponentIcon from "../../partials/icon";
 
 import { Props_note } from "@/frontend/types/props";
 
-export default function ComponentNote({ note, paint }: { note: Props_note, paint: boolean }) {
-    const { title, description, creation_date } = note;
+export default function ComponentNote({ note, paint, setRefresh }: { note: Props_note, paint: boolean, setRefresh: () => void }) {
+    const { _id, title, description, createdAt } = note;
+
+    const delete_note = async () => {
+        await axios.delete(`api/notes/${_id}`);
+        setRefresh();
+    }
 
     return (
         <div className={`group grid grid-cols-9 w-full bg-sixth pl-2.5 py-2 cursor-pointer rounded-md border-[0.1px] border-secondary ${paint ? 'border-opacity-100' : 'border-opacity-20 hover:border-opacity-100'}`}>
@@ -17,10 +23,10 @@ export default function ComponentNote({ note, paint }: { note: Props_note, paint
             </div>
             <div className="col-span-1 flex flex-col place-items-center gap-y-2">
                 <span className="text-tertiary text-[11px] opacity-50 px-1.5">
-                    {creation_date}
+                    {createdAt}
                 </span>
                 <div className="flex gap-x-2">
-                    <button type="button" title="Eliminar" className="outline-none border-none cursor-pointer">
+                    <button onClick={() => delete_note()} type="button" title="Eliminar" className="outline-none border-none cursor-pointer">
                         <ComponentIcon name="delete" size={20} description_class="text-fifth hover:text-red-500" />
                     </button>
                     <button type="button" title="Editar" className="outline-none border-none">

@@ -1,42 +1,31 @@
 import { NextResponse } from "next/server"
 
-var list =  [
-    {
-        id: '1',
-        title: 'Primera nota',
-        description: 'a',
-        creation_date: '2000-20-12'
-    },
-    {
-        id: '2',
-        title: 'Segunda nota',
-        description: 'b',
-        creation_date: '2000-20-02'
-    },
-    {
-        id: '3',
-        title: 'Tercera nota',
-        description: 'b',
-        creation_date: '2000-20-02'
-    }
-]
+import { Conect_db } from "@/backend/utils/db";
+
+import Notes from '@/backend/schemas/notes'
 
 export async function GET() {
+    Conect_db();
     try {
-        return NextResponse.json({
-            notes : list
-        })
+        const notes = await Notes.find();
+        console.log(notes);
+        return NextResponse.json({notes});
     } catch (error) {
         return NextResponse.json({ error: "Error" })
     }
 }
 
 export async function POST(req: Request) {
-    const data = await req.json();
+    const {title, description} = await req.json();
+
+    Conect_db();
 
     try {
+        const new_note = new Notes({title,description});
+        new_note.save();
         return NextResponse.json({
-            message: "Registrado"
+            message: "Registrado",
+            note:new_note
         })
     } catch (error) {
         return NextResponse.json({
