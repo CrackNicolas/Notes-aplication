@@ -13,7 +13,7 @@ type Props = {
 
 export default function ComponentList({ notes, setSelected, selected }: Props) {
     return (
-        <div className="col-span-full bg-red-500 lg:col-span-2 flex flex-col gap-y-2">
+        <div className="col-span-full lg:col-span-2 flex flex-col gap-y-2">
             <ComponentHeader />
             <div className="flex flex-col gap-y-1 overflow-hidden overflow-y-scroll scroll h-[calc(100vh-155px)] pr-1">
                 {

@@ -38,7 +38,7 @@ export default function ComponentForm({ setSelected, selected }: Props) {
     }, [selected])
 
     return (
-        <div className="col-span-full lg:col-span-1 bg-red-500 flex flex-col gap-y-2">
+        <div className="col-span-full lg:col-span-1 flex flex-col gap-y-2">
             <div className="flex justify-center">
                 <span className="text-2xl text-secondary font-semibold text-center">
                     {

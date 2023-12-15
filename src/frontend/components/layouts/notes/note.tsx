@@ -6,7 +6,7 @@ export default function ComponentNote({ note, paint }: { note: Props_note, paint
     const { title, description, creation_date } = note;
 
     return (
-        <div className={`group grid grid-cols-9 w-full bg-sixth pl-2.5 py-2 cursor-pointer rounded-md border-[0.1px] border-secondary border-opacity-20 ${paint ? 'border-opacity-100' : 'hover:border-opacity-100'}`}>
+        <div className={`group grid grid-cols-9 w-full bg-sixth pl-2.5 py-2 cursor-pointer rounded-md border-[0.1px] border-secondary ${paint ? 'border-opacity-100' : 'border-opacity-20 hover:border-opacity-100'}`}>
             <div className="col-span-8 flex flex-col">
                 <span className="text-md font-normal group-hover:font-semibold tracking-wide text-secondary">
                     {title}
