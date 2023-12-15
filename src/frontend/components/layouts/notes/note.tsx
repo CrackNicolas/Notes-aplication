@@ -2,15 +2,11 @@ import ComponentIcon from "../../partials/icon";
 
 import { Props_note } from "@/frontend/types/props";
 
-type Props = {
-    note: Props_note
-}
-
-export default function ComponentNote({ note }: Props) {
+export default function ComponentNote({ note, paint }: { note: Props_note, paint: boolean }) {
     const { title, description, creation_date } = note;
 
     return (
-        <div className="group grid grid-cols-9 w-full bg-sixth pl-2.5 py-2 cursor-pointer rounded-md border-[0.1px] border-secondary border-opacity-20 hover:border-opacity-100">
+        <div className={`group grid grid-cols-9 w-full bg-sixth pl-2.5 py-2 cursor-pointer rounded-md border-[0.1px] border-secondary border-opacity-20 ${paint ? 'border-opacity-100' : 'hover:border-opacity-100'}`}>
             <div className="col-span-8 flex flex-col">
                 <span className="text-md font-normal group-hover:font-semibold tracking-wide text-secondary">
                     {title}

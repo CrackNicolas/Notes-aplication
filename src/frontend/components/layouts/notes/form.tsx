@@ -1,16 +1,22 @@
 'use client'
 
 import { useForm } from 'react-hook-form';
-import { useRef } from 'react';
+import { Dispatch, SetStateAction, useEffect, useRef } from 'react';
 
 import axios from 'axios';
 
 import ComponentLabel from './label';
 
 import { validation } from '@/frontend/validations/form';
+import { Props_note } from '@/frontend/types/props';
 
-export default function ComponentForm() {
-    const { register, handleSubmit, formState: { errors } } = useForm();
+type Props = {
+    setSelected: Dispatch<SetStateAction<Props_note | undefined>>,
+    selected: Props_note | undefined
+}
+
+export default function ComponentForm({ setSelected, selected }: Props) {
+    const { register, handleSubmit, formState: { errors }, setValue, reset } = useForm();
 
     const ref_form = useRef<any>(null);
 
@@ -21,12 +27,24 @@ export default function ComponentForm() {
         });
 
         console.log(data);
+        reset();
+        setSelected(undefined)
     }
+
+    useEffect(() => {
+        reset();
+        setValue('title', selected?.title);
+        setValue('description', selected?.description);
+    }, [selected])
 
     return (
         <div className="col-span-1 flex flex-col gap-y-2">
             <div className="flex justify-center">
-                <span className="text-2xl text-secondary font-semibold text-center">Crear nota</span>
+                <span className="text-2xl text-secondary font-semibold text-center">
+                    {
+                        (selected === undefined) ? 'Crear nota' : 'Editar nota'
+                    }
+                </span>
             </div>
             <form method="POST" onSubmit={handleSubmit(onSubmit)} ref={ref_form} className="flex flex-col gap-y-7">
                 <div className="flex flex-col gap-y-3">
@@ -51,9 +69,16 @@ export default function ComponentForm() {
                         />
                     </div>
                 </div>
-                <button type="submit" title="Crear nota" className="flex w-full justify-center rounded-md text-secondary border-[0.1px] border-secondary border-opacity-80 px-3 py-1.5 text-md font-normal hover:font-semibold bg-primary tracking-wider hover:bg-sixth outline-none">
-                    Crear nota
-                </button>
+                <div className="flex gap-x-2">
+                    <button type="submit" title="Crear nota" className="flex w-full justify-center rounded-md text-secondary border-[0.1px] border-secondary border-opacity-80 px-3 py-1.5 text-md font-normal hover:font-semibold bg-primary tracking-wider hover:bg-sixth outline-none">
+                        {
+                            (selected === undefined) ? 'Crear nota' : 'Editar nota'
+                        }
+                    </button>
+                    <button onClick={() => setSelected(undefined)} title="Reiniciar" className="flex w-full justify-center rounded-md text-error border-[0.1px] border-error border-opacity-80 px-3 py-1.5 text-md font-normal hover:font-semibold bg-primary tracking-wider hover:bg-sixth outline-none">
+                        Deshacer
+                    </button>
+                </div>
             </form>
         </div>
     )
