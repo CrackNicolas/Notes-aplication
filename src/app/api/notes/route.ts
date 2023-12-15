@@ -8,7 +8,6 @@ export async function GET() {
     Conect_db();
     try {
         const notes = await Notes.find();
-        console.log(notes);
         return NextResponse.json({notes});
     } catch (error) {
         return NextResponse.json({ error: "Error" })
