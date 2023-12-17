@@ -22,8 +22,7 @@ export default function ComponentForm({ setSelected, selected, setRefresh }: Pro
     const ref_form = useRef<any>(null);
 
     const onSubmit = async () => {
-        console.log("gato");
-        await axios.post("api/notes", {
+        const result = await axios.post("api/notes", {
             title: ref_form.current.title.value,
             description: ref_form.current.description.value
         });

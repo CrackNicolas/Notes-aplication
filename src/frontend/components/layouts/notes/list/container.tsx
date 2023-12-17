@@ -19,16 +19,16 @@ export default function ComponentList({ notes, setSelected, selected, setRefresh
             <ComponentHeader />
             <div className="flex flex-col gap-y-1 overflow-hidden overflow-y-scroll scroll h-[calc(100vh-155px)] pr-1">
                 {
-                    (notes.length === 0) && <ComponentLoading />
-                }
-                {
-                    notes.map((note: Props_note) => {
-                        return (
-                            <div key={note._id} onClick={() => setSelected(note)} className="rounded-md">
-                                <ComponentNote note={note} paint={selected?._id === note._id} setRefresh={setRefresh} />
-                            </div>
-                        )
-                    })
+                    (!notes) ?
+                        <ComponentLoading />
+                        :
+                        notes.map((note: Props_note) => {
+                            return (
+                                <div key={note._id} onClick={() => setSelected(note)} className="rounded-md">
+                                    <ComponentNote note={note} paint={selected?._id === note._id} setRefresh={setRefresh} />
+                                </div>
+                            )
+                        })
                 }
             </div>
         </div>
