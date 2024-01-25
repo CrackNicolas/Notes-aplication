@@ -1,11 +1,21 @@
 import axios from "axios";
 
+import { Dispatch, SetStateAction } from "react";
+
 import ComponentIcon from "../../partials/icon";
 
 import { Props_note } from "@/frontend/types/props";
 import { Time_elapsed } from "@/frontend/logic/time";
 
-export default function ComponentNote({ note, paint, setRefresh }: { note: Props_note, paint: boolean, setRefresh: () => void }) {
+type Props = {
+    note: Props_note,
+    paint: boolean,
+    setSelected: Dispatch<SetStateAction<Props_note | undefined>>,
+    setRefresh: () => void
+}
+
+export default function ComponentNote(props: Props) {
+    const { note, paint, setRefresh, setSelected } = props;
     const { _id, title, description, createdAt } = note;
 
     const delete_note = async () => {
@@ -31,7 +41,7 @@ export default function ComponentNote({ note, paint, setRefresh }: { note: Props
                     <button onClick={() => delete_note()} type="button" title="Eliminar" className="outline-none border-none cursor-pointer">
                         <ComponentIcon name="delete" size={20} description_class="text-fifth hover:text-red-500" />
                     </button>
-                    <button type="button" title="Editar" className="outline-none border-none">
+                    <button onClick={() => setSelected(note)} type="button" title="Editar" className="outline-none border-none">
                         <ComponentIcon name="update" size={20} description_class="text-fifth hover:text-secondary" />
                     </button>
                 </div>

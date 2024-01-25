@@ -24,8 +24,8 @@ export default function ComponentList({ notes, setSelected, selected, setRefresh
                         :
                         notes.map((note: Props_note) => {
                             return (
-                                <div key={note._id} onClick={() => setSelected(note)} className="rounded-md">
-                                    <ComponentNote note={note} paint={selected?._id === note._id} setRefresh={setRefresh} />
+                                <div key={note._id} className="rounded-md">
+                                    <ComponentNote note={note} paint={selected?._id === note._id} setSelected={setSelected} setRefresh={setRefresh} />
                                 </div>
                             )
                         })

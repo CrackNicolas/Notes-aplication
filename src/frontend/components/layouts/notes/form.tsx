@@ -22,10 +22,25 @@ export default function ComponentForm({ setSelected, selected, setRefresh }: Pro
     const ref_form = useRef<any>(null);
 
     const onSubmit = async () => {
-        const result = await axios.post("api/notes", {
-            title: ref_form.current.title.value,
-            description: ref_form.current.description.value
-        });
+        if (selected === undefined) {
+            const { data } = await axios.post("api/notes", {
+                title: ref_form.current.title.value,
+                description: ref_form.current.description.value
+            })
+            if (data.status === 201) {
+                //Crear modal para confirmar creacion de una nota
+            }
+        }
+        if (selected !== undefined) {
+            const { data } = await axios.put("api/notes", {
+                _id: selected._id,
+                title: ref_form.current.title.value,
+                description: ref_form.current.description.value
+            })
+            if (data.status === 200) {
+                //Crear modal para confirmar modificacion de la nota
+            }
+        }
         setRefresh();
         reset();
         setSelected(undefined)
@@ -70,7 +85,7 @@ export default function ComponentForm({ setSelected, selected, setRefresh }: Pro
                     </div>
                 </div>
                 <div className="flex gap-x-10">
-                    <button type="submit" title="Crear nota" className="flex w-full justify-center rounded-md text-secondary border-[0.1px] border-secondary border-opacity-80 px-3 py-1.5 text-md font-normal hover:font-semibold bg-primary tracking-wider hover:bg-sixth outline-none">
+                    <button type="submit" title={(selected === undefined) ? 'Crear nota' : 'Editar nota'} className="flex w-full justify-center rounded-md text-secondary border-[0.1px] border-secondary border-opacity-80 px-3 py-1.5 text-md font-normal hover:font-semibold bg-primary tracking-wider hover:bg-sixth outline-none">
                         {
                             (selected === undefined) ? 'Crear nota' : 'Editar nota'
                         }

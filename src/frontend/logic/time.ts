@@ -1,36 +1,35 @@
 export function Time_elapsed(fecha_emit: string) {
-    let date_issue = new Date(fecha_emit.split("T")[0]).getTime();
-    let date_current = new Date().getTime();
-    let days = Math.round((date_current - date_issue) / (1000 * 60 * 60 * 24));
+    const date_provided: any = new Date(fecha_emit);
+    const current_date: any = new Date();
 
-    if (days < 1) {
-        let hour = (date_current - date_issue) / (1000 * 60 * 60 * 24) * 24;
-        if (hour < 1) {
-            let minute = hour * 60;
-            if (minute < 1) {
-                let seconds = Math.round(minute * 3600);
-                return "hace " + (seconds) + " " + (seconds == 1) ? " segundo" : " segundos";
-            }
-            return "hace " + (Math.round(minute)) + " " + ((Math.round(minute) == 1) ? " minuto" : " minutos");
-        }
-        return "hace " + Math.round(hour) + " " + ((Math.round(hour) == 1) ? " hora" : " horas");
-    }
-    if (days <= 30) {
-        return (days == 30) ? "hace 1 mes" : "hace " + days + " " + ((days === 1) ? "dia" : "dias");
-    }
-    if (days > 30 && days < 365) {
-        let month = Math.round(days / 30);
-        let difference = days - (month * 30);
-        return "hace " + month + ((month == 1) ? " mes" : " meses") + ((difference>0)? " y "+ difference + ((difference==1)? " dia":" dias") : "");
-    }
-    if (days >= 365 && days < 730) {
-        let month = Math.round(days / 30) - 12;
-        return "hace 1 año "+(month)+" meses";
-    }
-    if (days >= 730) {
-        let year =  Math.round(days / 365);
-        let month = Math.round((days-year*365) / 30);
-        return "hace " + year + " años "+ ((month>0)? (month==1)? "y 1 mes": "y "+month+" meses":"");
-    }
-    return "";
+    const milliseconds_in_an_second = 1000;
+    const seconds_in_an_minute = 60;
+    const minutes_in_an_hour = 60;
+    const hours_in_an_day = 24;
+    const days_in_an_month_average = 30.44; // Valor promedio para manejar variaciones en la duración de los meses
+    const months_in_an_year = 12;
+
+    const diference_in_milliseconds = current_date - date_provided;
+
+    const total_seconds = Math.floor(diference_in_milliseconds / milliseconds_in_an_second);
+    const total_minutes = Math.floor(total_seconds / seconds_in_an_minute);
+    const total_hour = Math.floor(total_minutes / minutes_in_an_hour);
+    const total_days = Math.floor(total_hour / hours_in_an_day);
+    const total_month = Math.floor(total_days / days_in_an_month_average);
+    const years = Math.floor(total_month / months_in_an_year);
+
+    const seconds = total_seconds % seconds_in_an_minute;
+    const minutes = total_minutes % minutes_in_an_hour;
+    const hours = total_hour % hours_in_an_day;
+    const days = total_days % days_in_an_month_average;
+    const month = total_month % months_in_an_year;
+
+    return `Hace 
+        ${(years > 0) ? (years > 1) ? (years) + ' años' : +(years) + ' año' : ''}
+        ${(month > 0) ? (month > 1) ? (month) + ' meses' : +(month) + ' mes' : ''}
+        ${(days > 0) ? (days > 1) ? Math.floor(days) + ' dias' : +Math.floor(days) + ' dia' : ''}
+        ${(hours > 0) ? hours + ' hs' : ''}
+        ${(minutes > 0) ? minutes + ' min' : ''}
+        ${(seconds > 0) ? seconds + ' seg' : ''}
+    `;
 }
