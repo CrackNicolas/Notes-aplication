@@ -10,7 +10,7 @@ import ComponentList from "./list/container";
 import { Props_note } from "@/frontend/types/props";
 
 export default function ComponentNotes() {
-    const [list_notes, setList_notes] = useState<Props_note[]>([]);
+    const [list_notes, setList_notes] = useState<Props_note[] | []>([]);
     const [selected_note, setSelected_note] = useState<Props_note | undefined>(undefined);
     const [load, setLoad] = useState<boolean>(false);
 
@@ -21,10 +21,9 @@ export default function ComponentNotes() {
     useEffect(() => {
         const load_notes = async () => {
             const { data } = await axios.get('api/notes');
-            console.log(data);
-            setList_notes(data.info);
+            setList_notes((data.status === 200) ? data.info : []);
         }
-        load_notes()
+        load_notes();
     }, [load])
 
     return (

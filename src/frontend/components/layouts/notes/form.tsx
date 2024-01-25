@@ -55,7 +55,7 @@ export default function ComponentForm({ setSelected, selected, setRefresh }: Pro
                             type="text"
                             id="title"
                             placeholder="Escriba el titulo..."
-                            className={`${(errors.title?.type === undefined) ? 'border-secondary text-secondary placeholder:text-secondary' : 'border-error text-error placeholder:text-error'} border-opacity-50 bg-primary w-full rounded-md border-[0.1px]  py-1.5 px-2 outline-none tracking-wide placeholder:opacity-70 sm:text-md`}
+                            className={`${(errors.title?.type === undefined) ? 'border-secondary text-secondary placeholder:text-secondary' : 'border-error text-error placeholder:text-error'} border-opacity-50 bg-primary w-full rounded-md border-[0.1px] py-1.5 px-2 outline-none tracking-wide placeholder:opacity-70 sm:text-md`}
                         />
                     </div>
                     <div className="flex flex-col gap-y-0.5">

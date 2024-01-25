@@ -1,12 +1,10 @@
 import { Fragment } from "react"
 
-import { count_loading } from "@/frontend/logic/loading"
-
-export default function ComponentLoading() {
+export default function ComponentLoading({ count }: { count: number }) {
     return (
         <Fragment>
             {
-                count_loading.map((index: number) => {
+                Array.from(Array(count).keys(), n => n + 1).map((index: number) => {
                     return (
                         <div key={index} className={`animate-pulse group grid grid-cols-9 w-full bg-sixth pl-2.5 py-2 cursor-pointer rounded-md border-[0.1px] border-tertiary border-opacity-20`}>
                             <div className="col-span-8 flex flex-col gap-y-1 justify-between">

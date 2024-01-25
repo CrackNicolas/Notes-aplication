@@ -4,7 +4,7 @@ const props = {
     isConnected: false
 }
 
-export async function Conect_db() {
+export async function Conect_database() {
     try {
         if (props.isConnected) return;
         const db = await connect('mongodb://localhost/notes_aplication');

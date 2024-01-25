@@ -1,14 +1,14 @@
 import { NextResponse } from "next/server"
 
-import { Conect_db } from "@/backend/utils/db";
+import { Conect_database } from "@/backend/utils/db";
 
 import Notes from '@/backend/schemas/notes'
 
 import { Props_response } from "@/backend/types/response";
 
 export async function GET() {
-    const connection = await Conect_db();
-    if (connection === 2) return NextResponse.json<Props_response>({ status: 500 });
+    const connection = await Conect_database();
+    if (connection === 2) return NextResponse.json<Props_response>({ status: 500, info: { error: "Error connecting to the database" } });
 
     try {
         const notes = await Notes.find();
@@ -21,8 +21,8 @@ export async function GET() {
 export async function POST(req: Request) {
     const { title, description } = await req.json();
 
-    const connection = await Conect_db();
-    if (connection === 2) return NextResponse.json<Props_response>({ status: 500 });
+    const connection = await Conect_database();
+    if (connection === 2) return NextResponse.json<Props_response>({ status: 500, info: { error: "Error connecting to the database" } });
 
     try {
         const new_note = new Notes({ title, description });

@@ -17,10 +17,10 @@ export default function ComponentList({ notes, setSelected, selected, setRefresh
     return (
         <div className="col-span-full lg:col-span-2 flex flex-col gap-y-2">
             <ComponentHeader />
-            <div className="flex flex-col gap-y-1 overflow-hidden overflow-y-scroll scroll h-[calc(100vh-155px)] pr-1">
+            <div className={`flex flex-col gap-y-1 ${(notes.length >= 9) && 'overflow-hidden overflow-y-scroll scroll'} h-[calc(100vh-155px)] pr-1`}>
                 {
-                    (!notes) ?
-                        <ComponentLoading />
+                    (notes.length === 0) ?
+                        <ComponentLoading count={8} />
                         :
                         notes.map((note: Props_note) => {
                             return (
