@@ -22,7 +22,7 @@ export default function ComponentItem(props: Props) {
     <div className="flex w-full flex-col h-[130px] items-start justify-between bg-sixth px-4 py-3 cursor-pointer rounded-md hover:shadow-sm hover:shadow-secondary transition duration-700" onMouseOver={() => setFocus(true)} onMouseLeave={() => setFocus(false)}>
       <div className="flex items-center justify-between w-full gap-x-4 text-xs pr-1">
         <span className="text-tertiary opacity-50 hover:opacity-100 transition duration-700">
-          {"Last time " + last_time}
+          {"Ultima vez " + last_time}
         </span>
         <ComponentIcon name={`${focus ? 'logo-fill' : 'logo'}`} size={20} description_class="text-secondary" />
       </div>

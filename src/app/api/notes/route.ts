@@ -8,13 +8,13 @@ import { Props_response } from "@/backend/types/response";
 
 export async function GET() {
     const connection = await Conect_database();
-    if (connection === 2) return NextResponse.json<Props_response>({ status: 500, info: { error: "Error connecting to the database" } });
+    if (connection === 2) return NextResponse.json<Props_response>({ status: 500, info: { error: "Error connecting to the database" } })
 
     try {
         const notes = await Notes.find();
         return NextResponse.json<Props_response>({ status: 200, info: notes });
     } catch (error) {
-        return NextResponse.json<Props_response>({ status: 500, info: { error: "Server error" } })
+        return NextResponse.json<Props_response>({ status: 500, info: { error: "Server error" } });
     }
 }
 
