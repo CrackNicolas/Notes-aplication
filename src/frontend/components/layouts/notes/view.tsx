@@ -1,26 +1,30 @@
+import { Dispatch, SetStateAction } from "react";
+
 import ComponentIcon from "../../partials/icon";
 import ComponentModal from "../../partials/modal";
 
+import { Props_note } from "@/frontend/types/props";
+
 type Props = {
     open: boolean,
-    setOpen: any
+    setOpen: any,
+    note: Props_note
 }
 
 export default function ComponentView(props: Props) {
-    const { open, setOpen } = props;
+    const { open, setOpen, note } = props;
 
     return (
         <ComponentModal open={open} setOpen={setOpen}>
-            <div className="flex items-center gap-y-3 px-3 sm:px-7 py-7">
-                <div className="flex h-12 w-12 place-items-center justify-center rounded-full bg-secondary">
-                    <ComponentIcon name='check-2' description_class='cursor-not-allowed mt-1 text-tertiary' size={25} />
-                </div>
+            <div className="relative flex items-center border-[0.1px] border-secondary border-opacity-50 rounded-lg gap-y-3 px-3 sm:px-5 py-5">
+                <ComponentIcon name='logo' description_class='absolute top-1.5 left-2 text-secondary opacity-70' size={20} />
+                <ComponentIcon name='close' description_class='absolute top-0 right-0 text-secondary opacity-70' size={30} />
                 <div className="flex flex-col items-center mt-3 text-center sm:mt-0 sm:text-left">
-                    <span className="font-semibold leading-6 text-secondary">
-                        Title
+                    <span className="font-normal tracking-wide text-secondary">
+                        {note.title}
                     </span>
                     <p className="text-center text-sm text-gray-500">
-                        Description
+                        {note.description}
                     </p>
                 </div>
             </div>

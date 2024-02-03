@@ -28,6 +28,9 @@ export default function ComponentForm({ setSelected, selected, setRefresh }: Pro
                 description: ref_form.current.description.value
             })
             if (data.status === 201) {
+                setRefresh();
+                reset();
+                setSelected(undefined)
                 //Crear modal para confirmar creacion de una nota
             }
         }
@@ -38,12 +41,12 @@ export default function ComponentForm({ setSelected, selected, setRefresh }: Pro
                 description: ref_form.current.description.value
             })
             if (data.status === 200) {
+                setRefresh();
+                reset();
+                setSelected(undefined)
                 //Crear modal para confirmar modificacion de la nota
             }
         }
-        setRefresh();
-        reset();
-        setSelected(undefined)
     }
 
     useEffect(() => {
