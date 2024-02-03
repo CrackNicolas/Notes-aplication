@@ -1,10 +1,11 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 
 import ComponentNote from "../note";
 import ComponentHeader from "../header";
 import ComponentLoading from "./loading";
 
 import { Props_note } from "@/frontend/types/props";
+import ComponentView from "../view";
 
 type Props = {
     notes: Props_note[],
@@ -15,6 +16,8 @@ type Props = {
 }
 
 export default function ComponentList({ notes, setSelected, selected, setRefresh, setSearch }: Props) {
+    const [open, setOpen] = useState<boolean>(false);
+
     return (
         <div className="col-span-full lg:col-span-2 flex flex-col gap-y-2">
             <ComponentHeader search={setSearch} />
