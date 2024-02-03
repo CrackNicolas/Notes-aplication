@@ -28,7 +28,7 @@ export default function ComponentNav() {
                     </div>
                     <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                         <Link href="/" className="sm:flex hidden flex-shrink-0 items-center" title="Logo" onMouseOver={() => setFocus(true)} onMouseLeave={() => setFocus(false)}>
-                            <ComponentIcon name={`${focus ? 'logo-fill' : 'logo'}`} size={27} description_class="text-secondary" />
+                            <ComponentIcon name={`${focus ? 'logo-fill' : 'logo'}`} size={27} description_class="text-secondary cursor-pointer" />
                         </Link>
                         <div className="hidden sm:ml-4 sm:block">
                             <div className="flex space-x-1">

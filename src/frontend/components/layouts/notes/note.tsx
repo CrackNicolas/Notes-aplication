@@ -38,11 +38,11 @@ export default function ComponentNote(props: Props) {
             </div>
             <div className="col-span-2 md:col-span-1 flex flex-col justify-end items-end pr-3 gap-y-2">
                 <div className="flex gap-x-2">
-                    <button onClick={() => delete_note()} type="button" title="Eliminar" className="outline-none border-none cursor-pointer">
-                        <ComponentIcon name="delete" size={20} description_class="text-fifth hover:text-red-500" />
+                    <button onClick={() => delete_note()} type="button" title="Eliminar" className="outline-none border-none">
+                        <ComponentIcon name="delete" size={20} description_class="text-fifth hover:text-red-500 cursor-pointer" />
                     </button>
                     <button onClick={() => setSelected(note)} type="button" title="Editar" className="outline-none border-none">
-                        <ComponentIcon name="update" size={20} description_class="text-fifth hover:text-secondary" />
+                        <ComponentIcon name="update" size={20} description_class="text-fifth hover:text-secondary cursor-pointer" />
                     </button>
                 </div>
             </div>

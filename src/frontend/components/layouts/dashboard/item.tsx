@@ -24,7 +24,7 @@ export default function ComponentItem(props: Props) {
         <span className="text-tertiary opacity-50 hover:opacity-100 transition duration-700">
           {"Ultima vez " + last_time}
         </span>
-        <ComponentIcon name={`${focus ? 'logo-fill' : 'logo'}`} size={20} description_class="text-secondary" />
+        <ComponentIcon name={`${focus ? 'logo-fill' : 'logo'}`} size={20} description_class="text-secondary cursor-pointer" />
       </div>
       <div className="group relative">
         <Link href={url} className="text-lg font-normal hover:font-semibold tracking-wide text-secondary">

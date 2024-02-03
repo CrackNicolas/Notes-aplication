@@ -10,7 +10,7 @@ export default function ComponentHeader({ search }: { search: Dispatch<SetStateA
             </span>
             <div className="flex items-center">
                 <div className="bg-sixth border-[0.1px] border-secondary border-opacity-40 py-1 px-2 rounded-l-xl">
-                    <ComponentIcon name="search" description_class="text-fifth cursor-default" size={20} view_box="0 0 24 24" />
+                    <ComponentIcon name="search" description_class="text-fifth" size={20} view_box="0 0 24 24" />
                 </div>
                 <input
                     type="text"

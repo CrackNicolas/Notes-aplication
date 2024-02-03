@@ -21,8 +21,7 @@ export default function ComponentNotes() {
 
     useEffect(() => {
         const load_notes = async () => {
-            const { data } = await axios.get(`api/notes`);
-            console.log(data);
+            const { data } = await axios.get(`api/notes${(search !== "") ? `/${search}` : ''}`);
             setList_notes((data.status === 200) ? data.info : []);
         }
         load_notes();
