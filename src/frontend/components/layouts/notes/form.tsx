@@ -17,33 +17,41 @@ type Props = {
 }
 
 export default function ComponentForm({ setSelected, selected, setRefresh }: Props) {
-    const { register, handleSubmit, formState: { errors }, setValue, reset } = useForm();
+    const { register, handleSubmit, formState: { errors }, setValue, reset, watch } = useForm();
 
     const ref_form = useRef<any>(null);
+
+    const restart = () => {
+        setRefresh();
+        reset();
+        setSelected(undefined);
+    }
 
     const onSubmit = async () => {
         if (selected === undefined) {
             const { data } = await axios.post("api/notes", {
                 title: ref_form.current.title.value,
-                description: ref_form.current.description.value
+                description: ref_form.current.description.value,
+                priority: ref_form.current.priority.value
             })
+            console.log(data);
             if (data.status === 201) {
-                setRefresh();
-                reset();
-                setSelected(undefined)
+                restart();
                 //Crear modal para confirmar creacion de una nota
+            }
+            if (data.status === 400) {
+
             }
         }
         if (selected !== undefined) {
             const { data } = await axios.put("api/notes", {
                 _id: selected._id,
                 title: ref_form.current.title.value,
-                description: ref_form.current.description.value
+                description: ref_form.current.description.value,
+                priority: ref_form.current.priority.value
             })
             if (data.status === 200) {
-                setRefresh();
-                reset();
-                setSelected(undefined)
+                restart();
                 //Crear modal para confirmar modificacion de la nota
             }
         }
@@ -53,6 +61,7 @@ export default function ComponentForm({ setSelected, selected, setRefresh }: Pro
         reset();
         setValue('title', selected?.title);
         setValue('description', selected?.description);
+        setValue('priority', selected?.priority);
     }, [selected])
 
     return (
@@ -85,6 +94,23 @@ export default function ComponentForm({ setSelected, selected, setRefresh }: Pro
                             placeholder="Escriba la descripcion..."
                             className={`${(errors.description?.type === undefined) ? 'border-secondary text-secondary placeholder:text-secondary' : 'border-error text-error placeholder:text-error'} border-opacity-50 bg-primary w-full rounded-md border-[0.1px] min-h-[80px] scroll py-1.5 px-2 outline-none tracking-wide placeholder:opacity-70 sm:text-md`}
                         />
+                    </div>
+                    <div className="flex flex-col gap-y-0.5">
+                        <ComponentLabel title="Prioridad" html_for="priority" error={errors.priority?.type} />
+                        <div className="grid grid-cols-3 gap-x-1">
+                            <input {...register('priority', validation('priority'))} type="radio" id="option_1" value="Alta" className='hidden' />
+                            <input {...register('priority', validation('priority'))} type="radio" id="option_2" value="Media" className='hidden' />
+                            <input {...register('priority', validation('priority'))} type="radio" id="option_3" value="Baja" className='hidden' />
+                            <div className={`${(watch('priority') === "Alta") ? 'bg-secondary text-primary' : 'bg-primary text-secondary'}  ${(errors.priority?.type === undefined) ? 'border-secondary' : 'border-error'} col-span-1 border-[0.1px] rounded-sm grid place-items-center`}>
+                                <label htmlFor="option_1" className={`w-full text-center text-sm tracking-wider font-semibold  ${(errors.priority?.type === undefined) ? 'hover:bg-secondary' : 'hover:bg-error text-error'} hover:text-primary cursor-pointer py-0.5`}>Alta</label>
+                            </div>
+                            <div className={`${(watch('priority') === "Media") ? 'bg-secondary text-primary' : 'bg-primary text-secondary'} ${(errors.priority?.type === undefined) ? 'border-secondary' : 'border-error'} col-span-1 border-[0.1px] rounded-sm grid place-items-center`}>
+                                <label htmlFor="option_2" className={`w-full text-center text-sm tracking-wider font-semibold  ${(errors.priority?.type === undefined) ? 'hover:bg-secondary' : 'hover:bg-error text-error'} hover:text-primary cursor-pointer py-0.5`}>Media</label>
+                            </div>
+                            <div className={`${(watch('priority') === "Baja") ? 'bg-secondary text-primary' : 'bg-primary text-secondary'}  ${(errors.priority?.type === undefined) ? 'border-secondary' : 'border-error'} col-span-1 border-[0.1px] rounded-sm grid place-items-center`}>
+                                <label htmlFor="option_3" className={`w-full text-center text-sm tracking-wider font-semibold  ${(errors.priority?.type === undefined) ? 'hover:bg-secondary' : 'hover:bg-error text-error'} hover:text-primary cursor-pointer py-0.5`}>Baja</label>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div className="flex gap-x-10">

@@ -6,7 +6,7 @@ export default function ComponentHeader({ search }: { search: Dispatch<SetStateA
     return (
         <div className="flex justify-between gap-1">
             <span className="text-secondary text-md tracking-wider flex items-end">
-                Lista de tereas
+                Notas
             </span>
             <div className="flex items-center">
                 <div className="bg-sixth border-[0.1px] border-secondary border-opacity-40 py-1 px-2 rounded-l-xl">

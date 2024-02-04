@@ -24,12 +24,13 @@ export function Time_elapsed(fecha_emit: string) {
     const days = total_days % days_in_an_month_average;
     const month = total_month % months_in_an_year;
 
-    return `Hace 
+    return (total_seconds > 0) ? `Hace 
         ${(years > 0) ? (years > 1) ? (years) + ' años' : +(years) + ' año' : ''}
         ${(month > 0) ? (month > 1) ? (month) + ' meses' : +(month) + ' mes' : ''}
         ${(days > 0) ? (days > 1) ? Math.floor(days) + ' dias' : +Math.floor(days) + ' dia' : ''}
         ${(hours > 0) ? hours + ' hs' : ''}
         ${(minutes > 0) ? minutes + ' min' : ''}
         ${(seconds > 0) ? seconds + ' seg' : ''}
-    `;
+        `:
+        `Hace ${total_seconds} seg`;
 }

@@ -1,7 +1,3 @@
-import axios from "axios";
-
-import { Dispatch, SetStateAction } from "react";
-
 import ComponentIcon from "../../partials/icon";
 
 import { Props_note } from "@/frontend/types/props";
@@ -10,18 +6,12 @@ import { Time_elapsed } from "@/frontend/logic/time";
 type Props = {
     note: Props_note,
     paint: boolean,
-    setSelected: Dispatch<SetStateAction<Props_note | undefined>>,
-    setRefresh: () => void
+    action_note: (action: string, note: Props_note) => void
 }
 
 export default function ComponentNote(props: Props) {
-    const { note, paint, setRefresh, setSelected } = props;
-    const { _id, title, description, createdAt } = note;
-
-    const delete_note = async () => {
-        await axios.delete(`api/notes/${_id}`);
-        setRefresh();
-    }
+    const { note, paint, action_note } = props;
+    const { title, description, createdAt } = note;
 
     return (
         <div className={`relative group grid grid-cols-9 w-full bg-sixth pl-2.5 py-2 cursor-pointer rounded-md border-[0.1px] border-secondary ${paint ? 'border-opacity-100' : 'border-opacity-20 hover:border-opacity-100'}`}>
@@ -36,13 +26,16 @@ export default function ComponentNote(props: Props) {
                     {Time_elapsed(createdAt)}
                 </span>
             </div>
-            <div className="col-span-2 md:col-span-1 flex flex-col justify-end items-end pr-3 gap-y-2">
-                <div className="flex gap-x-2">
-                    <button onClick={() => delete_note()} type="button" title="Eliminar" className="outline-none border-none">
+            <div className="col-span-2 md:col-span-1 flex flex-col items-end">
+                <div className="flex gap-2 items-end justify-center w-[100px] h-full">
+                    <button onClick={() => action_note('delete', note)} type="button" title="Eliminar" className="outline-none border-none">
                         <ComponentIcon name="delete" size={20} description_class="text-fifth hover:text-red-500 cursor-pointer" />
                     </button>
-                    <button onClick={() => setSelected(note)} type="button" title="Editar" className="outline-none border-none">
+                    <button onClick={() => action_note('update', note)} type="button" title="Editar" className="outline-none border-none">
                         <ComponentIcon name="update" size={20} description_class="text-fifth hover:text-secondary cursor-pointer" />
+                    </button>
+                    <button onClick={() => action_note('view', note)} type="button" title="Ver" className="outline-none border-none">
+                        <ComponentIcon name="see" size={20} description_class="text-fifth hover:text-secondary cursor-pointer" />
                     </button>
                 </div>
             </div>

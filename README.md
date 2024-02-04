@@ -32,20 +32,18 @@
     3 - Lista de Notas: [ ]
         - Muestra una lista de notas del usuario en el panel principal.
         - Proporciona opciones para crear nuevas notas y ver detalles de cada nota.
-    4 - Edición en Tiempo Real: [ ]
-        - Permite la edición en tiempo real de las notas para que los cambios se reflejen de inmediato.
-    5 - Búsqueda y Filtros: [ ]
+    4 - Búsqueda y Filtros: [ ]
         - Implementa un sistema de búsqueda para que los usuarios puedan encontrar notas fácilmente.
         - Añade filtros por categoría, fecha, etc.
-    6 - Estilos con Tailwind CSS: [ X ]
+    5 - Estilos con Tailwind CSS: [ X ]
         - Utiliza Tailwind CSS para estilizar la aplicación de manera eficiente y mantener un diseño consistente.
-    7 - Gestión de Estado con React Context o Redux: [ ]
+    6 - Gestión de Estado con React Context o Redux: [ X ]
         - Maneja el estado de la aplicación de manera efectiva utilizando las mejores prácticas de React.
-    8 - Manejo de Rutas con Next.js: [ ]
+    7 - Manejo de Rutas con Next.js: [ X ]
         - Utiliza Next.js para gestionar las rutas de la aplicación de forma eficiente.
-    9 - Validación de Formularios: [ X ]
+    8 - Validación de Formularios: [ X ]
         - Implementa la validación del lado del cliente para garantizar que los datos ingresados sean correctos antes de enviarlos al servidor.
-    10 - Integración con API Backend: [ X ]
+    9 - Integración con API Backend: [ X ]
         - Conecta el frontend con el backend a través de la API RESTful para realizar operaciones CRUD en las notas.
 
     - Aditional [ ]

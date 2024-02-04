@@ -12,6 +12,11 @@ const schema_notes = new Schema({
         require: [true, 'Required description'],
         unique: true,
         trim: true
+    },
+    priority : {
+        type: String,
+        require : [true, 'Required priority'],
+        enum: ['Alta','Media','Baja']
     }
 },
     {

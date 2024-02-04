@@ -1,4 +1,6 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import axios from "axios";
+
+import { Dispatch, SetStateAction, useState } from "react";
 
 import ComponentView from "../view";
 import ComponentNote from "../note";
@@ -19,14 +21,21 @@ export default function ComponentList({ notes, setSelected, selected, setRefresh
     const [open, setOpen] = useState<boolean>(false);
     const [view_note, setView_note] = useState<Props_note | undefined>(undefined);
 
-    const view_selected_note = (note: Props_note) => {
-        setOpen(true);
-        setView_note(note);
+    const action_note = async (action: string, note: Props_note) => {
+        switch (action) {
+            case 'view':
+                setOpen(true);
+                setView_note(note);
+                break;
+            case 'delete':
+                await axios.delete(`api/notes/${note._id}`);
+                setRefresh();
+                break;
+            case 'update':
+                setSelected(note);
+                break;
+        }
     }
-
-    useEffect(()=>{
-        setView_note(undefined);
-    },[selected])
 
     return (
         <div className="col-span-full lg:col-span-2 flex flex-col gap-y-2">
@@ -38,16 +47,15 @@ export default function ComponentList({ notes, setSelected, selected, setRefresh
                         :
                         notes.map((note: Props_note) => {
                             return (
-                                <div key={note._id} className="rounded-md" onClick={() => { view_selected_note(note) }}>
-                                    <ComponentNote note={note} paint={selected?._id === note._id} setSelected={setSelected} setRefresh={setRefresh} />
+                                <div key={note._id} className="rounded-md">
+                                    <ComponentNote note={note} paint={selected?._id === note._id} action_note={action_note} />
                                 </div>
                             )
                         })
                 }
             </div>
             {
-                (view_note !== undefined && selected === undefined) &&
-                <ComponentView open={open} setOpen={setOpen} note={view_note} />
+                (view_note !== undefined) && <ComponentView open={open} setOpen={setOpen} note={view_note} />
             }
         </div>
     )

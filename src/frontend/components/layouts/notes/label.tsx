@@ -12,7 +12,7 @@ export default function ComponentLabel(props: Props) {
     const message = () => {
         switch (error) {
             case 'required':
-                return `${title} requerid${(title === "Descripcion") ? 'a' : 'o'}`;
+                return `${title} requerid${(title === "Descripcion" || title === "Prioridad") ? 'a' : 'o'}`;
             default:
                 return title;
         }

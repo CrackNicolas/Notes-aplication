@@ -16,10 +16,12 @@ export default function ComponentView(props: Props) {
 
     return (
         <ComponentModal open={open} setOpen={setOpen}>
-            <div className="relative flex items-center border-[0.1px] border-secondary border-opacity-50 rounded-lg gap-y-3 px-3 sm:px-5 py-5">
+            <div className="relative flex border-[0.1px] border-secondary border-opacity-50 rounded-lg gap-y-3 px-3 sm:px-5 py-5">
                 <ComponentIcon name='logo' description_class='absolute top-1.5 left-2 text-secondary opacity-70' size={20} />
-                <ComponentIcon name='close' description_class='absolute top-0 right-0 text-secondary opacity-70' size={30} />
-                <div className="flex flex-col items-center mt-3 text-center sm:mt-0 sm:text-left">
+                <div onClick={() => setOpen(false)}>
+                    <ComponentIcon name='close' description_class='absolute top-0 right-0 text-secondary opacity-70 cursor-pointer' size={30} />
+                </div>
+                <div className="flex flex-col w-full items-center text-center sm:mt-0 sm:text-left">
                     <span className="font-normal tracking-wide text-secondary">
                         {note.title}
                     </span>

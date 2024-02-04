@@ -19,22 +19,26 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
-    const { title, description } = await req.json();
+    const { title, description, priority } = await req.json();
 
     const connection = await Conect_database();
     if (connection === 2) return NextResponse.json<Props_response>({ status: 500, info: { error: "Error connecting to the database" } });
 
     try {
-        const new_note = new Notes({ title, description });
+        const new_note = new Notes({ title, description, priority });
         await new_note.save();
         return NextResponse.json<Props_response>({ status: 201, info: new_note });
-    } catch (error) {
-        return NextResponse.json<Props_response>({ status: 500, info: { error: "Server error" } })
+    } catch (error: any) {
+        if (error.code === 11000 && error.keyPattern && error.keyValue) {
+            return NextResponse.json<Props_response>({ status: 400, info: { error: `Note with title ${error.keyValue.title} already exists` } })
+        } else {
+            return NextResponse.json<Props_response>({ status: 500, info: { error: "Server error" } })
+        }
     }
 }
 
 export async function PUT(req: Request) {
-    const { _id, title, description } = await req.json();
+    const { _id, title, description, priority } = await req.json();
 
     const connection = await Conect_database();
     if (connection === 2) return NextResponse.json<Props_response>({ status: 500, info: { error: "Error connecting to the database" } });
@@ -47,6 +51,7 @@ export async function PUT(req: Request) {
 
         exists_note.title = title;
         exists_note.description = description;
+        exists_note.priority = priority;
 
         await exists_note.save();
 
