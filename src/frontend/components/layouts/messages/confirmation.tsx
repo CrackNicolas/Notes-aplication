@@ -16,8 +16,8 @@ export default function ComponentMessageConfirmation(props: Props) {
             <div className="relative flex flex-col items-center border-[0.1px] border-secondary border-opacity-50 rounded-lg gap-y-5 px-3 sm:px-5 py-5">
                 <ComponentIcon name='logo' description_class='absolute top-1.5 left-2 text-secondary opacity-70' size={20} />
                 <div className="flex flex-col w-full items-center text-center sm:mt-0 sm:text-left">
-                    <span className="flex place-items-center p-5 rounded-full bg-gray-900">
-                        <ComponentIcon name='logo' description_class='text-secondary' size={20} />
+                    <span className="flex place-items-center p-3 rounded-full bg-gray-900">
+                        <ComponentIcon name='check' description_class='text-secondary' size={30} />
                     </span>
                     <p className="text-center text-xl text-gray-500">
                         {message}
