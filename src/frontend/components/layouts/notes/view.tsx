@@ -1,5 +1,4 @@
 import { Dispatch, SetStateAction } from "react";
-
 import ComponentIcon from "../../partials/icon";
 import ComponentModal from "../../partials/modal";
 
@@ -7,7 +6,7 @@ import { Props_note } from "@/frontend/types/props";
 
 type Props = {
     open: boolean,
-    setOpen: any,
+    setOpen: Dispatch<SetStateAction<boolean>>,
     note: Props_note
 }
 

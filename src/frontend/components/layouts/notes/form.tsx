@@ -1,7 +1,7 @@
 'use client'
 
 import { useForm } from 'react-hook-form';
-import { Dispatch, SetStateAction, useEffect, useRef } from 'react';
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 
 import axios from 'axios';
 
@@ -9,6 +9,7 @@ import ComponentLabel from './label';
 
 import { validation } from '@/frontend/validations/form';
 import { Props_note } from '@/frontend/types/props';
+import ComponentMessageConfirmation from '../messages/confirmation';
 
 type Props = {
     setSelected: Dispatch<SetStateAction<Props_note | undefined>>,
@@ -17,8 +18,10 @@ type Props = {
 }
 
 export default function ComponentForm({ setSelected, selected, setRefresh }: Props) {
-    const { register, handleSubmit, formState: { errors }, setValue, reset, watch } = useForm();
+    const [open, setOpen] = useState<boolean>(false);
+    const [message, setMessage] = useState<string>('');
 
+    const { register, handleSubmit, formState: { errors }, setValue, reset, watch } = useForm();
     const ref_form = useRef<any>(null);
 
     const restart = () => {
@@ -34,13 +37,15 @@ export default function ComponentForm({ setSelected, selected, setRefresh }: Pro
                 description: ref_form.current.description.value,
                 priority: ref_form.current.priority.value
             })
-            console.log(data);
-            if (data.status === 201) {
+            if (data.status === 201 || data.status === 400) {
                 restart();
-                //Crear modal para confirmar creacion de una nota
+                setOpen(true);
+            }
+            if (data.status === 201) {
+                setMessage("La nota fue creada con exito");
             }
             if (data.status === 400) {
-
+                setMessage(data.info)
             }
         }
         if (selected !== undefined) {
@@ -124,6 +129,7 @@ export default function ComponentForm({ setSelected, selected, setRefresh }: Pro
                     </button>
                 </div>
             </form>
+            <ComponentMessageConfirmation open={open} setOpen={setOpen} message={message} />
         </div>
     )
 }
