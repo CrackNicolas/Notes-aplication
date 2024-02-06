@@ -11,13 +11,16 @@ type Props = {
 
 export default function ComponentNote(props: Props) {
     const { note, paint, action_note } = props;
-    const { title, description, createdAt } = note;
+    const { title, description, priority, createdAt } = note;
 
     return (
         <div className={`relative group grid grid-cols-9 w-full bg-sixth pl-2.5 py-2 cursor-pointer rounded-md border-[0.1px] border-secondary ${paint ? 'border-opacity-100' : 'border-opacity-20 hover:border-opacity-100'}`}>
             <div className="col-span-7 md:col-span-8 flex flex-col">
-                <span className="text-md font-normal group-hover:font-semibold tracking-wide text-secondary">
+                <span className="flex text-md font-normal group-hover:font-semibold tracking-wide text-secondary">
                     {title}
+                    {(priority === "Alta") && <ComponentIcon name="arrow" size={20} description_class="text-red-500 rotate-[-180deg] " />}
+                    {(priority === "Media") && <ComponentIcon name="arrow" size={20} description_class="text-orange-500 rotate-[-180deg]" />}
+                    {(priority === "Baja") && <ComponentIcon name="arrow" size={20} description_class="text-green-500" />}
                 </span>
                 <p className="line-clamp-1 text-sm text-tertiary opacity-50">
                     {description}
