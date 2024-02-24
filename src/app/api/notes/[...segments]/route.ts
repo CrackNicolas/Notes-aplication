@@ -14,8 +14,8 @@ export async function GET(req: Request, { params: { segments } }: { params: { se
         const search = await Notes.find(
             {
                 $or: [
-                    { title: { $regex: `^${segments[0]}` } },
-                    { description: segments[0] }
+                    { title: { $regex: `(?i)^${segments[0]}` } },
+                    { description: { $regex: `(?i)^${segments[0]}` } }
                 ]
             }
         );
