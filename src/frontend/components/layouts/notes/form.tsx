@@ -119,12 +119,12 @@ export default function ComponentForm({ setSelected, selected, setRefresh }: Pro
                     </div>
                 </div>
                 <div className="flex gap-x-10">
-                    <button type="submit" title={(selected === undefined) ? 'Crear nota' : 'Editar nota'} className="flex w-full justify-center rounded-md text-secondary border-[0.1px] border-secondary border-opacity-80 px-3 py-1.5 text-md font-normal hover:font-semibold bg-primary tracking-wider hover:bg-sixth outline-none">
+                    <button type="submit" title={(selected === undefined) ? 'Crear nota' : 'Editar nota'} className="flex w-full justify-center rounded-md text-secondary border-[0.1px] border-secondary border-opacity-80 px-3 sm:py-1.5 py-1 text-md font-normal hover:font-semibold bg-primary tracking-wider hover:bg-sixth outline-none">
                         {
                             (selected === undefined) ? 'Crear nota' : 'Editar nota'
                         }
                     </button>
-                    <button onClick={() => setSelected(undefined)} type="button" title="Reiniciar" className="flex w-full justify-center rounded-md text-error border-[0.1px] border-error border-opacity-80 px-3 py-1.5 text-md font-normal hover:font-semibold bg-primary tracking-wider hover:bg-sixth outline-none">
+                    <button onClick={() => setSelected(undefined)} type="button" title="Reiniciar" className="flex w-full justify-center rounded-md text-error border-[0.1px] border-error border-opacity-80 px-3 sm:py-1.5 py-1 text-md font-normal hover:font-semibold bg-primary tracking-wider hover:bg-sixth outline-none">
                         Deshacer
                     </button>
                 </div>

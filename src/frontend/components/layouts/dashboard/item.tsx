@@ -19,7 +19,7 @@ export default function ComponentItem(props: Props) {
   const [focus, setFocus] = useState<boolean>(false);
 
   return (
-    <div className="flex w-full flex-col h-[130px] items-start justify-between bg-sixth px-4 py-3 cursor-pointer rounded-md hover:shadow-sm hover:shadow-secondary transition duration-700" onMouseOver={() => setFocus(true)} onMouseLeave={() => setFocus(false)}>
+    <div className="flex w-full flex-col items-start justify-between bg-sixth sm:px-4 px-3 sm:py-3 py-3 cursor-pointer rounded-md hover:shadow-sm hover:shadow-secondary transition duration-700" onMouseOver={() => setFocus(true)} onMouseLeave={() => setFocus(false)}>
       <div className="flex items-center justify-between w-full gap-x-4 text-xs pr-1">
         <span className="text-tertiary opacity-50 hover:opacity-100 transition duration-700">
           {"Ultima vez " + last_time}
@@ -30,7 +30,7 @@ export default function ComponentItem(props: Props) {
         <Link href={url} className="text-lg font-normal hover:font-semibold tracking-wide text-secondary">
           {title}
         </Link>
-        <p className="mt-3 line-clamp-2 text-sm leading-6 text-tertiary opacity-50 hover:opacity-100 transition duration-700">
+        <p className="mt-2 line-clamp-2 text-sm leading-6 text-tertiary opacity-50 hover:opacity-100 transition duration-700">
           {description}
         </p>
       </div>
