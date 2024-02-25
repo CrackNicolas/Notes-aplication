@@ -33,7 +33,7 @@ export async function DELETE(req: Request, { params: { segments } }: { params: {
 
     try {
         await Notes.findByIdAndDelete(_id);
-        return NextResponse.json<Props_response>({ status: 204, info: { message: `Nota ${_id} eliminada` } })
+        return NextResponse.json<Props_response>({ status: 204, info: { message: `Nota eliminada` } })
     } catch (error) {
         return NextResponse.json<Props_response>({ status: 500, info: { message: "Errores con el servidor" } })
     }
