@@ -1,4 +1,4 @@
-export function Time_elapsed(fecha_emit: string) {
+export function Time_elapsed(fecha_emit: string) : string {
     const date_provided: any = new Date(fecha_emit);
     const current_date: any = new Date();
 

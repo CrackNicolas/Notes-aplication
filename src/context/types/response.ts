@@ -8,7 +8,11 @@
     500 - Solicitud incumplida por errores en el servidor
 */
 
+import { Props_note } from "@/frontend/types/props"
+
 export type Props_response = {
-    status: 200 | 201 | 204 | 400 | 404 | 500
-    info?: object
+    status: Props_status
+    data?: Props_note[] | Props_note
+    info?: { message: string }
 }
+export type Props_status = 200 | 201 | 204 | 400 | 404 | 500;

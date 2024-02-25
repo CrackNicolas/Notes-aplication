@@ -2,11 +2,20 @@ import { Dispatch, SetStateAction } from "react";
 
 import ComponentIcon from "../../partials/icon";
 
-export default function ComponentHeader({ search }: { search: Dispatch<SetStateAction<string>> }) {
+type Props = {
+    search: Dispatch<SetStateAction<string>>,
+    result: boolean
+}
+
+export default function ComponentHeader(props: Props) {
+    const { search, result } = props;
+
     return (
         <div className="flex justify-between gap-1">
             <span className="sm:flex hidden text-secondary text-md tracking-wider items-end">
-                Notas
+                {
+                    (result) ? "No se encontraron resultados" : "Notas"
+                }
             </span>
             <div className="flex items-center sm:w-auto w-full">
                 <div className="bg-sixth border-[0.1px] border-secondary border-opacity-40 py-1 px-2 sm:rounded-l-xl rounded-l-md">

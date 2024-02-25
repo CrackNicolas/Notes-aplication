@@ -10,3 +10,9 @@ export type Props_note = {
     priority: string,
     createdAt: string
 }
+export type Props_inputs = {
+    required?: boolean
+    minLength?: number,
+    maxLength?: number,
+    pattern?: RegExp
+}

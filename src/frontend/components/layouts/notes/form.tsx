@@ -5,11 +5,14 @@ import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 
 import axios from 'axios';
 
+import ComponentMessageConfirmation from '../messages/confirmation';
 import ComponentLabel from './label';
+import ComponentIcon from '../../partials/icon';
 
 import { validation } from '@/frontend/validations/form';
+
 import { Props_note } from '@/frontend/types/props';
-import ComponentMessageConfirmation from '../messages/confirmation';
+import { Props_response } from '@/context/types/response';
 
 type Props = {
     setSelected: Dispatch<SetStateAction<Props_note | undefined>>,
@@ -19,15 +22,21 @@ type Props = {
 
 export default function ComponentForm({ setSelected, selected, setRefresh }: Props) {
     const [open, setOpen] = useState<boolean>(false);
-    const [message, setMessage] = useState<string>('');
+    const [response, setResponse] = useState<Props_response>();
 
     const { register, handleSubmit, formState: { errors }, setValue, reset, watch } = useForm();
     const ref_form = useRef<any>(null);
 
-    const restart = () => {
+    const restart = (): void => {
         setRefresh();
         reset();
         setSelected(undefined);
+    }
+
+    const open_modal = (data: Props_response): void => {
+        restart();
+        setOpen(true);
+        setResponse(data);
     }
 
     const onSubmit = async () => {
@@ -37,16 +46,7 @@ export default function ComponentForm({ setSelected, selected, setRefresh }: Pro
                 description: ref_form.current.description.value,
                 priority: ref_form.current.priority.value
             })
-            if (data.status === 201 || data.status === 400) {
-                restart();
-                setOpen(true);
-            }
-            if (data.status === 201) {
-                setMessage("La nota fue creada con exito");
-            }
-            if (data.status === 400) {
-                setMessage(data.info)
-            }
+            open_modal(data);
         }
         if (selected !== undefined) {
             const { data } = await axios.put("api/notes", {
@@ -55,10 +55,7 @@ export default function ComponentForm({ setSelected, selected, setRefresh }: Pro
                 description: ref_form.current.description.value,
                 priority: ref_form.current.priority.value
             })
-            if (data.status === 200) {
-                restart();
-                //Crear modal para confirmar modificacion de la nota
-            }
+            open_modal(data);
         }
     }
 
@@ -81,7 +78,7 @@ export default function ComponentForm({ setSelected, selected, setRefresh }: Pro
             <form method="POST" onSubmit={handleSubmit(onSubmit)} ref={ref_form} className="flex flex-col gap-y-7">
                 <div className="flex flex-col gap-y-3">
                     <div className="flex flex-col gap-y-0.5">
-                        <ComponentLabel title="Titulo" html_for="title" error={errors.title?.type} />
+                        <ComponentLabel title="Titulo" html_for="title" validation={validation('title')} error={errors.title?.type} />
                         <input
                             {...register('title', validation('title'))}
                             type="text"
@@ -91,7 +88,7 @@ export default function ComponentForm({ setSelected, selected, setRefresh }: Pro
                         />
                     </div>
                     <div className="flex flex-col gap-y-0.5">
-                        <ComponentLabel title="Descripcion" html_for="description" error={errors.description?.type} />
+                        <ComponentLabel title="Descripcion" html_for="description" validation={validation('description')} error={errors.description?.type} />
                         <textarea
                             {...register('description', validation('description'))}
                             rows={3}
@@ -106,15 +103,18 @@ export default function ComponentForm({ setSelected, selected, setRefresh }: Pro
                             <input {...register('priority', validation('priority'))} type="radio" id="option_1" value="Alta" className='hidden' />
                             <input {...register('priority', validation('priority'))} type="radio" id="option_2" value="Media" className='hidden' />
                             <input {...register('priority', validation('priority'))} type="radio" id="option_3" value="Baja" className='hidden' />
-                            <div className={`${(watch('priority') === "Alta") ? 'bg-secondary text-primary' : 'bg-primary text-secondary'}  ${(errors.priority?.type === undefined) ? 'border-secondary' : 'border-error'} col-span-1 border-[0.1px] rounded-sm grid place-items-center`}>
-                                <label htmlFor="option_1" className={`w-full text-center text-sm tracking-wider font-semibold  ${(errors.priority?.type === undefined) ? 'hover:bg-secondary' : 'hover:bg-error text-error'} hover:text-primary cursor-pointer py-0.5`}>Alta</label>
-                            </div>
-                            <div className={`${(watch('priority') === "Media") ? 'bg-secondary text-primary' : 'bg-primary text-secondary'} ${(errors.priority?.type === undefined) ? 'border-secondary' : 'border-error'} col-span-1 border-[0.1px] rounded-sm grid place-items-center`}>
-                                <label htmlFor="option_2" className={`w-full text-center text-sm tracking-wider font-semibold  ${(errors.priority?.type === undefined) ? 'hover:bg-secondary' : 'hover:bg-error text-error'} hover:text-primary cursor-pointer py-0.5`}>Media</label>
-                            </div>
-                            <div className={`${(watch('priority') === "Baja") ? 'bg-secondary text-primary' : 'bg-primary text-secondary'}  ${(errors.priority?.type === undefined) ? 'border-secondary' : 'border-error'} col-span-1 border-[0.1px] rounded-sm grid place-items-center`}>
-                                <label htmlFor="option_3" className={`w-full text-center text-sm tracking-wider font-semibold  ${(errors.priority?.type === undefined) ? 'hover:bg-secondary' : 'hover:bg-error text-error'} hover:text-primary cursor-pointer py-0.5`}>Baja</label>
-                            </div>
+                            <label htmlFor="option_1" className={`group  ${(errors.priority?.type === undefined) ? 'border-secondary' : 'border-error'} col-span-1 flex border-[0.1px] rounded-md grid pt-1 place-items-center overflow-hidden cursor-pointer`}>
+                                <ComponentIcon name="arrow" size={15} description_class="text-red-500 rotate-[-180deg]" />
+                                <span className={` ${(watch('priority') === "Alta") ? 'bg-secondary text-primary' : ` ${(errors.priority?.type === undefined) ? 'text-secondary group-hover:bg-secondary group-hover:text-primary' : 'text-error group-hover:bg-error group-hover:text-primary'}  `} w-full text-center text-sm tracking-wider font-semibold cursor-pointer py-0.5`}>Alta</span>
+                            </label>
+                            <label htmlFor="option_2" className={`group ${(errors.priority?.type === undefined) ? 'border-secondary' : 'border-error'} col-span-1 flex border-[0.1px] rounded-md grid pt-1 place-items-center overflow-hidden cursor-pointer`}>
+                                <ComponentIcon name="arrow" size={15} description_class="text-orange-500 rotate-[-180deg]" />
+                                <span className={` ${(watch('priority') === "Media") ? 'bg-secondary text-primary' : `${(errors.priority?.type === undefined) ? 'text-secondary group-hover:bg-secondary group-hover:text-primary' : 'text-error group-hover:bg-error group-hover:text-primary'} `} w-full text-center text-sm tracking-wider font-semibold cursor-pointer py-0.5`}>Media</span>
+                            </label>
+                            <label htmlFor="option_3" className={`group ${(errors.priority?.type === undefined) ? 'border-secondary' : 'border-error'} col-span-1 flex border-[0.1px] rounded-md grid pt-1 place-items-center overflow-hidden cursor-pointer`}>
+                                <ComponentIcon name="arrow" size={15} description_class="text-green-500" />
+                                <span className={` ${(watch('priority') === "Baja") ? 'bg-secondary text-primary' : `${(errors.priority?.type === undefined) ? 'text-secondary group-hover:bg-secondary group-hover:text-primary' : 'text-error group-hover:bg-error group-hover:text-primary'} `} w-full text-center text-sm tracking-wider font-semibold cursor-pointer py-0.5`}>Baja</span>
+                            </label>
                         </div>
                     </div>
                 </div>
@@ -124,12 +124,14 @@ export default function ComponentForm({ setSelected, selected, setRefresh }: Pro
                             (selected === undefined) ? 'Crear nota' : 'Editar nota'
                         }
                     </button>
-                    <button onClick={() => setSelected(undefined)} type="button" title="Reiniciar" className="flex w-full justify-center rounded-md text-error border-[0.1px] border-error border-opacity-80 px-3 sm:py-1.5 py-1 text-md font-normal hover:font-semibold bg-primary tracking-wider hover:bg-sixth outline-none">
+                    <button onClick={() => restart()} type="button" title="Reiniciar" className="flex w-full justify-center rounded-md text-error border-[0.1px] border-error border-opacity-80 px-3 sm:py-1.5 py-1 text-md font-normal hover:font-semibold bg-primary tracking-wider hover:bg-sixth outline-none">
                         Deshacer
                     </button>
                 </div>
             </form>
-            <ComponentMessageConfirmation open={open} setOpen={setOpen} message={message} />
+            {(response != undefined) &&
+                <ComponentMessageConfirmation open={open} setOpen={setOpen} response={response} />
+            }
         </div>
     )
 }

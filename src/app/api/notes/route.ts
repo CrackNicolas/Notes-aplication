@@ -4,17 +4,18 @@ import { Conect_database } from "@/backend/utils/db";
 
 import Notes from '@/backend/schemas/notes'
 
-import { Props_response } from "@/backend/types/response";
+import { Props_response } from "@/context/types/response";
+import { Props_note } from "@/frontend/types/props";
 
 export async function GET() {
     const connection = await Conect_database();
-    if (connection === 2) return NextResponse.json<Props_response>({ status: 500, info: { error: "Error connecting to the database" } })
+    if (connection === 2) return NextResponse.json<Props_response>({ status: 500, info: { message: "Error al conectarse a la base de datos" } })
 
     try {
-        const notes = await Notes.find();
-        return NextResponse.json<Props_response>({ status: 200, info: notes });
+        const notes: Props_note[] = await Notes.find();
+        return NextResponse.json<Props_response>({ status: 200, data: notes });
     } catch (error) {
-        return NextResponse.json<Props_response>({ status: 500, info: { error: "Server error" } });
+        return NextResponse.json<Props_response>({ status: 500, info: { message: "Errores con el servidor" } });
     }
 }
 
@@ -22,17 +23,17 @@ export async function POST(req: Request) {
     const { title, description, priority } = await req.json();
 
     const connection = await Conect_database();
-    if (connection === 2) return NextResponse.json<Props_response>({ status: 500, info: { error: "Error connecting to the database" } });
+    if (connection === 2) return NextResponse.json<Props_response>({ status: 500, info: { message: "Error al conectarse a la base de datos" } });
 
     try {
         const new_note = new Notes({ title, description, priority });
         await new_note.save();
-        return NextResponse.json<Props_response>({ status: 201, info: new_note });
+        return NextResponse.json<Props_response>({ status: 201, info: { message: `La nota "${title}" fue creada con exito` } });
     } catch (error: any) {
         if (error.code === 11000 && error.keyPattern && error.keyValue) {
-            return NextResponse.json<Props_response>({ status: 400, info: { error: `Note with title ${error.keyValue.title} already exists` } })
+            return NextResponse.json<Props_response>({ status: 400, info: { message: `La nota "${error.keyValue.title}" ya existe` } })
         } else {
-            return NextResponse.json<Props_response>({ status: 500, info: { error: "Server error" } })
+            return NextResponse.json<Props_response>({ status: 500, info: { message: "Errores con el servidor" } })
         }
     }
 }
@@ -41,12 +42,12 @@ export async function PUT(req: Request) {
     const { _id, title, description, priority } = await req.json();
 
     const connection = await Conect_database();
-    if (connection === 2) return NextResponse.json<Props_response>({ status: 500, info: { error: "Error connecting to the database" } });
+    if (connection === 2) return NextResponse.json<Props_response>({ status: 500, info: { message: "Error al conectarse a la base de datos" } });
 
     try {
         const exists_note = await Notes.findById(_id);
         if (!exists_note) {
-            return NextResponse.json<Props_response>({ status: 404, info: { error: "Note id not found" } });
+            return NextResponse.json<Props_response>({ status: 404, info: { message: "Id Nota no encontrada" } });
         }
 
         exists_note.title = title;
@@ -55,8 +56,8 @@ export async function PUT(req: Request) {
 
         await exists_note.save();
 
-        return NextResponse.json<Props_response>({ status: 200, info: exists_note });
+        return NextResponse.json<Props_response>({ status: 200, info: { message: `La nota "${exists_note.title}" fue modificada` } });
     } catch (error) {
-        return NextResponse.json<Props_response>({ status: 500, info: { error: "Server error" } })
+        return NextResponse.json<Props_response>({ status: 500, info: { message: "Errores con el servidor" } })
     }
 }
