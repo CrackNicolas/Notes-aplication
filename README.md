@@ -51,17 +51,19 @@
 
 ## Work tools used
   * Backend
-    - MongoDB
+    - MongoDB - Access the url ["https://www.mongodb.com/docs/manual"]
     - JavaScript
     - Axios
 
   * Frontend
-    - NextJS
+    - NextJS - Access the url ["https://nextjs.org/docs/"] 
     - React
     - TypeScript
     - JavaScript
-    - Tailwind
-    - Redux
+    - Tailwind - Access the url ["https://tailwindcss.com/"]
+
+## Testing
+  * Testing Library - Access the url ["https://testing-library.com/"]
 
 ## External authentication services
   * Access the url ["http://clerk.com/"]
