@@ -40,15 +40,14 @@ export default function ComponentForm({ setSelected, selected, setRefresh }: Pro
     }
 
     const onSubmit = async () => {
-        if (selected === undefined) {
+        if (!selected) {
             const { data } = await axios.post("api/notes", {
                 title: ref_form.current.title.value,
                 description: ref_form.current.description.value,
                 priority: ref_form.current.priority.value
             })
             open_modal(data);
-        }
-        if (selected !== undefined) {
+        } else {
             const { data } = await axios.put("api/notes", {
                 _id: selected._id,
                 title: ref_form.current.title.value,
@@ -71,7 +70,7 @@ export default function ComponentForm({ setSelected, selected, setRefresh }: Pro
             <div className="flex justify-center">
                 <span className="text-2xl text-secondary font-semibold text-center">
                     {
-                        (selected === undefined) ? 'Crear nota' : 'Editar nota'
+                        (!selected) ? 'Crear nota' : 'Editar nota'
                     }
                 </span>
             </div>
@@ -84,7 +83,7 @@ export default function ComponentForm({ setSelected, selected, setRefresh }: Pro
                             type="text"
                             id="title"
                             placeholder="Escriba el titulo..."
-                            className={`${(errors.title?.type === undefined) ? 'border-secondary text-secondary placeholder:text-secondary' : 'border-error text-error placeholder:text-error'} border-opacity-50 bg-primary w-full rounded-md border-[0.1px] py-1.5 px-2 outline-none tracking-wide placeholder:opacity-70 sm:text-md`}
+                            className={`${(!errors.title?.type) ? 'border-secondary text-secondary placeholder:text-secondary' : 'border-error text-error placeholder:text-error'} border-opacity-50 bg-primary w-full rounded-md border-[0.1px] py-1.5 px-2 outline-none tracking-wide placeholder:opacity-70 sm:text-md`}
                         />
                     </div>
                     <div className="flex flex-col gap-y-0.5">
@@ -94,7 +93,7 @@ export default function ComponentForm({ setSelected, selected, setRefresh }: Pro
                             rows={3}
                             id="description"
                             placeholder="Escriba la descripcion..."
-                            className={`${(errors.description?.type === undefined) ? 'border-secondary text-secondary placeholder:text-secondary' : 'border-error text-error placeholder:text-error'} border-opacity-50 bg-primary w-full rounded-md border-[0.1px] min-h-[80px] scroll py-1.5 px-2 outline-none tracking-wide placeholder:opacity-70 sm:text-md`}
+                            className={`${(!errors.description?.type) ? 'border-secondary text-secondary placeholder:text-secondary' : 'border-error text-error placeholder:text-error'} border-opacity-50 bg-primary w-full rounded-md border-[0.1px] min-h-[80px] scroll py-1.5 px-2 outline-none tracking-wide placeholder:opacity-70 sm:text-md`}
                         />
                     </div>
                     <div className="flex flex-col gap-y-0.5">
@@ -103,25 +102,25 @@ export default function ComponentForm({ setSelected, selected, setRefresh }: Pro
                             <input {...register('priority', validation('priority'))} type="radio" id="option_1" value="Alta" className='hidden' />
                             <input {...register('priority', validation('priority'))} type="radio" id="option_2" value="Media" className='hidden' />
                             <input {...register('priority', validation('priority'))} type="radio" id="option_3" value="Baja" className='hidden' />
-                            <label htmlFor="option_1" className={`group  ${(errors.priority?.type === undefined) ? 'border-secondary' : 'border-error'} col-span-1 flex border-[0.1px] rounded-md grid pt-1 place-items-center overflow-hidden cursor-pointer`}>
+                            <label htmlFor="option_1" className={`group  ${(!errors.priority?.type) ? 'border-secondary' : 'border-error'} col-span-1 flex border-[0.1px] rounded-md grid pt-1 place-items-center overflow-hidden cursor-pointer`}>
                                 <ComponentIcon name="arrow" size={15} description_class="text-red-500 rotate-[-180deg]" />
-                                <span className={` ${(watch('priority') === "Alta") ? 'bg-secondary text-primary' : ` ${(errors.priority?.type === undefined) ? 'text-secondary group-hover:bg-secondary group-hover:text-primary' : 'text-error group-hover:bg-error group-hover:text-primary'}  `} w-full text-center text-sm tracking-wider font-semibold cursor-pointer py-0.5`}>Alta</span>
+                                <span className={` ${(watch('priority') === "Alta") ? 'bg-secondary text-primary' : ` ${(!errors.priority?.type) ? 'text-secondary group-hover:bg-secondary group-hover:text-primary' : 'text-error group-hover:bg-error group-hover:text-primary'}  `} w-full text-center text-sm tracking-wider font-semibold cursor-pointer py-0.5`}>Alta</span>
                             </label>
-                            <label htmlFor="option_2" className={`group ${(errors.priority?.type === undefined) ? 'border-secondary' : 'border-error'} col-span-1 flex border-[0.1px] rounded-md grid pt-1 place-items-center overflow-hidden cursor-pointer`}>
+                            <label htmlFor="option_2" className={`group ${(!errors.priority?.type) ? 'border-secondary' : 'border-error'} col-span-1 flex border-[0.1px] rounded-md grid pt-1 place-items-center overflow-hidden cursor-pointer`}>
                                 <ComponentIcon name="arrow" size={15} description_class="text-orange-500 rotate-[-180deg]" />
-                                <span className={` ${(watch('priority') === "Media") ? 'bg-secondary text-primary' : `${(errors.priority?.type === undefined) ? 'text-secondary group-hover:bg-secondary group-hover:text-primary' : 'text-error group-hover:bg-error group-hover:text-primary'} `} w-full text-center text-sm tracking-wider font-semibold cursor-pointer py-0.5`}>Media</span>
+                                <span className={` ${(watch('priority') === "Media") ? 'bg-secondary text-primary' : `${(!errors.priority?.type) ? 'text-secondary group-hover:bg-secondary group-hover:text-primary' : 'text-error group-hover:bg-error group-hover:text-primary'} `} w-full text-center text-sm tracking-wider font-semibold cursor-pointer py-0.5`}>Media</span>
                             </label>
-                            <label htmlFor="option_3" className={`group ${(errors.priority?.type === undefined) ? 'border-secondary' : 'border-error'} col-span-1 flex border-[0.1px] rounded-md grid pt-1 place-items-center overflow-hidden cursor-pointer`}>
+                            <label htmlFor="option_3" className={`group ${(!errors.priority?.type) ? 'border-secondary' : 'border-error'} col-span-1 flex border-[0.1px] rounded-md grid pt-1 place-items-center overflow-hidden cursor-pointer`}>
                                 <ComponentIcon name="arrow" size={15} description_class="text-green-500" />
-                                <span className={` ${(watch('priority') === "Baja") ? 'bg-secondary text-primary' : `${(errors.priority?.type === undefined) ? 'text-secondary group-hover:bg-secondary group-hover:text-primary' : 'text-error group-hover:bg-error group-hover:text-primary'} `} w-full text-center text-sm tracking-wider font-semibold cursor-pointer py-0.5`}>Baja</span>
+                                <span className={` ${(watch('priority') === "Baja") ? 'bg-secondary text-primary' : `${(!errors.priority?.type) ? 'text-secondary group-hover:bg-secondary group-hover:text-primary' : 'text-error group-hover:bg-error group-hover:text-primary'} `} w-full text-center text-sm tracking-wider font-semibold cursor-pointer py-0.5`}>Baja</span>
                             </label>
                         </div>
                     </div>
                 </div>
                 <div className="flex gap-x-10">
-                    <button type="submit" title={(selected === undefined) ? 'Crear nota' : 'Editar nota'} className="flex w-full justify-center rounded-md text-secondary border-[0.1px] border-secondary border-opacity-80 px-3 sm:py-1.5 py-1 text-md font-normal hover:font-semibold bg-primary tracking-wider hover:bg-sixth outline-none">
+                    <button type="submit" title={(!selected) ? 'Crear nota' : 'Editar nota'} className="flex w-full justify-center rounded-md text-secondary border-[0.1px] border-secondary border-opacity-80 px-3 sm:py-1.5 py-1 text-md font-normal hover:font-semibold bg-primary tracking-wider hover:bg-sixth outline-none">
                         {
-                            (selected === undefined) ? 'Crear nota' : 'Editar nota'
+                            (!selected) ? 'Crear nota' : 'Editar nota'
                         }
                     </button>
                     <button onClick={() => restart()} type="button" title="Reiniciar" className="flex w-full justify-center rounded-md text-error border-[0.1px] border-error border-opacity-80 px-3 sm:py-1.5 py-1 text-md font-normal hover:font-semibold bg-primary tracking-wider hover:bg-sixth outline-none">
@@ -129,8 +128,8 @@ export default function ComponentForm({ setSelected, selected, setRefresh }: Pro
                     </button>
                 </div>
             </form>
-            {(response != undefined) &&
-                <ComponentMessageConfirmation open={open} setOpen={setOpen} response={response} />
+            {
+                (response) && <ComponentMessageConfirmation open={open} setOpen={setOpen} response={response} />
             }
         </div>
     )

@@ -16,7 +16,7 @@ export default function ComponentView(props: Props) {
 
     return (
         <ComponentModal open={open} setOpen={setOpen}>
-            <div className="relative flex border-[0.1px] border-secondary border-opacity-50 rounded-lg gap-y-3 px-3 sm:px-5 py-5">
+            <div className="relative flex border-[0.1px] border-secondary border-opacity-50 rounded-lg gap-y-3 px-3 sm:px-5 py-7">
                 <ComponentIcon name='logo' description_class='absolute top-1.5 left-2 text-secondary opacity-70' size={20} />
                 <div onClick={() => setOpen(false)}>
                     <ComponentIcon name='close' description_class='absolute top-0 right-0 text-secondary opacity-70 cursor-pointer' size={30} />

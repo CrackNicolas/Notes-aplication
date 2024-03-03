@@ -61,10 +61,10 @@ export default function ComponentList({ notes, setSelected, selected, setRefresh
                 }
             </div>
             {
-                (view_note !== undefined) && <ComponentView open={open_modal_view} setOpen={setOpen_modal_view} note={view_note} />
+                (view_note) && <ComponentView open={open_modal_view} setOpen={setOpen_modal_view} note={view_note} />
             }
             {
-                (response != undefined) && <ComponentMessageConfirmation open={open_modal_confirmation} setOpen={setOpen_modal_confirmation} response={response} />
+                (response) && <ComponentMessageConfirmation open={open_modal_confirmation} setOpen={setOpen_modal_confirmation} response={response} />
             }
         </div>
     )

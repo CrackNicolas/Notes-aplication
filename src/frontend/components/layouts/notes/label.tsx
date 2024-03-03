@@ -30,7 +30,7 @@ export default function ComponentLabel(props: Props) {
     }
 
     return (
-        <label htmlFor={html_for} className={`line-clamp-1 text-sm font-normal ${(error === undefined) ? 'text-secondary' : 'text-error'} tracking-wider`}>
+        <label htmlFor={html_for} className={`line-clamp-1 text-sm font-normal ${(!error) ? 'text-secondary' : 'text-error'} tracking-wider`}>
             {
                 message()
             }

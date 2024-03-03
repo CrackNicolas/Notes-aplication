@@ -27,7 +27,7 @@ export default function ComponentNotes() {
     useEffect(() => {
         const load_notes = async () => {
             const { data } = await axios.get(`api/notes${(search !== "") ? `/${search}` : ''}`);
-            if (data.status === 200) {                
+            if (data.status === 200) {
                 setList_notes(data.data);
             }
             if (data.status === 500) {
@@ -45,8 +45,8 @@ export default function ComponentNotes() {
                 <ComponentForm selected={selected_note} setSelected={setSelected_note} setRefresh={refresh} />
                 <ComponentList notes={list_notes} setSelected={setSelected_note} selected={selected_note} setRefresh={refresh} setSearch={setSearch} />
             </article>
-            {(response != undefined) &&
-                <ComponentMessageConfirmation open={open} setOpen={setOpen} response={response} />
+            {
+                (response) && <ComponentMessageConfirmation open={open} setOpen={setOpen} response={response} />
             }
         </section>
     )
