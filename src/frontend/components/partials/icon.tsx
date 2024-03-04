@@ -61,7 +61,7 @@ export default function ComponentIcon(props: Props) {
     }
 
     return (
-        <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} className={`cursor-default ${description_class} transition duration-500`} fill="currentColor" viewBox={view_box}>
+        <svg data-testid="icon" xmlns="http://www.w3.org/2000/svg" width={size} height={size} className={`cursor-default ${description_class} transition duration-500`} fill="currentColor" viewBox={view_box}>
             {get_icon(name)}
         </svg>
     )

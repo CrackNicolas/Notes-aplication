@@ -11,7 +11,7 @@ const config: Config = {
   verbose: true,
   clearMocks: true,
   collectCoverage: true,
-  coverageDirectory: "/src/__test__/coverage"
+  coverageDirectory: "__test__"
 }
  
 export default createJestConfig(config)
