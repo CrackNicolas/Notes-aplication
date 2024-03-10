@@ -5,7 +5,7 @@ import { render, screen } from '@testing-library/react'
 import ComponentHome from '@/frontend/components/layouts/home/container'
 
 describe('Home', () => {
-    it('Comprobando vista correcta', () => {
+    it('Renderizar correctamente', () => {
         render(<ComponentHome />)
         const logo = screen.getByTestId("icon");
         const title = screen.getByText('Notes Aplication');

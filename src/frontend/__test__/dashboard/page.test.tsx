@@ -10,7 +10,7 @@ describe('Dashboard', () => {
         render(<ComponentDashboard />);
     });
 
-    it('Header - Comprobando vista correcta', () => {
+    it('Renderizar correctamente (Header)', () => {
         const title = screen.getByText("Panel de Control");
         const subtitle = screen.getByText("Organiza tu mundo, mantente al tanto de lo más importante.");
 
@@ -18,7 +18,7 @@ describe('Dashboard', () => {
         expect(subtitle).toBeInTheDocument();
     })
 
-    it('Items - Comprobando vista correcta', () => {
+    it('Renderizar correctamente (Items)', () => {
         const items = [
             {
                 url: "",
