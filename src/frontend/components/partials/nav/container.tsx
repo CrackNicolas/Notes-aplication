@@ -9,7 +9,7 @@ import { Props_context } from "@/context/types/context";
 import ComponentIcon from "@/frontend/components/partials/icon";
 
 export default function ComponentNav(props: Props_context) {
-    const { section_current, user, button_login } = props;
+    const { section_current, user, button_sesion } = props;
 
     const [view_toggle, setView_toggle] = useState<boolean>(false);
     const [focus, setFocus] = useState<boolean>(false);
@@ -40,10 +40,10 @@ export default function ComponentNav(props: Props_context) {
                         {
                             (user) ?
                                 <div className="flex gap-x-4">
-                                    <button type="button" title="Notificacion" className="relative rounded-full p-1 outline-none">
+                                    <button type="button" title="Notificaciones" className="relative rounded-full p-1 outline-none">
                                         <ComponentIcon name="notification" size={20} description_class="hover:text-secondary text-fifth" />
                                     </button>
-                                    {button_login}
+                                    {button_sesion}
                                 </div>
                                 :
                                 <div className="flex gap-x-3">
