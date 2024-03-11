@@ -1,18 +1,15 @@
 'use client'
 
-import { UserButton, useUser } from "@clerk/nextjs";
-
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 
 import { useState } from "react";
 
-import ComponentIcon from "../icon";
+import { Props_context } from "@/context/types/context";
 
-export default function ComponentNav() {
-    const { user } = useUser();
+import ComponentIcon from "@/frontend/components/partials/icon";
 
-    const section = usePathname().substring(1);
+export default function ComponentNav(props: Props_context) {
+    const { section_current, user, button_login } = props;
 
     const [view_toggle, setView_toggle] = useState<boolean>(false);
     const [focus, setFocus] = useState<boolean>(false);
@@ -32,10 +29,10 @@ export default function ComponentNav() {
                         </Link>
                         <div className="hidden sm:ml-4 sm:block">
                             <div className="flex space-x-1">
-                                <Link href="/dashboard" className={`${(section === "dashboard") && 'text-secondary'} hover:text-secondary tracking-wider text-fifth px-1 py-2 text-md font-normal transition duration-500`} title="Panel">Panel</Link>
-                                <Link href="/notes" className={`${(section === "notes" && "text-secondary")} hover:text-secondary tracking-wider text-fifth px-1 py-2 text-md font-normal transition duration-500`} title="Notes">Notas</Link>
-                                <Link href="#" className={`${(section === "b")} hover:text-secondary tracking-wider text-fifth px-1 py-2 text-md font-normal transition duration-500`} title="Busquedas">Busquedas</Link>
-                                <Link href="#" className={`${(section === "c")} hover:text-secondary tracking-wider text-fifth px-1 py-2 text-md font-normal transition duration-500`} title="Configuracion">Configuracion</Link>
+                                <Link href="/dashboard" className={`${(section_current === "dashboard") && 'text-secondary'} hover:text-secondary tracking-wider text-fifth px-1 py-2 text-md font-normal transition duration-500`} title="Panel">Panel</Link>
+                                <Link href="/notes" className={`${(section_current === "notes" && "text-secondary")} hover:text-secondary tracking-wider text-fifth px-1 py-2 text-md font-normal transition duration-500`} title="Notes">Notas</Link>
+                                <Link href="#" className={`${(section_current === "b")} hover:text-secondary tracking-wider text-fifth px-1 py-2 text-md font-normal transition duration-500`} title="Busquedas">Busquedas</Link>
+                                <Link href="#" className={`${(section_current === "c")} hover:text-secondary tracking-wider text-fifth px-1 py-2 text-md font-normal transition duration-500`} title="Configuracion">Configuracion</Link>
                             </div>
                         </div>
                     </div>
@@ -46,7 +43,7 @@ export default function ComponentNav() {
                                     <button type="button" title="Notificacion" className="relative rounded-full p-1 outline-none">
                                         <ComponentIcon name="notification" size={20} description_class="hover:text-secondary text-fifth" />
                                     </button>
-                                    <UserButton afterSignOutUrl="/" />
+                                    {button_login}
                                 </div>
                                 :
                                 <div className="flex gap-x-3">
@@ -61,7 +58,7 @@ export default function ComponentNav() {
                     </div>
                 </div>
             </div>
-            <div className={` bg-room ${view_toggle ? 'visible' : 'hidden'} sm:hidden`}>
+            <div className={`bg-room ${view_toggle ? 'visible' : 'hidden'} sm:hidden`}>
                 <div className="space-y-1 px-2 pb-3 pt-2">
                     <a href="#" className="hover:text-secondary tracking-wider text-fifth block px-3 py-2 text-md font-normal transition duration-500">Panel</a>
                     <a href="#" className="hover:text-secondary tracking-wider text-fifth block px-3 py-2 text-md font-normal transition duration-500">Notas</a>
