@@ -15,7 +15,7 @@ import Template from '@/frontend/template/init'
 export const Context = createContext<Props_context>({
     section_current: '',
     user: {},
-    button_sesion: <UserButton data-testid="sesion" afterSignOutUrl="/" />
+    button_sesion: <UserButton afterSignOutUrl="/" />
 });
 
 export default function Provider({ children }: Props_layouts) {
@@ -31,7 +31,7 @@ export default function Provider({ children }: Props_layouts) {
     }, [path])
 
     return (
-        <Context.Provider value={{ section_current: path.substring(1), user, button_sesion: <UserButton data-testid="sesion" afterSignOutUrl="/" /> }}>
+        <Context.Provider value={{ section_current: path.substring(1), user, button_sesion: <UserButton afterSignOutUrl="/" /> }}>
             <ProgressBar color="#00ffff" />
             <Template>
                 {children}

@@ -2,11 +2,12 @@ type Props = {
     name: string
     size?: number,
     description_class?: string,
-    view_box?: string
+    view_box?: string,
+    testid?: string
 }
 
 export default function ComponentIcon(props: Props) {
-    const { name, size = 0, description_class = "", view_box = "0 0 16 16" } = props;
+    const { name, size = 0, description_class = "", view_box = "0 0 16 16", testid="icon" } = props;
 
     const get_icon = (name: string) => {
         switch (name) {
@@ -19,9 +20,9 @@ export default function ComponentIcon(props: Props) {
             case "toggle":
                 return <path fillRule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5" />
             case 'check':
-                return <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0"/>
+                return <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0" />
             case 'arrow':
-                return <path fillRule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1"/>
+                return <path fillRule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1" />
             case 'see':
                 return <g><path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z" /><path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0" /></g>
             case "notification":
@@ -61,7 +62,7 @@ export default function ComponentIcon(props: Props) {
     }
 
     return (
-        <svg data-testid="icon" xmlns="http://www.w3.org/2000/svg" width={size} height={size} className={`cursor-default ${description_class} transition duration-500`} fill="currentColor" viewBox={view_box}>
+        <svg data-testid={testid} name={name} xmlns="http://www.w3.org/2000/svg" width={size} height={size} className={`cursor-default ${description_class} transition duration-500`} fill="currentColor" viewBox={view_box}>
             {get_icon(name)}
         </svg>
     )
