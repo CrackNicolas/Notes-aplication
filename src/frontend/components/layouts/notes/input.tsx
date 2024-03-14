@@ -15,7 +15,7 @@ type Props = {
 }
 
 export default function ComponentInput(props: Props) {
-    const { type, name, id, placeholder, description_class, value, rows, error, register } = props;
+    const { type, name, id = name, placeholder, description_class, value, rows, error, register } = props;
 
     return (
         (!rows) ?

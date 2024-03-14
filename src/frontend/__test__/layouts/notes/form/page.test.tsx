@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react';
 
 import ComponentForm from '@/frontend/components/layouts/notes/form';
 import ComponentLabel from '@/frontend/components/layouts/notes/label';
+import ComponentInput from '@/frontend/components/layouts/notes/input';
 
 describe('Formulario de creacion y edicion de notas', () => {
     it('Renderizacion correcta', () => {
@@ -86,4 +87,36 @@ describe('Formulario de creacion y edicion de notas', () => {
             })
         })
     });
+
+    describe('Validacion correcta de errores en los inputs', () => {
+        describe('required', () => {
+            it('Title', () => {
+                const register = jest.fn();
+                
+                render(<ComponentInput
+                    type="text"
+                    name="title"
+                    placeholder="Escriba el titulo..."
+                    register={register}
+                    error="required"
+                    description_class="border-opacity-50 bg-primary w-full rounded-md border-[0.1px] py-1.5 px-2 outline-none tracking-wide placeholder:opacity-70 sm:text-md"
+                />)
+
+                const input_title = screen.getByLabelText('title');
+
+                expect(input_title).toHaveClass('border-error text-error placeholder:text-error');
+
+
+
+
+
+
+
+
+
+
+            })
+
+        })
+    })
 });
