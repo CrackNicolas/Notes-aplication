@@ -80,7 +80,8 @@ export default function ComponentForm({ setSelected, selected, setRefresh }: Pro
                             name="title"
                             placeholder="Escriba el titulo..."
                             register={register}
-                            description_class={`${(!errors.title?.type) ? 'border-secondary text-secondary placeholder:text-secondary' : 'border-error text-error placeholder:text-error'} border-opacity-50 bg-primary w-full rounded-md border-[0.1px] py-1.5 px-2 outline-none tracking-wide placeholder:opacity-70 sm:text-md`}
+                            error={errors.title?.type}
+                            description_class="border-opacity-50 bg-primary w-full rounded-md border-[0.1px] py-1.5 px-2 outline-none tracking-wide placeholder:opacity-70 sm:text-md"
                         />
                     </div>
                     <div className="flex flex-col gap-y-0.5">
@@ -90,7 +91,8 @@ export default function ComponentForm({ setSelected, selected, setRefresh }: Pro
                             name="description"
                             placeholder="Escriba la descripcion..."
                             register={register}
-                            description_class={`${(!errors.description?.type) ? 'border-secondary text-secondary placeholder:text-secondary' : 'border-error text-error placeholder:text-error'} border-opacity-50 bg-primary w-full rounded-md border-[0.1px] min-h-[80px] scroll py-1.5 px-2 outline-none tracking-wide placeholder:opacity-70 sm:text-md`}
+                            error={errors.description?.type}
+                            description_class="border-opacity-50 bg-primary w-full rounded-md border-[0.1px] min-h-[80px] scroll py-1.5 px-2 outline-none tracking-wide placeholder:opacity-70 sm:text-md"
                         />
                     </div>
                     <div className="flex flex-col gap-y-0.5">
