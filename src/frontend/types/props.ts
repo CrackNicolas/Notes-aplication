@@ -4,11 +4,11 @@ export type Props_layouts = {
     children: ReactNode
 }
 export type Props_note = {
-    _id: string,
+    _id?: string,
     title: string,
     description: string,
     priority: string,
-    createdAt: string
+    createdAt?: string
 }
 export type Props_inputs = {
     required?: boolean
