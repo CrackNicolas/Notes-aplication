@@ -23,17 +23,21 @@ export default function ComponentInput(props: Props) {
                 {...register(name, validation(name))}
                 type={type}
                 id={id}
+                name={name}
                 placeholder={placeholder}
                 value={value}
                 className={` ${(!error) ? 'border-secondary text-secondary placeholder:text-secondary' : 'border-error text-error placeholder:text-error'} ${description_class}`}
+                data-testid={`input-${name}`}
             />
             :
             <textarea
                 {...register(name, validation(name))}
                 id={id}
                 placeholder={placeholder}
+                name={name}
                 rows={rows}
                 className={` ${(!error) ? 'border-secondary text-secondary placeholder:text-secondary' : 'border-error text-error placeholder:text-error'} ${description_class}`}
+                data-testid={`input-${name}`}
             />
     )
 }

@@ -5,9 +5,9 @@ import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 
 import axios from 'axios';
 
-import ComponentIcon from '../../partials/icon';
 import ComponentInput from './input';
 import ComponentLabel from './label';
+import ComponentItemPriority from './item_priority';
 import ComponentMessageConfirmation from '../messages/confirmation';
 
 import { validation } from '@/frontend/validations/form';
@@ -98,21 +98,30 @@ export default function ComponentForm({ setSelected, selected, setRefresh }: Pro
                     <div className="flex flex-col gap-y-0.5">
                         <ComponentLabel title="Prioridad" html_for="priority" error={errors.priority?.type} />
                         <div className="grid grid-cols-3 gap-x-1">
-                            <ComponentInput type="radio" name="priority" id="option_1" value='Alta' description_class="hidden" register={register} />
-                            <ComponentInput type="radio" name="priority" id="option_2" value='Media' description_class="hidden" register={register} />
-                            <ComponentInput type="radio" name="priority" id="option_3" value='Baja' description_class="hidden" register={register} />
-                            <label htmlFor="option_1" className={`group  ${(!errors.priority?.type) ? 'border-secondary' : 'border-error'} col-span-1 flex border-[0.1px] rounded-md grid pt-1 place-items-center overflow-hidden cursor-pointer`}>
-                                <ComponentIcon name="arrow" size={15} description_class="text-red-500 rotate-[-180deg]" />
-                                <span className={` ${(watch('priority') === "Alta") ? 'bg-secondary text-primary' : ` ${(!errors.priority?.type) ? 'text-secondary group-hover:bg-secondary group-hover:text-primary' : 'text-error group-hover:bg-error group-hover:text-primary'}  `} w-full text-center text-sm tracking-wider font-semibold cursor-pointer py-0.5`}>Alta</span>
-                            </label>
-                            <label htmlFor="option_2" className={`group ${(!errors.priority?.type) ? 'border-secondary' : 'border-error'} col-span-1 flex border-[0.1px] rounded-md grid pt-1 place-items-center overflow-hidden cursor-pointer`}>
-                                <ComponentIcon name="arrow" size={15} description_class="text-orange-500 rotate-[-180deg]" />
-                                <span className={` ${(watch('priority') === "Media") ? 'bg-secondary text-primary' : `${(!errors.priority?.type) ? 'text-secondary group-hover:bg-secondary group-hover:text-primary' : 'text-error group-hover:bg-error group-hover:text-primary'} `} w-full text-center text-sm tracking-wider font-semibold cursor-pointer py-0.5`}>Media</span>
-                            </label>
-                            <label htmlFor="option_3" className={`group ${(!errors.priority?.type) ? 'border-secondary' : 'border-error'} col-span-1 flex border-[0.1px] rounded-md grid pt-1 place-items-center overflow-hidden cursor-pointer`}>
-                                <ComponentIcon name="arrow" size={15} description_class="text-green-500" />
-                                <span className={` ${(watch('priority') === "Baja") ? 'bg-secondary text-primary' : `${(!errors.priority?.type) ? 'text-secondary group-hover:bg-secondary group-hover:text-primary' : 'text-error group-hover:bg-error group-hover:text-primary'} `} w-full text-center text-sm tracking-wider font-semibold cursor-pointer py-0.5`}>Baja</span>
-                            </label>
+                            <ComponentItemPriority
+                                id="option_1"
+                                value='Alta'
+                                class_icon="text-red-500 rotate-[-180deg]"
+                                paint={watch('priority') === "Alta"}
+                                error={errors.priority?.type} 
+                                register={register}
+                            />
+                            <ComponentItemPriority
+                                id="option_2"
+                                value='Media'
+                                class_icon="text-orange-500 rotate-[-180deg]"
+                                paint={watch('priority') === "Media"}
+                                error={errors.priority?.type} 
+                                register={register}
+                            />
+                            <ComponentItemPriority
+                                id="option_3"
+                                value='Baja'
+                                class_icon="text-green-500"
+                                paint={watch('priority') === "Baja"}
+                                error={errors.priority?.type} 
+                                register={register}
+                            />
                         </div>
                     </div>
                 </div>
