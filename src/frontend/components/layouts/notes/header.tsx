@@ -22,7 +22,6 @@ export default function ComponentHeader(props: Props) {
                     <ComponentIcon name="search" description_class="text-fifth" size={20} view_box="0 0 24 24" />
                 </div>
                 <input
-                    data-testid="search"
                     type="text"
                     id="search"
                     placeholder="Buscar..."
