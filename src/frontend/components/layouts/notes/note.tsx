@@ -14,7 +14,7 @@ export default function ComponentNote(props: Props) {
     const { title, description, priority, createdAt } = note;
 
     return (
-        <div className={`relative group grid grid-cols-9 w-full bg-sixth sm:px-2.5 px-2 sm:py-2 py-1.5 cursor-pointer rounded-md border-[0.1px] border-secondary ${paint ? 'border-opacity-100' : 'border-opacity-20 hover:border-opacity-100'}`}>
+        <div data-testid="note" className={`relative group grid grid-cols-9 w-full bg-sixth sm:px-2.5 px-2 sm:py-2 py-1.5 cursor-pointer rounded-md border-[0.1px] border-secondary ${paint ? 'border-opacity-100' : 'border-opacity-20 hover:border-opacity-100'}`}>
             <div className="col-span-6 sm:col-span-7 md:col-span-8 flex flex-col">
                 <span className="flex">
                     <span className="line-clamp-1 text-md font-normal group-hover:font-semibold tracking-wide text-secondary">
@@ -33,13 +33,13 @@ export default function ComponentNote(props: Props) {
             </div>
             <div className="col-span-3 sm:col-span-2 md:col-span-1 flex flex-col items-end">
                 <div className="flex gap-2 items-end justify-center w-[75px] h-full">
-                    <button onClick={() => action_note('delete', note)} type="button" title="Eliminar" className="outline-none border-none">
+                    <button onClick={() => action_note('delete', note)} type="button" data-testid="btn-delete" title="Eliminar" className="outline-none border-none">
                         <ComponentIcon name="delete" size={18} description_class="text-fifth hover:text-red-500 cursor-pointer" />
                     </button>
-                    <button onClick={() => action_note('update', note)} type="button" title="Editar" className="outline-none border-none">
+                    <button onClick={() => action_note('update', note)} type="button" data-testid="btn-update" title="Editar" className="outline-none border-none">
                         <ComponentIcon name="update" size={18} description_class="text-fifth hover:text-secondary cursor-pointer" />
                     </button>
-                    <button onClick={() => action_note('view', note)} type="button" title="Ver" className="outline-none border-none">
+                    <button onClick={() => action_note('view', note)} type="button" data-testid="btn-view" title="Ver" className="outline-none border-none">
                         <ComponentIcon name="see" size={19} description_class="text-fifth hover:text-secondary cursor-pointer" />
                     </button>
                 </div>

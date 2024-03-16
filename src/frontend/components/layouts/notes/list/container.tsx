@@ -6,7 +6,7 @@ import ComponentView from "../view";
 import ComponentNote from "../note";
 import ComponentHeader from "../header";
 import ComponentLoading from "./loading";
-import ComponentMessageConfirmation from "../../messages/confirmation";
+import ComponentMessageConfirmation from "@/frontend/components/layouts/messages/confirmation";
 
 import { Props_note } from "@/frontend/types/props";
 import { Props_response } from "@/context/types/response";
@@ -53,7 +53,7 @@ export default function ComponentList({ notes, setSelected, selected, setRefresh
                         :
                         notes.map((note: Props_note) => {
                             return (
-                                <div key={note._id} className="rounded-md">
+                                <div key={note._id} data-testid="list-notes" className="rounded-md">
                                     <ComponentNote note={note} paint={selected?._id === note._id} action_note={action_note} />
                                 </div>
                             )

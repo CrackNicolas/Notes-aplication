@@ -6,21 +6,9 @@ import ComponentLabel from '@/frontend/components/layouts/notes/label';
 import ComponentInput from '@/frontend/components/layouts/notes/input';
 import ComponentItemPriority from '@/frontend/components/layouts/notes/item_priority';
 
+import { labels, note } from '@/frontend/__test__/mocks/notes/data'
+
 const register = jest.fn();
-
-const note = {
-    _id: '1234',
-    title: 'Titulo de prueba',
-    description: 'Descripcion de prueba',
-    priority: 'Alta',
-    createdAt: '2020-01-21'
-}
-
-const labels = [
-    { title: "Titulo", name: "title" },
-    { title: "Descripcion", name: "description" },
-    { title: "Prioridad", name: "priority" }
-]
 
 describe('Formulario de creacion y edicion de notas', () => {
 
