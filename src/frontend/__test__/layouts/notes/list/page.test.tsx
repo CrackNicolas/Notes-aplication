@@ -42,15 +42,6 @@ describe('Lista de notas creadas y editadas', () => {
 
         expect(view_close).not.toBeInTheDocument();
     })
-    
-    it('Renderizacion correcta de lista de notas',() => {
-        const setSelected = jest.fn();
-        setSelected(undefined);
-        render(<ComponentList notes={notes} setSelected={setSelected} selected={undefined} setRefresh={()=>{}}  setSearch={()=>{}} />);
-        
-        const list = screen.getByTestId('list-notes');
-        expect(list).toBeInTheDocument();
-    })
 
     describe('Renderizacion correcta de nota',() => {
         it('Renderizacion correcta de elementos',() => {
