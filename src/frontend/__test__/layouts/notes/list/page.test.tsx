@@ -52,20 +52,40 @@ describe('Lista de notas creadas y editadas', () => {
         expect(list).toBeInTheDocument();
     })
 
-    it('Renderizacion correcta de nota',() => {
-        const action_note = jest.fn();
-        render(<ComponentNote note={note} paint={true} action_note={action_note} />);
+    describe('Renderizacion correcta de nota',() => {
+        it('Renderizacion correcta de elementos',() => {
+            render(<ComponentNote note={note} paint={true} action_note={() => {}} />);
 
-        const note_element = screen.getByTestId('note');
-        const button_delete = screen.getByTestId('btn-delete');
-        const button_update = screen.getByTestId('btn-update');
-        const button_view = screen.getByTestId('btn-view');
-        
-        expect(note_element).toBeInTheDocument();
-        expect(button_delete).toBeInTheDocument();
-        expect(button_update).toBeInTheDocument();
-        expect(button_view).toBeInTheDocument();
-        expect(note_element).toHaveClass('border-opacity-100');
+            const note_element = screen.getByTestId('note');
+            const button_delete = screen.getByTestId('btn-delete');
+            const button_update = screen.getByTestId('btn-update');
+            const button_view = screen.getByTestId('btn-view');
+            
+            expect(note_element).toBeInTheDocument();
+            expect(button_delete).toBeInTheDocument();
+            expect(button_update).toBeInTheDocument();
+            expect(button_view).toBeInTheDocument();
+            expect(note_element).toHaveClass('border-opacity-100');
+        })
+
+        it('Renderizacion correcta de time elapsed al crear la nota',() => {
+            const new_note = {
+                _id: '1234',
+                title: 'Titulo de prueba',
+                description: 'Descripcion de prueba',
+                priority: 'Alta',
+                createdAt: new Date(),
+            }
+            render(<ComponentNote note={new_note} paint={true} action_note={() => {}} />);
+            const time = screen.getByTestId('time-elapsed');
+            expect(time.textContent).toBe('Hace 0 seg');
+        })
+
+        it('Renderizacion correcta de time elapsed al renderizar la nota 1 dia despues',() => {
+            render(<ComponentNote note={note} paint={true} action_note={() => {}} />);
+            const time = screen.getByTestId('time-elapsed');
+            expect(time.textContent).toMatch(/Hace|años|año|meses|mes|dias|dia|hs|min|seg/);
+        })
     })
 
     it('Renderizacion correcta Loading',() => {

@@ -1,4 +1,4 @@
-export function Time_elapsed(fecha_emit: string) : string {
+export function Time_elapsed(fecha_emit: Date): string {
     const date_provided: any = new Date(fecha_emit);
     const current_date: any = new Date();
 
@@ -24,13 +24,15 @@ export function Time_elapsed(fecha_emit: string) : string {
     const days = total_days % days_in_an_month_average;
     const month = total_month % months_in_an_year;
 
-    return (total_seconds > 0) ? `Hace 
-        ${(years > 0) ? (years > 1) ? (years) + ' años' : +(years) + ' año' : ''}
-        ${(month > 0) ? (month > 1) ? (month) + ' meses' : +(month) + ' mes' : ''}
-        ${(days > 0) ? (days > 1) ? Math.floor(days) + ' dias' : +Math.floor(days) + ' dia' : ''}
-        ${(hours > 0) ? hours + ' hs' : ''}
-        ${(minutes > 0) ? minutes + ' min' : ''}
-        ${(seconds > 0) ? seconds + ' seg' : ''}
-        `:
+    const deduction_years = (years > 0) ? (years > 1) ? (years) + ' años' : years + ' año' : '';
+    const deduction_month = (month > 0) ? (month > 1) ? (month) + ' meses' : month + ' mes' : ''
+    const deduction_days = (days > 0) ? (days > 1) ? Math.floor(days) + ' dias' : Math.floor(days) + ' dia' : ''
+    const deduction_hours = (hours > 0) ? hours + ' hs' : '';
+    const deduction_minutes = (minutes > 0) ? minutes + ' min' : '';
+    const deduction_seconds = (seconds > 0) ? seconds + ' seg' : '';
+
+    return (total_seconds > 0) ?
+        `Hace ${deduction_years} ${deduction_month} ${deduction_days} ${deduction_hours} ${deduction_minutes} ${deduction_seconds}`
+        :
         `Hace ${total_seconds} seg`;
 }

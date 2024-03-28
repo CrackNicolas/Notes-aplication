@@ -27,7 +27,7 @@ export default function ComponentNote(props: Props) {
                 <p className="line-clamp-1 text-sm text-tertiary opacity-50">
                     {description}
                 </p>
-                <span className="sm:visible invisible absolute right-3 text-tertiary text-[11px] opacity-50 ">
+                <span data-testid="time-elapsed" className="sm:visible invisible absolute right-3 text-tertiary text-[11px] opacity-50 ">
                     {Time_elapsed(createdAt)}
                 </span>
             </div>
