@@ -1,13 +1,14 @@
 import '@testing-library/jest-dom';
 
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 
 import ComponentList from '@/frontend/components/layouts/notes/list/container';
 import ComponentNote from '@/frontend/components/layouts/notes/note';
 import ComponentHeader from '@/frontend/components/layouts/notes/header';
 
-import { note, notes } from '@/frontend/__test__/mocks/notes/data';
 import { Props_note } from '@/frontend/types/props';
+
+import { note, notes } from '@/frontend/__test__/mocks/notes/data';
 
 describe('Lista de notas creadas y editadas', () => {
     const search = jest.fn();
@@ -36,20 +37,28 @@ describe('Lista de notas creadas y editadas', () => {
             const container = screen.getByTestId('container-list-notes');
             expect(container).toHaveClass('overflow-hidden overflow-y-scroll scroll pr-1');
         })
-        
-        //Esta prueba esta fallando
-        it('Funcionamiento correcto de boton view', () => {
+
+        it('Funcionamiento correcto del boton view', () => {
             setSelected(undefined);
             render(<ComponentList notes={notes} setSelected={setSelected} selected={undefined} setRefresh={() => { }} setSearch={() => { }} />);
-        
+
             const button_view = screen.getByTestId('btn-view');
-
             fireEvent.click(button_view);
-            
-        })
-        
 
-        it('Funcionamiento correcto de boton update', () => {
+            const modal = screen.getByTestId('modal');
+            expect(modal).toBeInTheDocument();
+
+            const button_close = screen.getByTestId('view-close');
+            fireEvent.click(button_close);
+
+            expect(modal).not.toBeInTheDocument();
+        })
+
+        it('Funcionamiento correcto del boton delete', async () => {
+            
+        });
+
+        it('Funcionamiento correcto del boton update', () => {
             render(<ComponentList notes={notes} setSelected={setSelected} selected={undefined} setRefresh={() => { }} setSearch={() => { }} />);
 
             const button_update = screen.getByTestId('btn-update');

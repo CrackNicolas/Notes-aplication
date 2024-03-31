@@ -25,9 +25,9 @@ export default function ComponentModal(props: Props) {
                             <Dialog.Panel className="relative transform overflow-hidden rounded-lg dark:bg-primary bg-tertiary shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
                                 <div className={`relative flex flex-col items-center border-[0.1px] border-${color} border-opacity-50 rounded-lg gap-y-5 px-3 sm:px-5 pb-6 pt-3`}>
                                     <ComponentIcon name='logo' description_class={`absolute top-1.5 left-2 text-${color} opacity-70 `} size={20} />
-                                    <div data-testid="view-close" onClick={() => setOpen(false)}>
+                                    <button data-testid="view-close" onClick={() => setOpen(false)}>
                                         <ComponentIcon name='close' description_class={`absolute top-0 right-0 text-${color} opacity-70 cursor-pointer`} size={30} />
-                                    </div>
+                                    </button>
                                     {children}
                                 </div>
                             </Dialog.Panel>
