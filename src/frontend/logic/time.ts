@@ -1,6 +1,7 @@
 export function Time_elapsed(fecha_emit: Date): string {
     const fecha_current = new Date();
-    const difference_in_milliseconds = fecha_current.getTime() - fecha_emit.getTime();
+    const format_fecha_emit = new Date(fecha_emit);
+    const difference_in_milliseconds = fecha_current.getTime() - format_fecha_emit.getTime();
 
     const milliseconds_in_second = 1000;
     const seconds_in_minute = 60;
