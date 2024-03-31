@@ -1,11 +1,9 @@
-const date = new Date();
-
 export const note = {
     _id: '1234',
     title: 'Titulo de prueba',
     description: 'Descripcion de prueba',
     priority: 'Alta',
-    createdAt: new Date(date.getFullYear(), date.getMonth(), date.getDate() - 1),
+    createdAt: new Date()
 }
 
 export const notes = [
@@ -14,7 +12,7 @@ export const notes = [
         title: 'Titulo de prueba',
         description: 'Descripcion de prueba',
         priority: 'Alta',
-        createdAt: new Date(date.getFullYear(), date.getMonth(), date.getDate() - 1),
+        createdAt: new Date()
     }
 ]
 

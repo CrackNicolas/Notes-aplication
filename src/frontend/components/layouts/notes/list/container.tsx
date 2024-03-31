@@ -46,7 +46,7 @@ export default function ComponentList({ notes, setSelected, selected, setRefresh
     return (
         <div className="col-span-full lg:col-span-2 flex flex-col gap-y-2">
             <ComponentHeader search={setSearch} result={notes.length === 0} />
-            <div className={`flex flex-col gap-y-1 ${(notes.length >= 7) && 'overflow-hidden overflow-y-scroll scroll pr-1'} h-[calc(100vh-165px)]`}>
+            <div data-testid="container-list-notes" className={`flex flex-col gap-y-1 ${(notes.length >= 7) && 'overflow-hidden overflow-y-scroll scroll pr-1'} h-[calc(100vh-165px)]`}>
                 {
                     (notes.length === 0) ?
                         <ComponentLoading count={8} />
