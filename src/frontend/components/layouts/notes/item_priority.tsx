@@ -19,7 +19,7 @@ export default function ComponentItemPriority(props: Props) {
     return (
         <Fragment>
             <ComponentInput type="radio" name="priority" id={id} value={value} description_class="hidden" register={register} />
-            <label htmlFor={id} title={`Opcion ${id} de prioridad`} className={`group  ${(!error) ? 'border-secondary' : 'border-error'} col-span-1 flex border-[0.1px] rounded-md grid pt-1 place-items-center overflow-hidden cursor-pointer`}>
+            <label htmlFor={id} title={`Opcion ${value} de prioridad`} className={`group  ${(!error) ? 'border-secondary' : 'border-error'} col-span-1 flex border-[0.1px] rounded-md grid pt-1 place-items-center overflow-hidden cursor-pointer`}>
                 <ComponentIcon name="arrow" size={15} description_class={class_icon} />
                 <span className={` ${paint ? 'bg-secondary text-primary' : ` ${(!error) ? 'text-secondary group-hover:bg-secondary group-hover:text-primary' : 'text-error group-hover:bg-error group-hover:text-primary'}  `} w-full text-center text-sm tracking-wider font-semibold cursor-pointer py-0.5`}>
                     {value}

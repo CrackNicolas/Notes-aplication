@@ -14,7 +14,7 @@ export const validation = (name: string): Props_inputs | any => {
                 required: true,
                 minLength: 15,
                 maxLength: 500,
-                pattern: /^[A-Z a-z._áéíóú]+$/i
+                pattern: /^[A-Z a-z,._áéíóú]+$/i
             }
         case "priority":
             return {

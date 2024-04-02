@@ -1,4 +1,7 @@
+import { useEffect, useState } from "react";
+
 import ComponentIcon from "@/frontend/components/partials/icon";
+import ComponentMessageConfirmationDelete from "../messages/confirmation_delete";
 
 import { Props_note } from "@/frontend/types/props";
 import { Time_elapsed } from "@/frontend/logic/time";
@@ -12,6 +15,16 @@ type Props = {
 export default function ComponentNote(props: Props) {
     const { note, paint, action_note } = props;
     const { title, description, priority, createdAt } = note;
+
+    const [open_confirmation, setOpen_confirmation] = useState<boolean>(false);
+    const [confirmation, setConfirmation] = useState<boolean>(false);
+
+    useEffect(() => {
+        if(confirmation){
+            action_note('delete', note);
+            setOpen_confirmation(false);
+        }
+    },[confirmation])
 
     return (
         <div title="Nota" className={`relative group grid grid-cols-9 w-full bg-sixth sm:px-2.5 px-2 sm:py-2 py-1.5 cursor-pointer rounded-md border-[0.1px] border-secondary ${paint ? 'border-opacity-100' : 'border-opacity-20 hover:border-opacity-100'}`}>
@@ -33,7 +46,7 @@ export default function ComponentNote(props: Props) {
             </div>
             <div className="col-span-3 sm:col-span-2 md:col-span-1 flex flex-col items-end">
                 <div className="flex gap-2 items-end justify-center w-[75px] h-full">
-                    <button onClick={() => action_note('delete', note)} type="button" title="Eliminar" className="outline-none border-none">
+                    <button onClick={() => setOpen_confirmation(true)} type="button" title="Eliminar" className="outline-none border-none">
                         <ComponentIcon name="delete" size={18} description_class="text-fifth hover:text-red-500 cursor-pointer" />
                     </button>
                     <button onClick={() => action_note('update', note)} type="button" title="Editar" className="outline-none border-none">
@@ -44,6 +57,9 @@ export default function ComponentNote(props: Props) {
                     </button>
                 </div>
             </div>
+            {
+                <ComponentMessageConfirmationDelete open={open_confirmation} setOpen={setOpen_confirmation} setConfirmation={setConfirmation} />
+            }
         </div>
     )
 }

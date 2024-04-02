@@ -8,16 +8,14 @@ import ComponentItemPriority from '@/frontend/components/layouts/notes/item_prio
 
 import { labels, note } from '@/frontend/__test__/mocks/notes'
 
-const register = jest.fn();
-
 describe('Componente <Form/> principal', () => {
     let component: RenderResult;
-
+    
     beforeEach(() => {
         component = render(<ComponentForm selected={undefined} setRefresh={() => { }} setSelected={() => { }} />)
     })
-
-    const setSelected = jest.fn();
+    
+    const register = jest.fn(), setSelected = jest.fn();
 
     test('Renderizacion correcta de elementos sin interaccion', () => {
         const input_title = component.getByPlaceholderText('Escriba el titulo...');
@@ -174,7 +172,7 @@ describe('Componente <Form/> principal', () => {
                             error="required"
                             register={register}
                         />)
-                        const label = component.getByTitle(`Opcion ${item.name} de prioridad`);
+                        const label = component.getByTitle(`Opcion ${item.value} de prioridad`);
                         const text_label = component.getByText(item.value);
 
                         expect(label).toHaveClass('border-error');

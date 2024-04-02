@@ -10,6 +10,9 @@ import { Props_note } from '@/frontend/types/props';
 
 import { note, notes } from '@/frontend/__test__/mocks/notes';
 
+import ResizeObserver from 'resize-observer-polyfill';
+global.ResizeObserver = ResizeObserver;
+
 describe('Lista de notas creadas y editadas', () => {
     const setSelected = jest.fn(), search = jest.fn();
     const date = new Date();

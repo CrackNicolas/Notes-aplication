@@ -11,10 +11,10 @@ export default function WithoutInternet() {
     const router = useRouter();
 
     useEffect(() => {
-        if (navigator.onLine) {
+        if (navigator?.onLine) {
             router.push("/")
         }
-    }, [navigator.onLine])
+    }, [navigator?.onLine])
 
     return (
         <section className="bg-primary pt-24 pb-9">
