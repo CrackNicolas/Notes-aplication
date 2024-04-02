@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
 
-import ComponentIcon from "../../partials/icon";
-import ComponentModal from "../../partials/modal";
+import ComponentIcon from "@/frontend/components/partials/icon";
+import ComponentModal from "@/frontend/components/partials/modal";
 
 import { Props_response, Props_status } from "@/context/types/response";
 

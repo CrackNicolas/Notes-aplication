@@ -25,12 +25,12 @@ export default function ComponentNav(props: Props_context) {
                     </div>
                     <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                         <Link href="/" className="sm:flex hidden flex-shrink-0 items-center" title="Logo" onMouseOver={() => setFocus(true)} onMouseLeave={() => setFocus(false)}>
-                            <ComponentIcon testid="logo" name={`${focus ? 'logo-fill' : 'logo'}`} size={27} description_class="text-secondary cursor-pointer" />
+                            <ComponentIcon testid="icon-home" name={`${focus ? 'logo-fill' : 'logo'}`} size={27} description_class="icon-home text-secondary cursor-pointer" />
                         </Link>
                         <div className="hidden sm:ml-4 sm:block">
                             <div className="flex space-x-1">
-                                <Link href="/dashboard" data-testid="dashboard" className={`${(section_current === "dashboard") && 'text-secondary'} hover:text-secondary tracking-wider text-fifth px-1 py-2 text-md font-normal transition duration-500`} title="Panel">Panel</Link>
-                                <Link href="/notes" data-testid="notes" className={`${(section_current === "notes" && 'text-secondary')} hover:text-secondary tracking-wider text-fifth px-1 py-2 text-md font-normal transition duration-500`} title="Notes">Notas</Link>
+                                <Link href="/dashboard" className={`${(section_current === "dashboard") && 'text-secondary'} hover:text-secondary tracking-wider text-fifth px-1 py-2 text-md font-normal transition duration-500`} title="Panel">Panel</Link>
+                                <Link href="/notes" className={`${(section_current === "notes" && 'text-secondary')} hover:text-secondary tracking-wider text-fifth px-1 py-2 text-md font-normal transition duration-500`} title="Notes">Notas</Link>
                             </div>
                         </div>
                     </div>
@@ -56,7 +56,7 @@ export default function ComponentNav(props: Props_context) {
                     </div>
                 </div>
             </div>
-            <div data-testid="nav-toggle" className={`bg-room ${view_toggle ? 'visible' : 'hidden'} sm:hidden`}>
+            <div title="toggle" className={`bg-room ${view_toggle ? 'visible' : 'hidden'} sm:hidden`}>
                 <div className="space-y-1 px-2 pb-3 pt-2">
                     <a href="#" className="hover:text-secondary tracking-wider text-fifth block px-3 py-2 text-md font-normal transition duration-500">Panel</a>
                     <a href="#" className="hover:text-secondary tracking-wider text-fifth block px-3 py-2 text-md font-normal transition duration-500">Notas</a>

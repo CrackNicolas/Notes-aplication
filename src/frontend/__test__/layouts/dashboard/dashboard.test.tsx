@@ -1,24 +1,24 @@
 import '@testing-library/jest-dom'
-
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, RenderResult } from '@testing-library/react'
 
 import ComponentDashboard from '@/frontend/components/layouts/dashboard/container'
 
-describe('Dashboard', () => {
+describe('Componente <Dashboard/>', () => {
+    let component: RenderResult
 
     beforeEach(() => {
-        render(<ComponentDashboard />);
+        component = render(<ComponentDashboard />);
     });
 
-    it('Renderizar correctamente (Header)', () => {
-        const title = screen.getByText("Panel de Control");
-        const subtitle = screen.getByText("Organiza tu mundo, mantente al tanto de lo más importante.");
+    test('Renderizacion correcta en el Header', () => {
+        const title = component.getByText("Panel de Control");
+        const subtitle = component.getByText("Organiza tu mundo, mantente al tanto de lo más importante.");
 
         expect(title).toBeInTheDocument();
         expect(subtitle).toBeInTheDocument();
     })
 
-    it('Renderizar correctamente (Items)', () => {
+    test('Renderizacion correcta en los Items', () => {
         const items = [
             {
                 url: "",
@@ -52,7 +52,7 @@ describe('Dashboard', () => {
             }
         ];
 
-        const icons = screen.getAllByTestId("icon");
+        const icons = component.getAllByTestId("icon");
 
         icons.forEach(icon => {
             expect(icon).toBeInTheDocument();
@@ -61,9 +61,9 @@ describe('Dashboard', () => {
         })
 
         items.forEach(item => {
-            expect(screen.getByText(item.title)).toBeInTheDocument()
-            expect(screen.getByText(item.title)).toHaveAttribute('href', item.url);
-            expect(screen.getByText(item.description)).toBeInTheDocument()
+            expect(component.getByText(item.title)).toBeInTheDocument()
+            expect(component.getByText(item.title)).toHaveAttribute('href', item.url);
+            expect(component.getByText(item.description)).toBeInTheDocument()
         })
     })
 

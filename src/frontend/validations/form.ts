@@ -1,4 +1,4 @@
-import { Props_inputs } from "../types/props"
+import { Props_inputs } from "@/frontend/types/props"
 
 export const validation = (name: string): Props_inputs | any => {
     switch (name) {

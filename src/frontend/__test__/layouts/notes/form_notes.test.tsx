@@ -1,35 +1,36 @@
 import '@testing-library/jest-dom';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { RenderResult, fireEvent, render } from '@testing-library/react';
 
 import ComponentForm from '@/frontend/components/layouts/notes/container_form';
 import ComponentLabel from '@/frontend/components/layouts/notes/label';
 import ComponentInput from '@/frontend/components/layouts/notes/input';
 import ComponentItemPriority from '@/frontend/components/layouts/notes/item_priority';
 
-import { labels, note } from '@/frontend/__test__/mocks/notes/data'
+import { labels, note } from '@/frontend/__test__/mocks/notes'
 
 const register = jest.fn();
 
-describe('Formulario de creacion y edicion de notas', () => {
+describe('Componente <Form/> principal', () => {
+    let component: RenderResult;
 
-    it('Renderizacion correcta', () => {
-        render(<ComponentForm selected={undefined} setRefresh={() => { }} setSelected={() => { }} />)
+    beforeEach(() => {
+        component = render(<ComponentForm selected={undefined} setRefresh={() => { }} setSelected={() => { }} />)
+    })
 
-        const title = screen.getByTestId('title-global');
-        const input_title = screen.getByPlaceholderText('Escriba el titulo...');
-        const input_description = screen.getByPlaceholderText('Escriba la descripcion...');
-        const inputs_priority = screen.getAllByRole('radio');
-        const label_title = screen.getByTestId('title');
-        const label_description = screen.getByTestId('description');
-        const button_submit = screen.getByTestId('Enviar');
-        const button_deshacer = screen.getByTestId('Deshacer');
+    const setSelected = jest.fn();
 
-        expect(title).toBeInTheDocument();
+    test('Renderizacion correcta de elementos sin interaccion', () => {
+        const input_title = component.getByPlaceholderText('Escriba el titulo...');
+        const input_description = component.getByPlaceholderText('Escriba la descripcion...');
+        const inputs_priority = component.getAllByRole('radio');
+        const label_title = component.getByTitle('title');
+        const label_description = component.getByTitle('description');
+        const button_deshacer = component.getByRole('button', { name: 'Deshacer' });
+
         expect(input_title).toBeInTheDocument();
         expect(input_description).toBeInTheDocument();
         expect(label_title).toBeInTheDocument();
         expect(label_description).toBeInTheDocument();
-        expect(button_submit).toBeInTheDocument();
         expect(button_deshacer).toBeInTheDocument();
 
         inputs_priority.map(input => {
@@ -37,40 +38,34 @@ describe('Formulario de creacion y edicion de notas', () => {
         })
     });
 
-    it('Renderizacion correcta para crear notas', () => {
-        render(<ComponentForm selected={undefined} setRefresh={() => { }} setSelected={() => { }} />)
 
-        const title = screen.getByTestId('title-global');
-        const button_submit = screen.getByTestId('Enviar');
+    describe('Renderizacion correcta', () => {
+        const buttons = [{ name: 'Crear' }, { name: 'Actualizar' }];
 
-        expect(title.textContent).toBe('Crear nota');
-        expect(button_submit.textContent).toBe('Crear nota');
-    });
+        buttons.map(button => {
+            test(`Para ${button.name} nota`, () => {
+                component.rerender(<ComponentForm selected={(button.name === "Crear") ? undefined : note} setRefresh={() => { }} setSelected={() => { }} />)
+                const title = component.getByTitle('Titulo formulario');
+                const button_submit = component.getByTitle(button.name);
+                expect(title.textContent).toBe(`${button.name} nota`);
+                expect(button_submit.textContent).toBe(button.name);
+            })
+        })
+    })
 
-    it('Renderizacion correcta para editar notas', () => {
-        render(<ComponentForm selected={note} setRefresh={() => { }} setSelected={() => { }} />)
-
-        const title = screen.getByTestId('title-global');
-        const button_submit = screen.getByTestId('Enviar');
-
-        expect(title.textContent).toBe('Editar nota');
-        expect(button_submit.textContent).toBe('Editar nota');
-    });
-
-    it('Renderizacion correcta al deshacer una operacion', () => {
-        const setSelected = jest.fn();
+    test('Renderizacion correcta al deshacer una operacion', () => {
         setSelected(note);
-        render(<ComponentForm selected={note} setRefresh={() => { }} setSelected={setSelected} />)
+        component.rerender(<ComponentForm selected={note} setRefresh={() => { }} setSelected={setSelected} />)
 
-        const input_title = screen.getByPlaceholderText('Escriba el titulo...');
-        const input_description = screen.getByPlaceholderText('Escriba la descripcion...');
-        const input_priority = screen.getByTestId('text-option_1');
+        const input_title = component.getByPlaceholderText('Escriba el titulo...');
+        const input_description = component.getByPlaceholderText('Escriba la descripcion...');
+        const input_priority = component.getByText('Alta');
 
         expect(input_title).toHaveValue(note.title);
         expect(input_description).toHaveValue(note.description);
         expect(input_priority).toHaveClass('bg-secondary text-primary');
 
-        const button_deshacer = screen.getByTestId('Deshacer');
+        const button_deshacer = component.getByRole('button', { name: 'Deshacer' });
         fireEvent.click(button_deshacer);
 
         expect(setSelected).toHaveBeenCalledWith(undefined);
@@ -90,31 +85,31 @@ describe('Formulario de creacion y edicion de notas', () => {
         validations.forEach(validation => {
             describe(`Error ${validation.name}`, () => {
                 labels.forEach(label => {
-                    it(`${label.title}`, () => {
-                        render(<ComponentLabel title={label.title} html_for={label.name} validation={{}} error={validation.name} />)
-                        const label_element = screen.getByTestId(label.name);
+                    test(`${label.title}`, () => {
+                        component.rerender(<ComponentLabel title={label.title} html_for={label.name} validation={{}} error={validation.name} />)
+                        const label_element = component.getByTitle(label.name);
                         expect(label_element.textContent).toMatch(validation.match);
                     })
                 })
             })
         })
+
         describe('Sin errores', () => {
             labels.forEach(label => {
-                it(`${label.title}`, () => {
-                    render(<ComponentLabel title={label.title} html_for={label.name} validation={{}} error={undefined} />)
-                    const label_element = screen.getByTestId(label.name);
+                test(`${label.title}`, () => {
+                    component.rerender(<ComponentLabel title={label.title} html_for={label.name} validation={{}} error={undefined} />)
+                    const label_element = component.getByTitle(label.name);
                     expect(label_element.textContent).toMatch(new RegExp(label.title));
                 })
             })
         })
-
     });
 
     describe('Validacion correcta sin errores en los inputs', () => {
         const inputs = labels;
         inputs.forEach(input => {
-            it(`${input.name}`, () => {
-                render(<ComponentInput
+            test(`${input.name}`, () => {
+                component.rerender(<ComponentInput
                     type="text"
                     name={input.name}
                     placeholder="Escriba..."
@@ -122,7 +117,7 @@ describe('Formulario de creacion y edicion de notas', () => {
                     error={undefined}
                     description_class="border-opacity-50 bg-primary w-full rounded-md border-[0.1px] py-1.5 px-2 outline-none tracking-wide placeholder:opacity-70 sm:text-md"
                 />)
-                const input_element = screen.getByTestId('input-' + input.name);
+                const input_element = component.getByPlaceholderText('Escriba...');
                 expect(input_element).toHaveClass('border-secondary text-secondary placeholder:text-secondary');
             })
         })
@@ -133,8 +128,8 @@ describe('Formulario de creacion y edicion de notas', () => {
 
         describe('Titulo', () => {
             validations.forEach(validation => {
-                it(`Error ${validation.name}`, () => {
-                    render(<ComponentInput
+                test(`Error ${validation.name}`, () => {
+                    component.rerender(<ComponentInput
                         type="text"
                         name="title"
                         placeholder="Escriba el titulo..."
@@ -142,7 +137,7 @@ describe('Formulario de creacion y edicion de notas', () => {
                         error={validation.name}
                         description_class="border-opacity-50 bg-primary w-full rounded-md border-[0.1px] py-1.5 px-2 outline-none tracking-wide placeholder:opacity-70 sm:text-md"
                     />)
-                    const input_title = screen.getByTestId('input-title');
+                    const input_title = component.getByPlaceholderText('Escriba el titulo...');
                     expect(input_title).toHaveClass('border-error text-error placeholder:text-error');
                 })
             })
@@ -150,8 +145,8 @@ describe('Formulario de creacion y edicion de notas', () => {
 
         describe('Descripcion', () => {
             validations.forEach(validation => {
-                it(`Error ${validation.name}`, () => {
-                    render(<ComponentInput
+                test(`Error ${validation.name}`, () => {
+                    component.rerender(<ComponentInput
                         rows={3}
                         name="description"
                         placeholder="Escriba la descripcion..."
@@ -159,19 +154,19 @@ describe('Formulario de creacion y edicion de notas', () => {
                         error={validation.name}
                         description_class="border-opacity-50 bg-primary w-full rounded-md border-[0.1px] min-h-[80px] scroll py-1.5 px-2 outline-none tracking-wide placeholder:opacity-70 sm:text-md"
                     />)
-                    const input_description = screen.getByTestId('input-description');
+                    const input_description = component.getByPlaceholderText('Escriba la descripcion...');
                     expect(input_description).toHaveClass('border-error text-error placeholder:text-error');
                 })
             })
         })
 
         describe('Prioridad', () => {
-            const items = [{ name: "option_1", value: "Alta" }, { name: "option_2", value: "Media" }, { name: "option_3", value: "Baja" }];
+            const items = [{ name: "1", value: "Alta" }, { name: "2", value: "Media" }, { name: "3", value: "Baja" }];
 
             describe('Error required', () => {
                 items.forEach(item => {
-                    it(`${item.name}`, () => {
-                        render(<ComponentItemPriority
+                    test(`Opcion ${item.name}`, () => {
+                        component.rerender(<ComponentItemPriority
                             id={item.name}
                             value={item.value}
                             class_icon="text-red-500 rotate-[-180deg]"
@@ -179,8 +174,8 @@ describe('Formulario de creacion y edicion de notas', () => {
                             error="required"
                             register={register}
                         />)
-                        const label = screen.getByTestId(item.name);
-                        const text_label = screen.getByTestId(`text-${item.name}`);
+                        const label = component.getByTitle(`Opcion ${item.name} de prioridad`);
+                        const text_label = component.getByText(item.value);
 
                         expect(label).toHaveClass('border-error');
                         expect(text_label).toHaveClass('text-error group-hover:bg-error group-hover:text-primary');

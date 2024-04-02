@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 
-import ComponentModal from "../../partials/modal";
+import ComponentModal from "@/frontend/components/partials/modal";
 
 import { Props_note } from "@/frontend/types/props";
 

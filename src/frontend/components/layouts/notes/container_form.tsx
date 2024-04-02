@@ -9,7 +9,7 @@ import ComponentForm from './form';
 import ComponentInput from './input';
 import ComponentLabel from './label';
 import ComponentItemPriority from './item_priority';
-import ComponentMessageConfirmation from '../messages/confirmation';
+import ComponentMessageConfirmation from '@/frontend/components/layouts/messages/confirmation';
 
 import { validation } from '@/frontend/validations/form';
 
@@ -62,8 +62,8 @@ export default function ComponentContainerForm({ setSelected, selected, setRefre
     return (
         <div className="col-span-full lg:col-span-1 flex flex-col gap-y-2">
             <div className="flex justify-center">
-                <span data-testid="title-global" className="text-2xl text-secondary font-semibold text-center">
-                    {(!selected) ? 'Crear nota' : 'Editar nota'}
+                <span title="Titulo formulario" className="text-2xl text-secondary font-semibold text-center">
+                    {(!selected) ? 'Crear nota' : 'Actualizar nota'}
                 </span>
             </div>
             <ComponentForm
@@ -123,10 +123,10 @@ export default function ComponentContainerForm({ setSelected, selected, setRefre
                 ]}
                 buttons={
                     <Fragment>
-                        <button type="submit" data-testid="Enviar" title={(!selected) ? 'Crear nota' : 'Editar nota'} className="flex w-full justify-center rounded-md text-secondary border-[0.1px] border-secondary border-opacity-80 px-3 sm:py-1.5 py-1 text-md font-normal hover:font-semibold bg-primary tracking-wider hover:bg-sixth outline-none">
-                            {(!selected) ? 'Crear nota' : 'Editar nota'}
+                        <button type="submit" title={(!selected) ? 'Crear' : 'Actualizar'} name={(!selected) ? 'Crear' : 'Actualizar'}  className="flex w-full justify-center rounded-md text-secondary border-[0.1px] border-secondary border-opacity-80 px-3 sm:py-1.5 py-1 text-md font-normal hover:font-semibold bg-primary tracking-wider hover:bg-sixth outline-none">
+                            {(!selected) ? 'Crear' : 'Actualizar'}
                         </button>
-                        <button onClick={() => restart()} type="button" data-testid="Deshacer" title="Reiniciar" className="flex w-full justify-center rounded-md text-error border-[0.1px] border-error border-opacity-80 px-3 sm:py-1.5 py-1 text-md font-normal hover:font-semibold bg-primary tracking-wider hover:bg-sixth outline-none">
+                        <button onClick={() => restart()} type="button" name="Deshacer" title="Reiniciar" className="flex w-full justify-center rounded-md text-error border-[0.1px] border-error border-opacity-80 px-3 sm:py-1.5 py-1 text-md font-normal hover:font-semibold bg-primary tracking-wider hover:bg-sixth outline-none">
                             Deshacer
                         </button>
                     </Fragment>

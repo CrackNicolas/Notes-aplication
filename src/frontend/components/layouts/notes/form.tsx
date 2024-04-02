@@ -1,4 +1,4 @@
-import { FormEventHandler, LegacyRef, ReactNode } from "react";
+import { FormEventHandler, ReactNode } from "react";
 
 export type Props = {
     inputs: ReactNode[],

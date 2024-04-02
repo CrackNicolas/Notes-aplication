@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 
-import ComponentIcon from "../../partials/icon";
+import ComponentIcon from "@/frontend/components/partials/icon";
 
 type Props = {
     search: Dispatch<SetStateAction<string>>,

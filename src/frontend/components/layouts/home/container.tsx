@@ -1,12 +1,12 @@
 import Link from "next/link";
 
-import ComponentIcon from "../../partials/icon";
+import ComponentIcon from "@/frontend/components/partials/icon";
 
 export default function ComponentHome() {
     return (
         <div className="relative px-6 lg:px-8">
             <div className="mt-[150px] flex flex-col items-center gap-y-9">
-                <ComponentIcon name="logo" size={70} description_class="text-secondary" />
+                <ComponentIcon testid="icon-home" name="logo" size={70} description_class="text-secondary" />
                 <div className="flex flex-col gap-y-2">
                     <span className="text-center text-4xl font-bold tracking-wider text-tertiary sm:text-6xl">
                         Notes Aplication

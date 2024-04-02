@@ -5,8 +5,8 @@ import { useEffect, useState } from "react";
 import axios from 'axios';
 
 import ComponentContainerForm from "./container_form";
-import ComponentList from "./list/container";
-import ComponentMessageConfirmation from "../messages/confirmation";
+import ComponentList from "@/frontend/components/layouts/notes/list/container";
+import ComponentMessageConfirmation from "@/frontend/components/layouts/messages/confirmation";
 
 import { Props_note } from "@/frontend/types/props";
 import { Props_response } from "@/context/types/response";
