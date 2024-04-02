@@ -13,7 +13,7 @@ import { note, notes } from '@/frontend/__test__/mocks/notes';
 import ResizeObserver from 'resize-observer-polyfill';
 global.ResizeObserver = ResizeObserver;
 
-describe('Lista de notas creadas y editadas', () => {
+describe('Componente <List/> de crud', () => {
     const setSelected = jest.fn(), search = jest.fn();
     const date = new Date();
 
@@ -122,8 +122,23 @@ describe('Lista de notas creadas y editadas', () => {
             expect(modal).not.toBeInTheDocument();
         })
 
-        test('Funcionamiento correcto del boton delete', () => {
-            
+        describe('Funcionamiento correcto del boton delete', () => {
+            test('Renderizacion correcta de modal confirmation', () => {
+                const component = render(<ComponentNote note={note} paint={true} action_note={() => { }} />);
+
+                const button_delete = component.getByRole('button', { name: 'Eliminar' });
+                fireEvent.click(button_delete);
+
+                const modal = component.getByTitle('modal');
+                expect(modal).toBeInTheDocument();
+
+                const text_modal = component.getByText('¿Seguro que desea eliminar?');
+                expect(text_modal).toBeInTheDocument();
+
+                const button_no = component.getByRole('button', { name: 'NO' });
+                fireEvent.click(button_no);
+                expect(text_modal).not.toBeInTheDocument();
+            })
         })
 
         test('Funcionamiento correcto del boton update', () => {
