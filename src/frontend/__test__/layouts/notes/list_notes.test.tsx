@@ -119,24 +119,9 @@ describe('Lista de notas creadas y editadas', () => {
             expect(modal).not.toBeInTheDocument();
         })
 
-        test('Funcionamiento correcto del boton delete', async () => {
-            /*
-            // Simula la función action_note
-            const mockActionNote = jest.fn();
-
-            // Renderiza el componente
-            const { getByRole } = render(<TuComponente action_note={mockActionNote} />);
-
-            // Encuentra el botón por su nombre
-            const botonEliminar = getByRole('button', { name: 'Eliminar' });
-
-            // Simula un clic en el botón
-            fireEvent.click(botonEliminar);
-
-            // Verifica que la función action_note haya sido llamada con los argumentos correctos
-            expect(mockActionNote).toHaveBeenCalledWith('delete', note);
-            */
-        });
+        test('Funcionamiento correcto del boton delete', () => {
+            
+        })
 
         test('Funcionamiento correcto del boton update', () => {
             const component = render(<ComponentList notes={notes} setSelected={setSelected} selected={undefined} setRefresh={() => { }} setSearch={() => { }} />);

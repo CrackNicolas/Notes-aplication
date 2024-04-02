@@ -44,7 +44,7 @@ export default function ComponentMessageConfirmation(props: Props) {
                     {info?.message}
                 </p>
             </div>
-            <button name="Aceptar" onClick={() => setOpen(false)} className={`outline-none rounded-full w-[200px] bg-primary hover:opacity-100 opacity-70 cursor-pointer text-${color(status)} border-[0.1px] border-${color(status)} `} type="button">
+            <button type="button" name="Aceptar" onClick={() => setOpen(false)} className={`outline-none rounded-full w-[200px] bg-primary hover:opacity-100 opacity-70 cursor-pointer text-${color(status)} border-[0.1px] border-${color(status)} `}>
                 Aceptar
             </button>
         </ComponentModal>

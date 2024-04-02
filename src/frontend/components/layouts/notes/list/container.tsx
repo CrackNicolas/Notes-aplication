@@ -53,7 +53,7 @@ export default function ComponentList({ notes, setSelected, selected, setRefresh
                         :
                         notes.map((note: Props_note) => {
                             return (
-                                <div key={note._id} data-testid="list-notes" className="rounded-md">
+                                <div key={note._id} className="rounded-md">
                                     <ComponentNote note={note} paint={selected?._id === note._id} action_note={action_note} />
                                 </div>
                             )
