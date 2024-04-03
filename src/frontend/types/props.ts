@@ -8,7 +8,8 @@ export type Props_note = {
     title: string,
     description: string,
     priority: string,
-    createdAt: Date
+    createdAt: Date,
+    file: File
 }
 export type Props_inputs = {
     required?: boolean

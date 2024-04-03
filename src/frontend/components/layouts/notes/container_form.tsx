@@ -26,6 +26,8 @@ export default function ComponentContainerForm({ setSelected, selected, setRefre
     const [open, setOpen] = useState<boolean>(false);
     const [response, setResponse] = useState<Props_response>();
 
+    const [file, setFile] = useState<File | undefined>(undefined);
+
     const { register, handleSubmit, formState: { errors }, setValue, reset, watch } = useForm();
 
     const restart = (): void => {
@@ -43,11 +45,17 @@ export default function ComponentContainerForm({ setSelected, selected, setRefre
     const onSubmit: SubmitHandler<FieldValues | Props_note> = async (data) => {
         let response;
 
+        const form = new FormData();
+        form.set('title', data.title);
+        form.set('description', data.description);
+        form.set('priority', data.priority);
+        form.set('file', file as File);
+
         if (!selected) {
-            response = await axios.post("api/notes", data);
+            response = await axios.post("api/notes", form);
         } else {
-            data._id = selected._id
-            response = await axios.put("api/notes", data);
+            form.set('_id', selected._id as string);
+            response = await axios.put("api/notes", form);
         }
         open_modal(response.data);
     }
@@ -119,11 +127,12 @@ export default function ComponentContainerForm({ setSelected, selected, setRefre
                                 register={register}
                             />
                         </div>
-                    </Fragment>
+                    </Fragment>,
+                    <input type="file" onChange={(e) => setFile(e.target.files?.[0])} />
                 ]}
                 buttons={
                     <Fragment>
-                        <button type="submit" title={(!selected) ? 'Crear' : 'Actualizar'} name={(!selected) ? 'Crear' : 'Actualizar'}  className="flex w-full justify-center rounded-md text-secondary border-[0.1px] border-secondary border-opacity-80 px-3 sm:py-1.5 py-1 text-md font-normal hover:font-semibold bg-primary tracking-wider hover:bg-sixth outline-none">
+                        <button type="submit" title={(!selected) ? 'Crear' : 'Actualizar'} name={(!selected) ? 'Crear' : 'Actualizar'} className="flex w-full justify-center rounded-md text-secondary border-[0.1px] border-secondary border-opacity-80 px-3 sm:py-1.5 py-1 text-md font-normal hover:font-semibold bg-primary tracking-wider hover:bg-sixth outline-none">
                             {(!selected) ? 'Crear' : 'Actualizar'}
                         </button>
                         <button onClick={() => restart()} type="button" name="Deshacer" title="Reiniciar" className="flex w-full justify-center rounded-md text-error border-[0.1px] border-error border-opacity-80 px-3 sm:py-1.5 py-1 text-md font-normal hover:font-semibold bg-primary tracking-wider hover:bg-sixth outline-none">

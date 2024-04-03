@@ -30,6 +30,6 @@ export function Time_elapsed(fecha_emit: Date): string {
         `${remainingMinutes} min`,
         `${remainingSeconds} seg`
     ].filter(part => part.startsWith('0') ? false : true);
-    
-    return `Hace ${parts.join(' ')}`;
+
+    return (parts.length === 0) ? 'Recien creada' : `Hace ${parts.join(' ')}`;
 }

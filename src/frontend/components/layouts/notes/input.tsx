@@ -27,7 +27,6 @@ export default function ComponentInput(props: Props) {
                 placeholder={placeholder}
                 value={value}
                 className={` ${(!error) ? 'border-secondary text-secondary placeholder:text-secondary' : 'border-error text-error placeholder:text-error'} ${description_class}`}
-                data-testid={`input-${name}`}
             />
             :
             <textarea
@@ -37,7 +36,6 @@ export default function ComponentInput(props: Props) {
                 name={name}
                 rows={rows}
                 className={` ${(!error) ? 'border-secondary text-secondary placeholder:text-secondary' : 'border-error text-error placeholder:text-error'} ${description_class}`}
-                data-testid={`input-${name}`}
             />
     )
 }

@@ -25,7 +25,7 @@
         - Configura un sistema para manejar errores de manera adecuada y proporcionar respuestas claras al frontend.
 
     - Frontend
-    1 - Interfaz de Usuario Responsiva: [ ] 
+    1 - Interfaz de Usuario Responsiva: [ X ] 
         - Diseña una interfaz de usuario atractiva y fácil de usar que se adapte a diferentes dispositivos y tamaños de pantalla.
     2 - Página de Inicio de Sesión y Registro: [ X ]
         - Crea páginas para que los usuarios inicien sesión y se registren.
@@ -65,5 +65,8 @@
 ## Testing
   * Testing Library - Access the url ["https://testing-library.com/"]
 
-## External authentication services
+## External file upload service
+  * Access the url ["https://cloudinary.com/"]
+
+## External authentication service
   * Access the url ["http://clerk.com/"]

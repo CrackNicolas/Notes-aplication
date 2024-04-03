@@ -6,7 +6,10 @@ const nextConfig = {
         NEXT_PUBLIC_CLERK_SIGN_IN_URL: "/sign-in",
         NEXT_PUBLIC_CLERK_SIGN_UP_URL: "/sign-up",
         NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL: "/",
-        NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL: "/"
+        NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL: "/",
+        CLOUDINARY_CLOUD_NAME: "cracknicolas",
+        CLOUDINARY_API_KEY: "716978288343629",
+        CLOUDINARY_API_SECRET: "b0SkQa2gfooFNsGMO5yDNgMBaIM"
     }
 }
 
