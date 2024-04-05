@@ -8,7 +8,7 @@ import ComponentHeader from "@/frontend/components/layouts/notes/header";
 import ComponentLoading from "./loading";
 import ComponentMessageConfirmation from "@/frontend/components/layouts/messages/confirmation";
 
-import { Props_note } from "@/frontend/types/props";
+import { Props_note } from "@/context/types/note";
 import { Props_response } from "@/context/types/response";
 
 type Props = {

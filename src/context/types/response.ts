@@ -8,7 +8,7 @@
     500 - Solicitud incumplida por errores en el servidor
 */
 
-import { Props_note } from "@/frontend/types/props"
+import { Props_note } from "@/context/types/note"
 
 export type Props_response = {
     status: Props_status

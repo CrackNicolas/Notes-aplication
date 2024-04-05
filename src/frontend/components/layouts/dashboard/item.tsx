@@ -4,7 +4,7 @@ import Link from "next/link";
 
 import { useState } from "react";
 
-import ComponentIcon from "../../partials/icon";
+import ComponentIcon from "@/frontend/components/partials/icon";
 
 type Props = {
   last_time: string,

@@ -7,8 +7,8 @@ import { AppProgressBar as ProgressBar } from "next-nprogress-bar";
 
 import { createContext, useEffect } from "react";
 
-import { Props_layouts } from "@/frontend/types/props";
 import { Props_context } from "@/context/types/context";
+import { Props_layouts } from "@/frontend/types/props";
 
 import Template from '@/frontend/template/init'
 

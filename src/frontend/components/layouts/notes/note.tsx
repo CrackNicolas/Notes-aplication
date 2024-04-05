@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import ComponentIcon from "@/frontend/components/partials/icon";
 import ComponentMessageConfirmationDelete from "../messages/confirmation_delete";
 
-import { Props_note } from "@/frontend/types/props";
+import { Props_note } from "@/context/types/note";
 import { Time_elapsed } from "@/frontend/logic/time";
 
 type Props = {

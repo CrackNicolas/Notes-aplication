@@ -1,11 +1,10 @@
 'use client'
 
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import { Dispatch, Fragment, SetStateAction, useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 import axios from 'axios';
 
-import ComponentForm from './form';
 import ComponentInput from './input';
 import ComponentLabel from './label';
 import ComponentItemPriority from './item_priority';
@@ -13,7 +12,7 @@ import ComponentMessageConfirmation from '@/frontend/components/layouts/messages
 
 import { validation } from '@/frontend/validations/form';
 
-import { Props_note } from '@/frontend/types/props';
+import { Props_note } from '@/context/types/note';
 import { Props_response } from '@/context/types/response';
 
 type Props = {
@@ -51,6 +50,8 @@ export default function ComponentContainerForm({ setSelected, selected, setRefre
         form.set('priority', data.priority);
         form.set('file', file as File);
 
+        console.log(form);
+
         if (!selected) {
             response = await axios.post("api/notes", form);
         } else {
@@ -74,10 +75,9 @@ export default function ComponentContainerForm({ setSelected, selected, setRefre
                     {(!selected) ? 'Crear nota' : 'Actualizar nota'}
                 </span>
             </div>
-            <ComponentForm
-                handleSubmit={handleSubmit(onSubmit)}
-                inputs={[
-                    <Fragment>
+            <form method="POST" onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-y-7">
+                <div className="flex flex-col gap-y-3">
+                    <div className="flex flex-col gap-y-0.5">
                         <ComponentLabel title="Titulo" html_for="title" validation={validation('title')} error={errors.title?.type} />
                         <ComponentInput
                             type="text"
@@ -87,8 +87,8 @@ export default function ComponentContainerForm({ setSelected, selected, setRefre
                             error={errors.title?.type}
                             description_class="border-opacity-50 bg-primary w-full rounded-md border-[0.1px] py-1.5 px-2 outline-none tracking-wide placeholder:opacity-70 sm:text-md"
                         />
-                    </Fragment>,
-                    <Fragment>
+                    </div>
+                    <div className="flex flex-col gap-y-0.5">
                         <ComponentLabel title="Descripcion" html_for="description" validation={validation('description')} error={errors.description?.type} />
                         <ComponentInput
                             rows={3}
@@ -98,8 +98,8 @@ export default function ComponentContainerForm({ setSelected, selected, setRefre
                             error={errors.description?.type}
                             description_class="border-opacity-50 bg-primary w-full rounded-md border-[0.1px] min-h-[80px] scroll py-1.5 px-2 outline-none tracking-wide placeholder:opacity-70 sm:text-md"
                         />
-                    </Fragment>,
-                    <Fragment>
+                    </div>
+                    <div className="flex flex-col gap-y-0.5">
                         <ComponentLabel title="Prioridad" html_for="priority" error={errors.priority?.type} />
                         <div className="grid grid-cols-3 gap-x-1">
                             <ComponentItemPriority
@@ -127,21 +127,18 @@ export default function ComponentContainerForm({ setSelected, selected, setRefre
                                 register={register}
                             />
                         </div>
-                    </Fragment>,
+                    </div>
                     <input type="file" onChange={(e) => setFile(e.target.files?.[0])} />
-                ]}
-                buttons={
-                    <Fragment>
-                        <button type="submit" title={(!selected) ? 'Crear' : 'Actualizar'} name={(!selected) ? 'Crear' : 'Actualizar'} className="flex w-full justify-center rounded-md text-secondary border-[0.1px] border-secondary border-opacity-80 px-3 sm:py-1.5 py-1 text-md font-normal hover:font-semibold bg-primary tracking-wider hover:bg-sixth outline-none">
-                            {(!selected) ? 'Crear' : 'Actualizar'}
-                        </button>
-                        <button onClick={() => restart()} type="button" name="Deshacer" title="Reiniciar" className="flex w-full justify-center rounded-md text-error border-[0.1px] border-error border-opacity-80 px-3 sm:py-1.5 py-1 text-md font-normal hover:font-semibold bg-primary tracking-wider hover:bg-sixth outline-none">
-                            Deshacer
-                        </button>
-                    </Fragment>
-                }
-            >
-            </ComponentForm>
+                </div>
+                <div className="flex gap-x-10">
+                    <button type="submit" title={(!selected) ? 'Crear' : 'Actualizar'} name={(!selected) ? 'Crear' : 'Actualizar'} className="flex w-full justify-center rounded-md text-secondary border-[0.1px] border-secondary border-opacity-80 px-3 sm:py-1.5 py-1 text-md font-normal hover:font-semibold bg-primary tracking-wider hover:bg-sixth outline-none">
+                        {(!selected) ? 'Crear' : 'Actualizar'}
+                    </button>
+                    <button onClick={() => restart()} type="button" name="Deshacer" title="Reiniciar" className="flex w-full justify-center rounded-md text-error border-[0.1px] border-error border-opacity-80 px-3 sm:py-1.5 py-1 text-md font-normal hover:font-semibold bg-primary tracking-wider hover:bg-sixth outline-none">
+                        Deshacer
+                    </button>
+                </div>
+            </form>
             {
                 (response) && <ComponentMessageConfirmation open={open} setOpen={setOpen} response={response} />
             }

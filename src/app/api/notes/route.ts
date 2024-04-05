@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 
+import { Props_note } from "@/context/types/note";
 import { Props_response } from "@/context/types/response";
 
 import { Conect_database } from "@/backend/utils/db";
@@ -7,11 +8,9 @@ import { File_transformer } from '@/backend/utils/cloudinary';
 
 import Notes from '@/backend/schemas/notes'
 
-import { Props_note } from "@/frontend/types/props";
-
-export async function GET() {
-    const connection = await Conect_database();
-    if (connection === 2) return NextResponse.json<Props_response>({ status: 500, info: { message: "Error al conectarse a la base de datos" } })
+export async function GET(): Promise<NextResponse> {
+    const connection: boolean = await Conect_database();
+    if (!connection) return NextResponse.json<Props_response>({ status: 500, info: { message: "Error al conectarse a la base de datos" } })
 
     try {
         const notes: Props_note[] = await Notes.find();
@@ -21,11 +20,11 @@ export async function GET() {
     }
 }
 
-export async function POST(req: Request) {
+export async function POST(req: Request): Promise<NextResponse> {
     const data = await req.formData();
 
-    const connection = await Conect_database();
-    if (connection === 2) return NextResponse.json<Props_response>({ status: 500, info: { message: "Error al conectarse a la base de datos" } });
+    const connection: boolean = await Conect_database();
+    if (!connection) return NextResponse.json<Props_response>({ status: 500, info: { message: "Error al conectarse a la base de datos" } });
 
     const { id, url } = await File_transformer(data.get('file') as File);
 
@@ -53,11 +52,11 @@ export async function POST(req: Request) {
     }
 }
 
-export async function PUT(req: Request) {
+export async function PUT(req: Request): Promise<NextResponse> {
     const data = await req.formData();
 
-    const connection = await Conect_database();
-    if (connection === 2) return NextResponse.json<Props_response>({ status: 500, info: { message: "Error al conectarse a la base de datos" } });
+    const connection: boolean = await Conect_database();
+    if (!connection) return NextResponse.json<Props_response>({ status: 500, info: { message: "Error al conectarse a la base de datos" } });
 
     const { id, url } = await File_transformer(data.get('file') as File);
 

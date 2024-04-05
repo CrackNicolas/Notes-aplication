@@ -8,7 +8,7 @@ import ComponentContainerForm from "./container_form";
 import ComponentList from "@/frontend/components/layouts/notes/list/container";
 import ComponentMessageConfirmation from "@/frontend/components/layouts/messages/confirmation";
 
-import { Props_note } from "@/frontend/types/props";
+import { Props_note } from "@/context/types/note";
 import { Props_response } from "@/context/types/response";
 
 export default function ComponentNotes() {

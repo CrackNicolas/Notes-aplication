@@ -4,12 +4,12 @@ const props = {
     isConnected: false
 }
 
-export async function Conect_database() {
+export async function Conect_database(): Promise<boolean> {
     try {
-        if (props.isConnected) return;
+        if (props.isConnected) return true;
         const db = await connect('mongodb://localhost/notes_aplication');
         props.isConnected = (db.connections[0].readyState === 1)
-        return db.connections[0].readyState;
+        return props.isConnected;
     } catch (error) {
         return false;
     }
