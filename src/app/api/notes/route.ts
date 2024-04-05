@@ -2,12 +2,12 @@ import { NextResponse } from "next/server"
 
 import { Props_response } from "@/context/types/response";
 
-import { Props_note } from "@/frontend/types/props";
-
 import { Conect_database } from "@/backend/utils/db";
+import { File_transformer } from '@/backend/utils/cloudinary';
 
 import Notes from '@/backend/schemas/notes'
-import File_transformer from '@/backend/logic/file_transformer';
+
+import { Props_note } from "@/frontend/types/props";
 
 export async function GET() {
     const connection = await Conect_database();
@@ -75,7 +75,7 @@ export async function PUT(req: Request) {
         exists_note.description = data.get('description');
         exists_note.priority = data.get('priority');
         exists_note.file = {
-            id,url
+            id, url
         }
 
         await exists_note.save();

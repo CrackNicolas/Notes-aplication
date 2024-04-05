@@ -6,7 +6,7 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-export default async function File_transformer(file: File) {
+export async function File_transformer(file: File) {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
@@ -18,7 +18,12 @@ export default async function File_transformer(file: File) {
     });
 
     return {
-        id:  response.public_id,
-        url : response.secure_url
+        id: response.public_id,
+        url: response.secure_url
     }
+}
+
+export async function File_delete(id: string) {
+    const result = await cloudinary.uploader.destroy(id);
+    return result;
 }
