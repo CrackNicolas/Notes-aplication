@@ -25,6 +25,11 @@ const schema_notes = new Schema<Props_note>({
             require: [true, 'Required id'],
             trim: true
         },
+        name: {
+            type: String,
+            require: [true, 'Required name'],
+            trim: true
+        },
         url: {
             type: String,
             require: [true, 'Required url'],

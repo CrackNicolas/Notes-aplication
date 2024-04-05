@@ -4,8 +4,9 @@ export type Props_note = {
     description: string,
     priority: string,
     createdAt: Date,
-    file: {
+    file?: {
         id: string,
+        name: string,
         url: string
     }
 }

@@ -14,6 +14,7 @@ import { validation } from '@/frontend/validations/form';
 
 import { Props_note } from '@/context/types/note';
 import { Props_response } from '@/context/types/response';
+import ComponentIcon from '../../partials/icon';
 
 type Props = {
     setSelected: Dispatch<SetStateAction<Props_note | undefined>>,
@@ -33,6 +34,7 @@ export default function ComponentContainerForm({ setSelected, selected, setRefre
         setRefresh();
         reset();
         setSelected(undefined);
+        setFile(undefined);
     }
 
     const open_modal = (data: Props_response): void => {
@@ -48,9 +50,10 @@ export default function ComponentContainerForm({ setSelected, selected, setRefre
         form.set('title', data.title);
         form.set('description', data.description);
         form.set('priority', data.priority);
-        form.set('file', file as File);
 
-        console.log(form);
+        if (file !== undefined) {
+            form.set('file', file as File);
+        }
 
         if (!selected) {
             response = await axios.post("api/notes", form);
@@ -128,7 +131,16 @@ export default function ComponentContainerForm({ setSelected, selected, setRefre
                             />
                         </div>
                     </div>
-                    <input type="file" onChange={(e) => setFile(e.target.files?.[0])} />
+                    <label htmlFor="file-upload" className="grid gap-y-0.5 place-items-center mt-1 p-1.5 cursor-pointer border-secondary border-opacity-50 bg-primary w-full rounded-md border-[0.1px]">
+                        <ComponentIcon name={`upload-file${(selected?.file?.id) ? '-selected' : (file === undefined) ? '' : '-selected'}`} size={27} description_class="icon-home text-secondary cursor-pointer" />
+                        <span className='line-clamp-1 text-secondary text-md font-normal tracking-wide'>
+                            {
+                                (file) ? `${file.name} seleccionado` :
+                                    (selected?.file?.id) ? `${selected.file.name} cargado` : "Subir archivo..."
+                            }
+                        </span>
+                        <input id="file-upload" name="file-upload" type="file" onChange={(e) => setFile(e.target.files?.[0])} className="sr-only" />
+                    </label>
                 </div>
                 <div className="flex gap-x-10">
                     <button type="submit" title={(!selected) ? 'Crear' : 'Actualizar'} name={(!selected) ? 'Crear' : 'Actualizar'} className="flex w-full justify-center rounded-md text-secondary border-[0.1px] border-secondary border-opacity-80 px-3 sm:py-1.5 py-1 text-md font-normal hover:font-semibold bg-primary tracking-wider hover:bg-sixth outline-none">
