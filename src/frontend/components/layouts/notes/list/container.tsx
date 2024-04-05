@@ -7,6 +7,7 @@ import ComponentNote from "@/frontend/components/layouts/notes/note";
 import ComponentHeader from "@/frontend/components/layouts/notes/header";
 import ComponentLoading from "./loading";
 import ComponentMessageConfirmation from "@/frontend/components/layouts/messages/confirmation";
+import ComponentMessageProgressBar from "@/frontend/components/layouts/messages/progress_bar";
 
 import { Props_note } from "@/context/types/note";
 import { Props_response } from "@/context/types/response";
@@ -24,6 +25,7 @@ export default function ComponentList({ notes, setSelected, selected, setRefresh
     const [open_modal_confirmation, setOpen_modal_confirmation] = useState<boolean>(false);
     const [view_note, setView_note] = useState<Props_note | undefined>(undefined);
     const [response, setResponse] = useState<Props_response>();
+    const [loading, setLoading] = useState<boolean>(false);
 
     const action_note = async (action: string, note: Props_note) => {
         switch (action) {
@@ -32,9 +34,11 @@ export default function ComponentList({ notes, setSelected, selected, setRefresh
                 setView_note(note);
                 break;
             case 'delete':
+                setLoading(true);
                 const { data } = await axios.delete(`api/notes/${note._id}`);
                 setOpen_modal_confirmation(true);
                 setResponse(data);
+                setLoading(false);
                 setRefresh();
                 break;
             case 'update':
@@ -65,6 +69,9 @@ export default function ComponentList({ notes, setSelected, selected, setRefresh
             }
             {
                 (response) && <ComponentMessageConfirmation open={open_modal_confirmation} setOpen={setOpen_modal_confirmation} response={response} />
+            }
+            {
+                (loading) && <ComponentMessageProgressBar open={loading} setOpen={setLoading} />
             }
         </div>
     )

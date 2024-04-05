@@ -5,16 +5,17 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 import axios from 'axios';
 
+import ComponentIcon from '../../partials/icon';
 import ComponentInput from './input';
 import ComponentLabel from './label';
 import ComponentItemPriority from './item_priority';
 import ComponentMessageConfirmation from '@/frontend/components/layouts/messages/confirmation';
+import ComponentMessageProgressBar from '@/frontend/components/layouts/messages/progress_bar';
 
 import { validation } from '@/frontend/validations/form';
 
 import { Props_note } from '@/context/types/note';
 import { Props_response } from '@/context/types/response';
-import ComponentIcon from '../../partials/icon';
 
 type Props = {
     setSelected: Dispatch<SetStateAction<Props_note | undefined>>,
@@ -24,6 +25,7 @@ type Props = {
 
 export default function ComponentContainerForm({ setSelected, selected, setRefresh }: Props) {
     const [open, setOpen] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
     const [response, setResponse] = useState<Props_response>();
 
     const [file, setFile] = useState<File | undefined>(undefined);
@@ -55,12 +57,14 @@ export default function ComponentContainerForm({ setSelected, selected, setRefre
             form.set('file', file as File);
         }
 
+        setLoading(true);
         if (!selected) {
             response = await axios.post("api/notes", form);
         } else {
             form.set('_id', selected._id as string);
             response = await axios.put("api/notes", form);
         }
+        setLoading(false);
         open_modal(response.data);
     }
 
@@ -153,6 +157,9 @@ export default function ComponentContainerForm({ setSelected, selected, setRefre
             </form>
             {
                 (response) && <ComponentMessageConfirmation open={open} setOpen={setOpen} response={response} />
+            }
+            {
+                (loading) && <ComponentMessageProgressBar open={loading} setOpen={setLoading} />
             }
         </div >
     )
