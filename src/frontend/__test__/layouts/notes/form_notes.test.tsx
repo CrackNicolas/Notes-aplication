@@ -21,8 +21,8 @@ describe('Componente <Form/> principal', () => {
         const input_title = component.getByPlaceholderText('Escriba el titulo...');
         const input_description = component.getByPlaceholderText('Escriba la descripcion...');
         const inputs_priority = component.getAllByRole('radio');
-        const label_title = component.getByTitle('title');
-        const label_description = component.getByTitle('description');
+        const label_title = component.getByTitle('Titulo');
+        const label_description = component.getByTitle('Descripcion');
         const button_deshacer = component.getByRole('button', { name: 'Deshacer' });
 
         expect(input_title).toBeInTheDocument();
@@ -85,7 +85,7 @@ describe('Componente <Form/> principal', () => {
                 labels.forEach(label => {
                     test(`${label.title}`, () => {
                         component.rerender(<ComponentLabel title={label.title} html_for={label.name} validation={{}} error={validation.name} />)
-                        const label_element = component.getByTitle(label.name);
+                        const label_element = component.getByTitle(label.title);
                         expect(label_element.textContent).toMatch(validation.match);
                     })
                 })
@@ -96,7 +96,7 @@ describe('Componente <Form/> principal', () => {
             labels.forEach(label => {
                 test(`${label.title}`, () => {
                     component.rerender(<ComponentLabel title={label.title} html_for={label.name} validation={{}} error={undefined} />)
-                    const label_element = component.getByTitle(label.name);
+                    const label_element = component.getByTitle(label.title);
                     expect(label_element.textContent).toMatch(new RegExp(label.title));
                 })
             })

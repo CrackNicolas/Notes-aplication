@@ -17,7 +17,7 @@ export default function ComponentLabel(props: Props) {
     const message = (): string => {
         switch (error) {
             case 'required':
-                return `${title} requerid${(title === "Descripcion" || title === "Prioridad") ? 'a' : 'o'}`;
+                return `${title} ${(title === "¿Destacar nota?") ? '' : `requerid${(title === "Descripcion" || title === "Prioridad") ? 'a' : 'o'}`}`;
             case 'minLength':
                 return `${connector_primary} ${title.toLowerCase()} debe ser mayor a ${validation?.minLength} caracteres`;
             case 'maxLength':
@@ -30,7 +30,7 @@ export default function ComponentLabel(props: Props) {
     }
 
     return (
-        <label title={html_for} htmlFor={html_for} className={`line-clamp-1 text-sm font-normal ${(!error) ? 'text-secondary' : 'text-error'} tracking-wider`}>
+        <label title={title} htmlFor={html_for} className={`line-clamp-1 text-sm font-normal ${(!error) ? 'text-secondary' : 'text-error'} tracking-wider`}>
             {
                 message()
             }

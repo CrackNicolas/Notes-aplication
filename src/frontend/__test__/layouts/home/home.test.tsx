@@ -9,7 +9,7 @@ describe('Componente <Home/>', () => {
         const component = render(<ComponentHome />);
 
         const logo = component.getByTestId("icon-home");
-        const title = component.getByText('Notes Aplication');
+        const title = component.getByText('Aplicacion de notas');
         const subtitle = component.getByText('¡Organiza tu vida, toma notas sin límites!');
         const link = component.getByRole("link");
 

@@ -3,6 +3,7 @@ export const note = {
     title: 'Titulo de prueba',
     description: 'Descripcion de prueba',
     priority: 'Alta',
+    featured: true,
     createdAt: new Date()
 }
 
@@ -12,6 +13,7 @@ export const notes = [
         title: 'Titulo de prueba',
         description: 'Descripcion de prueba',
         priority: 'Alta',
+        featured: true,
         createdAt: new Date()
     }
 ]

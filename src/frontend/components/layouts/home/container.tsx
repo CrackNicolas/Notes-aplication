@@ -9,7 +9,7 @@ export default function ComponentHome() {
                 <ComponentIcon testid="icon-home" name="logo" size={70} description_class="text-secondary" />
                 <div className="flex flex-col gap-y-2">
                     <span className="text-center text-4xl font-bold tracking-wider text-tertiary sm:text-6xl">
-                        Notes Aplication
+                        Aplicacion de notas
                     </span>
                     <span className="text-center text-lg leading-8 text-tertiary opacity-60 tracking-wider">
                         ¡Organiza tu vida, toma notas sin límites!

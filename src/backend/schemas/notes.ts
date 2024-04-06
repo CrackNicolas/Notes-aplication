@@ -19,6 +19,10 @@ const schema_notes = new Schema<Props_note>({
         require: [true, 'Required priority'],
         enum: ['Alta', 'Media', 'Baja']
     },
+    featured: {
+        type: Boolean,
+        require: [true, 'Required featured']
+    },
     file: {
         id: {
             type: String,

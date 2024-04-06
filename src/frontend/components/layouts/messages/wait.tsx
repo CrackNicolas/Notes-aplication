@@ -7,7 +7,7 @@ type Props = {
     setOpen: Dispatch<SetStateAction<boolean>>
 }
 
-export default function ComponentMessageProgressBar(props: Props) {
+export default function ComponentMessageWait(props: Props) {
     const { open, setOpen } = props;
 
     return (

@@ -3,10 +3,11 @@ export type Props_note = {
     title: string,
     description: string,
     priority: string,
-    createdAt: Date,
+    featured: boolean
     file?: {
         id: string,
         name: string,
         url: string
-    }
+    },
+    createdAt: Date,
 }

@@ -6,8 +6,8 @@ import ComponentView from "@/frontend/components/layouts/notes/view";
 import ComponentNote from "@/frontend/components/layouts/notes/note";
 import ComponentHeader from "@/frontend/components/layouts/notes/header";
 import ComponentLoading from "./loading";
+import ComponentMessageWait from "@/frontend/components/layouts/messages/wait";
 import ComponentMessageConfirmation from "@/frontend/components/layouts/messages/confirmation";
-import ComponentMessageProgressBar from "@/frontend/components/layouts/messages/progress_bar";
 
 import { Props_note } from "@/context/types/note";
 import { Props_response } from "@/context/types/response";
@@ -71,7 +71,7 @@ export default function ComponentList({ notes, setSelected, selected, setRefresh
                 (response) && <ComponentMessageConfirmation open={open_modal_confirmation} setOpen={setOpen_modal_confirmation} response={response} />
             }
             {
-                (loading) && <ComponentMessageProgressBar open={loading} setOpen={setLoading} />
+                (loading) && <ComponentMessageWait open={loading} setOpen={setLoading} />
             }
         </div>
     )

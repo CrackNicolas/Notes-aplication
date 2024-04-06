@@ -9,8 +9,9 @@ import ComponentIcon from '../../partials/icon';
 import ComponentInput from './input';
 import ComponentLabel from './label';
 import ComponentItemPriority from './item_priority';
+import ComponentItemFeatured from './item_featured';
+import ComponentMessageWait from '@/frontend/components/layouts/messages/wait';
 import ComponentMessageConfirmation from '@/frontend/components/layouts/messages/confirmation';
-import ComponentMessageProgressBar from '@/frontend/components/layouts/messages/progress_bar';
 
 import { validation } from '@/frontend/validations/form';
 
@@ -52,6 +53,7 @@ export default function ComponentContainerForm({ setSelected, selected, setRefre
         form.set('title', data.title);
         form.set('description', data.description);
         form.set('priority', data.priority);
+        form.set('featured', data.featured);
 
         if (file !== undefined) {
             form.set('file', file as File);
@@ -73,10 +75,11 @@ export default function ComponentContainerForm({ setSelected, selected, setRefre
         setValue('title', selected?.title);
         setValue('description', selected?.description);
         setValue('priority', selected?.priority);
+        setValue('featured', selected?.featured? 'SI':'NO');
     }, [selected])
 
     return (
-        <div className="col-span-full lg:col-span-1 flex flex-col gap-y-2">
+        <div className="col-span-full lg:col-span-1 flex flex-col gap-y-1">
             <div className="flex justify-center">
                 <span title="Titulo formulario" className="text-2xl text-secondary font-semibold text-center">
                     {(!selected) ? 'Crear nota' : 'Actualizar nota'}
@@ -103,7 +106,7 @@ export default function ComponentContainerForm({ setSelected, selected, setRefre
                             placeholder="Escriba la descripcion..."
                             register={register}
                             error={errors.description?.type}
-                            description_class="border-opacity-50 bg-primary w-full rounded-md border-[0.1px] min-h-[80px] scroll py-1.5 px-2 outline-none tracking-wide placeholder:opacity-70 sm:text-md"
+                            description_class="border-opacity-50 bg-primary w-full rounded-md border-[0.1px] min-h-[65px] scroll py-1.5 px-2 outline-none tracking-wide placeholder:opacity-70 sm:text-md"
                         />
                     </div>
                     <div className="flex flex-col gap-y-0.5">
@@ -135,6 +138,23 @@ export default function ComponentContainerForm({ setSelected, selected, setRefre
                             />
                         </div>
                     </div>
+                    <div className="grid grid-cols-2 items-center my-1">
+                        <ComponentLabel title="¿Destacar nota?" html_for="featured" validation={validation('featured')} error={errors.featured?.type} />
+                        <div className='flex w-full gap-x-2'>
+                            <ComponentItemFeatured
+                                value='SI'
+                                paint={watch('featured') === 'SI'}
+                                error={errors.featured?.type}
+                                register={register}
+                            />
+                            <ComponentItemFeatured
+                                value='NO'
+                                paint={watch('featured') === 'NO'}
+                                error={errors.featured?.type}
+                                register={register}
+                            />
+                        </div>
+                    </div>
                     <label htmlFor="file-upload" className="grid gap-y-0.5 place-items-center mt-1 p-1.5 cursor-pointer border-secondary border-opacity-50 bg-primary w-full rounded-md border-[0.1px]">
                         <ComponentIcon name={`upload-file${(selected?.file?.id) ? '-selected' : (file === undefined) ? '' : '-selected'}`} size={27} description_class="icon-home text-secondary cursor-pointer" />
                         <span className='line-clamp-1 text-secondary text-md font-normal tracking-wide'>
@@ -159,7 +179,7 @@ export default function ComponentContainerForm({ setSelected, selected, setRefre
                 (response) && <ComponentMessageConfirmation open={open} setOpen={setOpen} response={response} />
             }
             {
-                (loading) && <ComponentMessageProgressBar open={loading} setOpen={setLoading} />
+                (loading) && <ComponentMessageWait open={loading} setOpen={setLoading} />
             }
         </div >
     )
