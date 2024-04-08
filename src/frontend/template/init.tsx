@@ -2,7 +2,7 @@ import { Fragment, useContext } from "react";
 
 import { Context } from "@/context/provider";
 
-import ComponentNav from "@/frontend/components/partials/nav/container";
+import ComponentNavTop from "@/frontend/components/partials/nav/top";
 
 import { Props_layouts } from "@/frontend/types/props";
 
@@ -11,7 +11,7 @@ export default function Template({ children }: Props_layouts) {
 
     return (
         <Fragment>
-            <ComponentNav {...props} />
+            <ComponentNavTop {...props} />
             {children}
         </Fragment>
     )

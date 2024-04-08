@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom'
 import { fireEvent, render, RenderResult } from '@testing-library/react'
 
-import ComponentDashboard from '@/frontend/components/layouts/dashboard/container'
+import ComponentDashboard from '@/frontend/components/layouts/dashboard/main'
 
 describe('Componente <Dashboard/>', () => {
     let component: RenderResult

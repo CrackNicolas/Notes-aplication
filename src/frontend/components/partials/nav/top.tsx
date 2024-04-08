@@ -8,7 +8,7 @@ import { Props_context } from "@/context/types/context";
 
 import ComponentIcon from "@/frontend/components/partials/icon";
 
-export default function ComponentNav(props: Props_context) {
+export default function ComponentNavTop(props: Props_context) {
     const { section_current, user, button_sesion } = props;
 
     const [view_toggle, setView_toggle] = useState<boolean>(false);
@@ -29,7 +29,7 @@ export default function ComponentNav(props: Props_context) {
                         </Link>
                         <div className="hidden sm:ml-4 sm:block">
                             <div className="flex space-x-1">
-                                <Link href="/dashboard" className={`${(section_current === "dashboard") && 'text-secondary'} hover:text-secondary tracking-wider text-fifth px-1 py-2 text-md font-normal transition duration-500`} title="Panel">Panel</Link>
+                                <Link href="/dashboard/main" className={`${(section_current === "dashboard") && 'text-secondary'} hover:text-secondary tracking-wider text-fifth px-1 py-2 text-md font-normal transition duration-500`} title="Panel">Panel</Link>
                             </div>
                         </div>
                     </div>

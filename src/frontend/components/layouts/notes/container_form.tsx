@@ -116,10 +116,11 @@ export default function ComponentContainerForm({ setSelected, selected, setRefre
                             placeholder="Escriba la descripcion..."
                             register={register}
                             error={errors.description?.type}
-                            description_class="border-opacity-50 bg-primary w-full rounded-md border-[0.1px] min-h-[65px] scroll py-1 px-2 outline-none tracking-wide placeholder:opacity-70 sm:text-md"
+                            description_class="border-opacity-50 bg-primary w-full rounded-md border-[0.1px] min-h-[65px] scroll-text py-1 px-2 outline-none tracking-wide placeholder:opacity-70 sm:text-md"
                         />
                     </div>
                     <ComponentSelect
+                        categorys={[]}
                         error={errors.category?.type}
                         select_category={select_category}
                         setSelect_category={setSelect_category}

@@ -1,5 +1,6 @@
-import { Props_note } from "@/context/types/note";
 import { Schema, model, models } from "mongoose";
+
+import { Props_note } from "@/context/types/note";
 
 const schema_notes = new Schema<Props_note>({
     title: {

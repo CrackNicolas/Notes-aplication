@@ -1,13 +1,13 @@
 import '@testing-library/jest-dom'
 import { fireEvent, render, RenderResult } from "@testing-library/react"
 
-import ComponentNav from "@/frontend/components/partials/nav/container"
+import ComponentNavTop from "@/frontend/components/partials/nav/top"
 
 describe('Componente <Nav/>', () => {
     let component: RenderResult;
 
     beforeEach(() => {
-        component = render(<ComponentNav section_current="/" user={undefined} button_sesion={<></>} />)
+        component = render(<ComponentNavTop section_current="/" user={undefined} button_sesion={<></>} />)
     })
 
     describe('Renderizacion correcta en el cambio de seccion', () => {
@@ -17,7 +17,7 @@ describe('Componente <Nav/>', () => {
 
         sections.forEach(section => {
             test(`Seccion ${section.name} renderizada correctamente`, () => {
-                component.rerender(<ComponentNav section_current={section.name} user={undefined} button_sesion={<></>} />);
+                component.rerender(<ComponentNavTop section_current={section.name} user={undefined} button_sesion={<></>} />);
                 const element = component.getByTitle(section.title);
                 expect(element).toHaveClass('text-secondary');
             });
@@ -57,7 +57,7 @@ describe('Componente <Nav/>', () => {
         })
 
         test('Iniciada', () => {
-            component.rerender(<ComponentNav section_current="/" user={{ user: "Usuario" }} button_sesion={<></>} />)
+            component.rerender(<ComponentNavTop section_current="/" user={{ user: "Usuario" }} button_sesion={<></>} />)
 
             const button = component.getByTitle('Notificaciones');
             expect(button).toBeInTheDocument();

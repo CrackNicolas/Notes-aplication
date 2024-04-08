@@ -12,7 +12,7 @@ import { Props_note } from "@/context/types/note";
 import { Props_response } from "@/context/types/response";
 
 export default function ComponentNotes() {
-    const [list_notes, setList_notes] = useState<Props_note[] | []>([]);
+    const [list_notes, setList_notes] = useState<Props_note[]>([]);
     const [selected_note, setSelected_note] = useState<Props_note | undefined>(undefined);
     const [load, setLoad] = useState<boolean>(false);
     const [search, setSearch] = useState<string>("");

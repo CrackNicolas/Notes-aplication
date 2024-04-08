@@ -4,8 +4,10 @@ import { FieldError, FieldErrorsImpl, FieldValues, LiteralUnion, Merge, UseFormR
 import ComponentIcon from '@/frontend/components/partials/icon';
 
 import { validation } from "@/frontend/validations/form";
+import { Props_category } from "@/context/types/category";
 
 type Props = {
+    categorys: Props_category[],
     error?: FieldError | Merge<FieldError, FieldErrorsImpl<any>> | LiteralUnion<"required", string> | undefined,
     select_category: string,
     setSelect_category: Dispatch<SetStateAction<string>>
@@ -13,10 +15,9 @@ type Props = {
 }
 
 export default function ComponentSelect(props: Props) {
-    const { error, select_category, setSelect_category, register } = props;
+    const { categorys, error, select_category, setSelect_category, register } = props;
 
     const [open_category, setOpen_category] = useState<boolean>(false);
-    const categorys = ["Viajes", "Personal", "Trabajo"]
 
     const selected = (category: string) => {
         setSelect_category(category);
@@ -35,11 +36,11 @@ export default function ComponentSelect(props: Props) {
                 </span>
                 <ComponentIcon name={open_category ? 'caret-up' : 'caret-down'} size={20} description_class={`${!error ? 'text-secondary' : 'text-error'}`} />
             </div>
-            <ul className={`${(!open_category) && 'hidden'} absolute z-10 mt-[32px] w-full bg-primary border-[0.1px] ${!error ? 'border-secondary' : 'border-error'} rounded-b-md border-opacity-50`}>
+            <ul className={`${(!open_category) && 'hidden'} absolute z-10 mt-[32px] w-full overflow-hidden overflow-y-scroll scroll-select h-[123px] bg-primary border-[0.1px] ${!error ? 'border-secondary' : 'border-error'} rounded-b-md border-opacity-50`}>
                 {
-                    categorys.filter(category => category != select_category).map(category => {
-                        return <li key={category} onClick={() => selected(category)} className={`${!error ? 'text-secondary hover:bg-secondary' : 'text-error hover:bg-error'} hover:text-primary px-2 py-0.5 select-none cursor-pointer hover:font-semibold`}>
-                            {category}
+                    categorys.filter(category => category.title != select_category).map(category => {
+                        return <li key={category.title} onClick={() => selected(category.title)} className={`${!error ? 'text-secondary hover:bg-secondary' : 'text-error hover:bg-error'} hover:text-primary px-2 py-0.5 select-none cursor-pointer hover:font-semibold`}>
+                            {category.title}
                         </li>
                     })
                 }
