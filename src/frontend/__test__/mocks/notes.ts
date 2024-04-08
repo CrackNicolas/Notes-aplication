@@ -2,6 +2,7 @@ export const note = {
     _id: '1234',
     title: 'Titulo de prueba',
     description: 'Descripcion de prueba',
+    category: 'Viaje',
     priority: 'Alta',
     featured: true,
     createdAt: new Date()
@@ -12,6 +13,7 @@ export const notes = [
         _id: '1234',
         title: 'Titulo de prueba',
         description: 'Descripcion de prueba',
+        category: 'Viaje',
         priority: 'Alta',
         featured: true,
         createdAt: new Date()

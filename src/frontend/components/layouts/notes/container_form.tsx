@@ -5,18 +5,19 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 import axios from 'axios';
 
-import ComponentIcon from '../../partials/icon';
-import ComponentInput from './input';
-import ComponentLabel from './label';
-import ComponentItemPriority from './item_priority';
-import ComponentItemFeatured from './item_featured';
+import ComponentIcon from '@/frontend/components/partials/icon';
+import ComponentInput from '@/frontend/components/partials/form/input';
+import ComponentLabel from '@/frontend/components/partials/form/label';
+import ComponentSelect from '@/frontend/components/partials/form/select';
+import ComponentItemPriority from '@/frontend/components/partials/form/item_priority';
+import ComponentItemFeatured from '@/frontend/components/partials/form/item_featured';
 import ComponentMessageWait from '@/frontend/components/layouts/messages/wait';
 import ComponentMessageConfirmation from '@/frontend/components/layouts/messages/confirmation';
 
-import { validation } from '@/frontend/validations/form';
-
 import { Props_note } from '@/context/types/note';
 import { Props_response } from '@/context/types/response';
+
+import { validation } from '@/frontend/validations/form';
 
 type Props = {
     setSelected: Dispatch<SetStateAction<Props_note | undefined>>,
@@ -30,14 +31,16 @@ export default function ComponentContainerForm({ setSelected, selected, setRefre
     const [response, setResponse] = useState<Props_response>();
 
     const [file, setFile] = useState<File | undefined>(undefined);
+    const [select_category, setSelect_category] = useState<string>('Seleccionar categoria...');
 
-    const { register, handleSubmit, formState: { errors }, setValue, reset, watch } = useForm();
+    const { register, handleSubmit, formState: { errors }, setValue, reset, watch, clearErrors } = useForm();
 
     const restart = (): void => {
         setRefresh();
         reset();
         setSelected(undefined);
         setFile(undefined);
+        setSelect_category('Seleccionar categoria...');
     }
 
     const open_modal = (data: Props_response): void => {
@@ -54,6 +57,7 @@ export default function ComponentContainerForm({ setSelected, selected, setRefre
         form.set('description', data.description);
         form.set('priority', data.priority);
         form.set('featured', data.featured);
+        form.set('category', data.category);
 
         if (file !== undefined) {
             form.set('file', file as File);
@@ -75,7 +79,13 @@ export default function ComponentContainerForm({ setSelected, selected, setRefre
         setValue('title', selected?.title);
         setValue('description', selected?.description);
         setValue('priority', selected?.priority);
-        setValue('featured', selected?.featured? 'SI':'NO');
+        setValue('featured', selected?.featured ? 'SI' : 'NO');
+        setValue('category', selected?.category);
+
+        if (selected?.category) {
+            setSelect_category(selected.category);
+        }
+
     }, [selected])
 
     return (
@@ -85,7 +95,7 @@ export default function ComponentContainerForm({ setSelected, selected, setRefre
                     {(!selected) ? 'Crear nota' : 'Actualizar nota'}
                 </span>
             </div>
-            <form method="POST" onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-y-7">
+            <form method="POST" onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-y-6">
                 <div className="flex flex-col gap-y-3">
                     <div className="flex flex-col gap-y-0.5">
                         <ComponentLabel title="Titulo" html_for="title" validation={validation('title')} error={errors.title?.type} />
@@ -95,7 +105,7 @@ export default function ComponentContainerForm({ setSelected, selected, setRefre
                             placeholder="Escriba el titulo..."
                             register={register}
                             error={errors.title?.type}
-                            description_class="border-opacity-50 bg-primary w-full rounded-md border-[0.1px] py-1.5 px-2 outline-none tracking-wide placeholder:opacity-70 sm:text-md"
+                            description_class="border-opacity-50 bg-primary w-full rounded-md border-[0.1px] py-1 px-2 outline-none tracking-wide placeholder:opacity-70 sm:text-md"
                         />
                     </div>
                     <div className="flex flex-col gap-y-0.5">
@@ -106,9 +116,15 @@ export default function ComponentContainerForm({ setSelected, selected, setRefre
                             placeholder="Escriba la descripcion..."
                             register={register}
                             error={errors.description?.type}
-                            description_class="border-opacity-50 bg-primary w-full rounded-md border-[0.1px] min-h-[65px] scroll py-1.5 px-2 outline-none tracking-wide placeholder:opacity-70 sm:text-md"
+                            description_class="border-opacity-50 bg-primary w-full rounded-md border-[0.1px] min-h-[65px] scroll py-1 px-2 outline-none tracking-wide placeholder:opacity-70 sm:text-md"
                         />
                     </div>
+                    <ComponentSelect
+                        error={errors.category?.type}
+                        select_category={select_category}
+                        setSelect_category={setSelect_category}
+                        register={register}
+                    />
                     <div className="flex flex-col gap-y-0.5">
                         <ComponentLabel title="Prioridad" html_for="priority" error={errors.priority?.type} />
                         <div className="grid grid-cols-3 gap-x-1">
@@ -155,7 +171,7 @@ export default function ComponentContainerForm({ setSelected, selected, setRefre
                             />
                         </div>
                     </div>
-                    <label htmlFor="file-upload" className="grid gap-y-0.5 place-items-center mt-1 p-1.5 cursor-pointer border-secondary border-opacity-50 bg-primary w-full rounded-md border-[0.1px]">
+                    <label htmlFor="file-upload" className="grid gap-y-0.5 place-items-center mt-0.5 p-1.5 cursor-pointer border-secondary border-opacity-50 bg-primary w-full rounded-md border-[0.1px]">
                         <ComponentIcon name={`upload-file${(selected?.file?.id) ? '-selected' : (file === undefined) ? '' : '-selected'}`} size={27} description_class="icon-home text-secondary cursor-pointer" />
                         <span className='line-clamp-1 text-secondary text-md font-normal tracking-wide'>
                             {
@@ -167,10 +183,10 @@ export default function ComponentContainerForm({ setSelected, selected, setRefre
                     </label>
                 </div>
                 <div className="flex gap-x-10">
-                    <button type="submit" title={(!selected) ? 'Crear' : 'Actualizar'} name={(!selected) ? 'Crear' : 'Actualizar'} className="flex w-full justify-center rounded-md text-secondary border-[0.1px] border-secondary border-opacity-80 px-3 sm:py-1.5 py-1 text-md font-normal hover:font-semibold bg-primary tracking-wider hover:bg-sixth outline-none">
+                    <button type="submit" title={(!selected) ? 'Crear' : 'Actualizar'} name={(!selected) ? 'Crear' : 'Actualizar'} className="flex w-full justify-center rounded-md text-secondary border-[0.1px] border-secondary border-opacity-80 px-3 py-1 text-md font-normal hover:font-semibold bg-primary tracking-wider hover:bg-sixth outline-none">
                         {(!selected) ? 'Crear' : 'Actualizar'}
                     </button>
-                    <button onClick={() => restart()} type="button" name="Deshacer" title="Reiniciar" className="flex w-full justify-center rounded-md text-error border-[0.1px] border-error border-opacity-80 px-3 sm:py-1.5 py-1 text-md font-normal hover:font-semibold bg-primary tracking-wider hover:bg-sixth outline-none">
+                    <button onClick={() => restart()} type="button" name="Deshacer" title="Reiniciar" className="flex w-full justify-center rounded-md text-error border-[0.1px] border-error border-opacity-80 px-3 py-1 text-md font-normal hover:font-semibold bg-primary tracking-wider hover:bg-sixth outline-none">
                         Deshacer
                     </button>
                 </div>

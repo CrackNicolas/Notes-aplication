@@ -2,9 +2,9 @@ import '@testing-library/jest-dom';
 import { RenderResult, fireEvent, render } from '@testing-library/react';
 
 import ComponentForm from '@/frontend/components/layouts/notes/container_form';
-import ComponentLabel from '@/frontend/components/layouts/notes/label';
-import ComponentInput from '@/frontend/components/layouts/notes/input';
-import ComponentItemPriority from '@/frontend/components/layouts/notes/item_priority';
+import ComponentLabel from '@/frontend/components/partials/form/label';
+import ComponentInput from '@/frontend/components/partials/form/input';
+import ComponentItemPriority from '@/frontend/components/partials/form/item_priority';
 
 import { labels, note } from '@/frontend/__test__/mocks/notes'
 
@@ -172,7 +172,7 @@ describe('Componente <Form/> principal', () => {
                             error="required"
                             register={register}
                         />)
-                        const label = component.getByTitle(`Opcion ${item.value} de prioridad`);
+                        const label = component.getByTitle(`${item.value} prioridad`);
                         const text_label = component.getByText(item.value);
 
                         expect(label).toHaveClass('border-error');

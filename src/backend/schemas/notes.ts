@@ -14,6 +14,11 @@ const schema_notes = new Schema<Props_note>({
         unique: true,
         trim: true
     },
+    category: {
+        type: String,
+        require: [true, 'Required category'],
+        trim: true
+    },
     priority: {
         type: String,
         require: [true, 'Required priority'],

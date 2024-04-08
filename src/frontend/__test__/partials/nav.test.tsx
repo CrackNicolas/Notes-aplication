@@ -12,8 +12,7 @@ describe('Componente <Nav/>', () => {
 
     describe('Renderizacion correcta en el cambio de seccion', () => {
         const sections = [
-            { name: "dashboard", title: "Panel" },
-            { name: "notes", title: "Notes" }
+            { name: "dashboard", title: "Panel" }
         ];
 
         sections.forEach(section => {

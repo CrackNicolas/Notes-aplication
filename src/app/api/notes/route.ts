@@ -32,6 +32,7 @@ export async function POST(req: Request): Promise<NextResponse> {
         const note_data: any = {
             title: data.get('title'),
             description: data.get('description'),
+            category: data.get('category'),
             priority: data.get('priority'),
             featured: (data.get('featured') === 'SI')
         };
@@ -71,8 +72,9 @@ export async function PUT(req: Request): Promise<NextResponse> {
 
         exists_note.title = data.get('title');
         exists_note.description = data.get('description');
+        exists_note.category = data.get('category');
         exists_note.priority = data.get('priority');
-        exists_note.featured = (data.get('featured') === 'SI')
+        exists_note.featured = (data.get('featured') === 'SI');
 
         const file = data.get('file') as File;
 

@@ -6,7 +6,7 @@ import ComponentInput from "./input";
 type Props = {
     value?: string,
     paint?:boolean
-    error?: FieldError | Merge<FieldError, FieldErrorsImpl<any>> | LiteralUnion<"required" | "pattern" | "maxLength" | "minLength", string> | undefined
+    error?: FieldError | Merge<FieldError, FieldErrorsImpl<any>> | LiteralUnion<"required", string> | undefined
     register: UseFormRegister<FieldValues>
 }
 
