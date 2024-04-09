@@ -42,3 +42,18 @@ body::-webkit-scrollbar-thumb:hover,
 .scroll-text::-webkit-scrollbar-thumb  {
   border-top-right-radius: 10px;
 }
+
+.spinner-load{
+  border: 2.3px solid theme("colors.primary");
+  border-left-color: theme("colors.secondary");
+  box-shadow: 0 0 10px 2px theme("colors.secondary");
+  animation: animation_spinner 1s linear infinite;
+}
+@keyframes animation_spinner{
+  0%{
+      transform: rotate(0deg);
+  }
+  100%{
+      transform: rotate(360deg);
+  }
+}

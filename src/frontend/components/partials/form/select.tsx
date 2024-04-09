@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, Fragment, SetStateAction, useEffect, useState } from "react";
 import { FieldError, FieldErrorsImpl, FieldValues, LiteralUnion, Merge, UseFormRegister } from "react-hook-form";
 
 import ComponentIcon from '@/frontend/components/partials/icon';
@@ -30,21 +30,33 @@ export default function ComponentSelect(props: Props) {
 
     return (
         <div title="Categoria" className='relative flex w-full'>
-            <div onClick={() => setOpen_category(!open_category)} {...register('category', validation('category'))} className={`flex justify-between items-center bg-primary w-full rounded-md border-[0.1px] ${open_category && 'rounded-b-none'} ${!error ? 'border-secondary' : 'border-error'} border-opacity-50 py-1 px-2 cursor-pointer`}>
-                <span className={`${!error ? 'text-secondary' : 'text-error'} text-md`}>
-                    {select_category}
-                </span>
-                <ComponentIcon name={open_category ? 'caret-up' : 'caret-down'} size={20} description_class={`${!error ? 'text-secondary' : 'text-error'}`} />
-            </div>
-            <ul className={`${(!open_category) && 'hidden'} absolute z-10 mt-[32px] w-full overflow-hidden overflow-y-scroll scroll-select h-[123px] bg-primary border-[0.1px] ${!error ? 'border-secondary' : 'border-error'} rounded-b-md border-opacity-50`}>
-                {
-                    categorys.filter(category => category.title != select_category).map(category => {
-                        return <li key={category.title} onClick={() => selected(category.title)} className={`${!error ? 'text-secondary hover:bg-secondary' : 'text-error hover:bg-error'} hover:text-primary px-2 py-0.5 select-none cursor-pointer hover:font-semibold`}>
-                            {category.title}
-                        </li>
-                    })
-                }
-            </ul>
+            {
+                (categorys.length === 0) ?
+                    <div className="flex justify-between items-center w-full py-1 px-2 border-secondary border-[0.1px] border-opacity-50 rounded-md">
+                        <span className="text-secondary">
+                            Cargando categorias...
+                        </span>
+                        <div className='spinner-load w-[15px] h-[15px] rounded-full'></div>
+                    </div>
+                    :
+                    <Fragment>
+                        <div onClick={() => setOpen_category(!open_category)} {...register('category', validation('category'))} className={`flex justify-between items-center bg-primary w-full rounded-md border-[0.1px] ${open_category && 'rounded-b-none'} ${!error ? 'border-secondary' : 'border-error'} border-opacity-50 py-1 px-2 cursor-pointer`}>
+                            <span className={`${!error ? 'text-secondary' : 'text-error'} text-md`}>
+                                {select_category}
+                            </span>
+                            <ComponentIcon name={open_category ? 'caret-up' : 'caret-down'} size={20} description_class={`${!error ? 'text-secondary' : 'text-error'}`} />
+                        </div>
+                        <ul className={`${(!open_category) && 'hidden'} absolute z-10 mt-[32px] w-full ${(categorys.length > 4) && 'overflow-hidden overflow-y-scroll scroll-select h-[123px]'} bg-primary border-[0.1px] ${!error ? 'border-secondary' : 'border-error'} rounded-b-md border-opacity-50`}>
+                            {
+                                categorys.filter(category => category.title != select_category).map(category => {
+                                    return <li key={category.title} onClick={() => selected(category.title)} className={`${!error ? 'text-secondary hover:bg-secondary' : 'text-error hover:bg-error'} hover:text-primary px-2 py-0.5 select-none cursor-pointer hover:font-semibold`}>
+                                        {category.title}
+                                    </li>
+                                })
+                            }
+                        </ul>
+                    </Fragment>
+            }
         </div>
     )
 }
