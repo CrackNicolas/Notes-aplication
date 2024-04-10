@@ -12,6 +12,10 @@ const schema_category = new Schema<Props_category>({
     use: {
         type: Boolean,
         require: [true, 'Required use']
+    },
+    icon: {
+        type: String,
+        require: [true, 'Required icon']
     }
 },
     {
