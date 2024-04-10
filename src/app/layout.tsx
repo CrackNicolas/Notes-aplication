@@ -16,8 +16,11 @@ const roboto = Roboto({
 })
 
 export const metadata: Metadata = {
-  title: 'Notes aplication',
-  description: 'Create by Beltran Ricardo Nicolas Alejo',
+  title: 'Aplicacion de notas',
+  description: 'Creado por Beltran Ricardo Nicolas Alejo',
+  icons: {
+    icon: '/favicon.ico'
+  }
 }
 
 export default function RootLayout({ children }: Props_layouts) {
