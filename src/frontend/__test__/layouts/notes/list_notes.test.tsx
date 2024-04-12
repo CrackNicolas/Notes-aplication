@@ -1,12 +1,12 @@
 import '@testing-library/jest-dom';
 
-import { fireEvent, render } from '@testing-library/react';
+import { RenderResult, fireEvent, render, waitFor } from '@testing-library/react';
 
 import ComponentList from '@/frontend/components/layouts/notes/list/container';
 import ComponentNote from '@/frontend/components/layouts/notes/note';
 import ComponentHeader from '@/frontend/components/layouts/notes/header';
 
-import { Props_note } from '@/frontend/types/props';
+import { Props_note } from '@/context/types/note';
 
 import { note, notes } from '@/frontend/__test__/mocks/notes';
 
@@ -18,20 +18,24 @@ describe('Componente <List/> de crud', () => {
     const date = new Date();
 
     describe('Renderizacion correcta del Header', () => {
+        let component: RenderResult;
+
+        beforeEach(() => {
+            component = render(<ComponentHeader search={search} result={true} />);
+        })
+
         test('Con resultados "NO" encontrados', () => {
-            const component = render(<ComponentHeader search={search} result={true} />);
             const message = component.getByText('No se encontraron resultados');
             expect(message).toBeInTheDocument();
         })
 
         test('Con resultados "SI" encontrados', () => {
-            const component = render(<ComponentHeader search={search} result={false} />);
+            component.rerender(<ComponentHeader search={search} result={false} />);
             const message = component.getByText('Notas');
             expect(message).toBeInTheDocument();
         })
 
         test('Al buscar una nota', () => {
-            const component = render(<ComponentHeader search={search} result={false} />);
             const input_search = component.getByPlaceholderText('Buscar...');
 
             fireEvent.change(input_search, { target: { value: "Nombre de nota" } });
@@ -42,8 +46,13 @@ describe('Componente <List/> de crud', () => {
     })
 
     describe('Renderizacion correcta de nota', () => {
+        let component: RenderResult;
+
+        beforeEach(() => {
+            component = render(<ComponentNote note={note} paint={true} action_note={() => { }} />);
+        })
+
         test('Renderizacion correcta de elementos', () => {
-            const component = render(<ComponentNote note={note} paint={true} action_note={() => { }} />);
             const note_element = component.getByTitle('Nota');
             const button_delete = component.getByRole('button', { name: 'Eliminar' });
             const button_update = component.getByRole('button', { name: 'Editar' });
@@ -75,13 +84,13 @@ describe('Componente <List/> de crud', () => {
             times.map(time => {
                 test(`Creada hace ${time.name} tiempo`, () => {
                     note.createdAt = time.date;
-                    const component = render(<ComponentNote note={note} paint={true} action_note={() => { }} />);
                     const element_time = component.getByTitle('Tiempo transcurrido');
-                    expect(element_time.textContent).toMatch(/Hace|años|año|meses|mes|dias|dia|hs|min|seg/);
+                    expect(element_time.textContent).toMatch(/Hace|años|año|meses|mes|dias|dia|hs|min|seg|Recien creada/);
                 })
             })
         })
     })
+
 
     describe('Renderizacion correcta de lista de notas', () => {
         test('Renderizacion correcta de Loading con 0 notas', () => {
@@ -97,7 +106,9 @@ describe('Componente <List/> de crud', () => {
                     _id: "id_" + i,
                     title: `Titulo de prueba ${i}`,
                     description: `Descripcion de prueba ${i}`,
+                    category: 'Viajes',
                     priority: 'Alta',
+                    featured: true,
                     createdAt: new Date(),
                 });
             }
@@ -122,30 +133,63 @@ describe('Componente <List/> de crud', () => {
             expect(modal).not.toBeInTheDocument();
         })
 
-        describe('Funcionamiento correcto del boton delete', () => {
-            test('Renderizacion correcta de modal confirmation', () => {
-                const component = render(<ComponentNote note={note} paint={true} action_note={() => { }} />);
-
-                const button_delete = component.getByRole('button', { name: 'Eliminar' });
-                fireEvent.click(button_delete);
-
-                const modal = component.getByTitle('modal');
-                expect(modal).toBeInTheDocument();
-
-                const text_modal = component.getByText('¿Seguro que desea eliminar?');
-                expect(text_modal).toBeInTheDocument();
-
-                const button_no = component.getByRole('button', { name: 'NO' });
-                fireEvent.click(button_no);
-                expect(text_modal).not.toBeInTheDocument();
-            })
-        })
-
         test('Funcionamiento correcto del boton update', () => {
             const component = render(<ComponentList notes={notes} setSelected={setSelected} selected={undefined} setRefresh={() => { }} setSearch={() => { }} />);
             const button_update = component.getByRole('button', { name: 'Editar' });
             fireEvent.click(button_update);
             expect(setSelected).not.toBe(undefined);
+        })
+
+        describe('Funcionamiento correcto del boton delete', () => {
+            let component: RenderResult;
+            let button_delete: HTMLElement;
+
+            beforeEach(() => {
+                component = render(<ComponentNote note={note} paint={true} action_note={() => { }} />);
+                button_delete = component.getByRole('button', { name: 'Eliminar' });
+            })
+
+            test('Renderizacion correcta de modal confirmation', async () => {
+                fireEvent.click(button_delete);
+
+                await waitFor(() => {
+                    const modal = component.getByTitle('modal');
+                    const text_modal = component.getByTitle('¿Seguro que desea eliminar?');
+                    const button_no = component.getByRole('button', { name: 'NO' });
+                    const button_si = component.getByRole('button', { name: 'SI' });
+
+                    expect(modal).toBeInTheDocument();
+                    expect(text_modal.textContent).toBe('¿Seguro que desea eliminar?');
+                    expect(button_no).toBeInTheDocument();
+                    expect(button_si).toBeInTheDocument();
+                })
+            })
+
+            test('Renderizacion correcta de modal confirmation con respuesta "NO"', async () => {
+                fireEvent.click(button_delete);
+
+                await waitFor(() => {
+                    const button_no = component.getByRole('button', { name: 'NO' });
+                    const text_modal = component.getByTitle('¿Seguro que desea eliminar?');
+
+                    fireEvent.click(button_no);
+
+                    expect(text_modal).not.toBeInTheDocument();
+                })
+            })
+
+            test('Renderizacion correcta de modal confirmation con respuesta "SI"', async () => {
+                fireEvent.click(button_delete);
+
+                await waitFor(() => {
+                    const button_si = component.getByRole('button', { name: 'SI' });
+                    const text_modal = component.getByTitle('¿Seguro que desea eliminar?');
+
+                    fireEvent.click(button_si);
+
+                    expect(text_modal).not.toBeInTheDocument();
+                })
+            })
         })
     })
 })

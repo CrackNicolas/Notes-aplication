@@ -13,7 +13,7 @@ export default function ComponentMessageWait(props: Props) {
     return (
         <ComponentModal open={open} setOpen={setOpen}>
             <div className="flex flex-col items-center gap-y-5 px-3 sm:px-7 py-7">
-                <p className="mt-2 text-center text-xl text-gray-500">
+                <p title="Texto de espera" className="mt-2 text-center text-xl text-gray-500">
                     Espere por favor...
                 </p>
                 <div className="mt-1 flex gap-x-4 place-items-center justify-center">

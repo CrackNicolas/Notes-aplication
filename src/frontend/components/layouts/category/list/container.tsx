@@ -23,7 +23,8 @@ export default function ComponentList(props: Props) {
     const select = async (category: Props_category) => {
         const { data } = await axios.put('/api/categorys', {
             title: category.title,
-            use: !category.use
+            use: !category.use,
+            icon: category.icon
         });
 
         setOpen(true);

@@ -18,15 +18,15 @@ export default function ComponentMessageConfirmationDelete(props: Props) {
                 <span className="flex place-items-center p-2.5 rounded-full bg-gray-900">
                     <ComponentIcon name='delete-note' description_class='text-error' size={25} />
                 </span>
-                <p className="mt-2 text-center text-xl text-gray-500">
+                <p title="¿Seguro que desea eliminar?" className="mt-2 text-center text-xl text-gray-500">
                     ¿Seguro que desea eliminar?
                 </p>
             </div>
             <div className="flex gap-x-2 sm:gap-x-5">
-                <button type="button" title="SI" onClick={() => setConfirmation(true)} className={`outline-none rounded-full w-[135px] sm:w-[200px] bg-primary hover:opacity-100 opacity-70 cursor-pointer text-secondary border-[0.1px] border-secondary`}>
+                <button type="button" title="SI" onClick={() => setConfirmation(true)} className='outline-none rounded-full w-[135px] sm:w-[200px] bg-primary hover:opacity-100 opacity-70 cursor-pointer text-secondary border-[0.1px] border-secondary'>
                     SI
                 </button>
-                <button type="button" title="NO" onClick={() => setOpen(false)} className={`outline-none rounded-full w-[135px] sm:w-[200px] bg-primary hover:opacity-100 opacity-70 cursor-pointer text-error border-[0.1px] border-error`}>
+                <button type="button" title="NO" onClick={() => setOpen(false)} className='outline-none rounded-full w-[135px] sm:w-[200px] bg-primary hover:opacity-100 opacity-70 cursor-pointer text-error border-[0.1px] border-error'>
                     NO
                 </button>
             </div>

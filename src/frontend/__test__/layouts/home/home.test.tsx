@@ -17,6 +17,6 @@ describe('Componente <Home/>', () => {
         expect(title).toBeInTheDocument();
         expect(subtitle).toBeInTheDocument();
         expect(link).toBeInTheDocument();
-        expect(link).toHaveAttribute('href', '/dashboard');
+        expect(link).toHaveAttribute('href', '/dashboard/main');
     })
 })

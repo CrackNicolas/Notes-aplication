@@ -18,7 +18,6 @@ import { Props_note } from '@/context/types/note';
 import { Props_response } from '@/context/types/response';
 
 import { validation } from '@/frontend/validations/form';
-import { Props_category } from '@/context/types/category';
 
 type Props = {
     setSelected: Dispatch<SetStateAction<Props_note | undefined>>,
@@ -33,9 +32,8 @@ export default function ComponentContainerForm({ setSelected, selected, setRefre
 
     const [file, setFile] = useState<File | undefined>(undefined);
     const [select_category, setSelect_category] = useState<string>('Seleccionar categoria...');
-    const [list_categorys, setList_Categorys] = useState<Props_category[]>([]);
 
-    const { register, handleSubmit, formState: { errors }, setValue, reset, watch, clearErrors } = useForm();
+    const { register, handleSubmit, formState: { errors }, setValue, reset, watch } = useForm();
 
     const restart = (): void => {
         setRefresh();
@@ -75,20 +73,6 @@ export default function ComponentContainerForm({ setSelected, selected, setRefre
         setLoading(false);
         open_modal(response.data);
     }
-
-    useEffect(() => {
-        const load_categorys = async () => {
-            const { data } = await axios.get("api/categorys/true");
-
-            if (data.status === 200) {
-                setList_Categorys(data.data);
-            }
-            if (data.status === 500) {
-                open_modal(data)
-            }
-        }
-        load_categorys();
-    }, []);
 
     useEffect(() => {
         reset();
@@ -136,7 +120,6 @@ export default function ComponentContainerForm({ setSelected, selected, setRefre
                         />
                     </div>
                     <ComponentSelect
-                        categorys={list_categorys}
                         error={errors.category?.type}
                         select_category={select_category}
                         setSelect_category={setSelect_category}

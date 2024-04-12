@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction } from "react";
 
 import ComponentModal from "@/frontend/components/partials/modal";
 
-import { Props_note } from "@/frontend/types/props";
+import { Props_note } from "@/context/types/note";
 
 type Props = {
     open: boolean,

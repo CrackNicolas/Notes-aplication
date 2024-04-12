@@ -64,6 +64,7 @@
 
 ## Testing
   * Testing Library - Access the url ["https://testing-library.com/"]
+  * Mock Service Worker - Access the url ["https://mswjs.io/"]
 
 ## External file upload service
   * Access the url ["https://cloudinary.com/"]

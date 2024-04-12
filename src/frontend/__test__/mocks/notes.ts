@@ -1,4 +1,6 @@
-export const note = {
+import { Props_note } from "@/context/types/note"
+
+export const note: Props_note = {
     _id: '1234',
     title: 'Titulo de prueba',
     description: 'Descripcion de prueba',
@@ -8,7 +10,7 @@ export const note = {
     createdAt: new Date()
 }
 
-export const notes = [
+export const notes: Props_note[] = [
     {
         _id: '1234',
         title: 'Titulo de prueba',

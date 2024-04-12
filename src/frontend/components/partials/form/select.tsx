@@ -1,13 +1,14 @@
 import { Dispatch, Fragment, SetStateAction, useEffect, useState } from "react";
 import { FieldError, FieldErrorsImpl, FieldValues, LiteralUnion, Merge, UseFormRegister } from "react-hook-form";
 
+import axios from "axios";
+
 import ComponentIcon from '@/frontend/components/partials/icon';
 
 import { validation } from "@/frontend/validations/form";
 import { Props_category } from "@/context/types/category";
 
 type Props = {
-    categorys: Props_category[],
     error?: FieldError | Merge<FieldError, FieldErrorsImpl<any>> | LiteralUnion<"required", string> | undefined,
     select_category: string,
     setSelect_category: Dispatch<SetStateAction<string>>
@@ -15,14 +16,26 @@ type Props = {
 }
 
 export default function ComponentSelect(props: Props) {
-    const { categorys, error, select_category, setSelect_category, register } = props;
+    const { error, select_category, setSelect_category, register } = props;
 
     const [open_category, setOpen_category] = useState<boolean>(false);
+    const [categorys, setCategorys] = useState<Props_category[] | []>([]);
 
     const selected = (category: string) => {
         setSelect_category(category);
         setOpen_category(false);
     }
+
+    useEffect(() => {
+        const load_categorys = async () => {
+            const { data } = await axios.get("/api/categorys/true");
+
+            if (data.status === 200) {
+                setCategorys(data.data);
+            }
+        }
+        load_categorys();
+    }, []);
 
     useEffect(() => {
         setOpen_category(false);
