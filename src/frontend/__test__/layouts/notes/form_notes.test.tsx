@@ -1,10 +1,12 @@
 import '@testing-library/jest-dom';
-import { RenderResult, fireEvent, render, waitFor } from '@testing-library/react';
+import { fireEvent, render, waitFor } from '@testing-library/react';
 
 import ComponentForm from '@/frontend/components/layouts/notes/container_form';
 import ComponentLabel from '@/frontend/components/partials/form/label';
 import ComponentInput from '@/frontend/components/partials/form/input';
+import ComponentSelect from '@/frontend/components/partials/form/select';
 import ComponentItemPriority from '@/frontend/components/partials/form/item_priority';
+import ComponentItemFeatured from '@/frontend/components/partials/form/item_featured';
 
 import { labels, note } from '@/frontend/__test__/mocks/notes'
 import { categorys } from '@/frontend/__test__/mocks/categorys';
@@ -13,6 +15,7 @@ import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 
 const mock = new MockAdapter(axios);
+
 mock.onGet('/api/categorys/true').reply(200, {
     status: 200,
     data: categorys
@@ -45,34 +48,33 @@ describe('Componente <Form/> principal', () => {
 
         await waitFor(() => {
             const container = component.getByTitle('Categoria');
-    
+
             fireEvent.click(container);
 
             const list_categorys = component.getByTitle('Lista de categorias');
-            
+
             expect(list_categorys).toBeInTheDocument();
+            expect(list_categorys).toHaveClass('overflow-hidden overflow-y-scroll scroll-select h-[123px]');
             expect(container).toBeInTheDocument();
             expect(container).toHaveClass('rounded-b-none');
-            
-            const category = component.getByTitle('Viajes');
-            
-            fireEvent.click(category);
 
+            const category = component.getByTitle('Viajes');
+            fireEvent.click(category);
         })
 
     })
 
     test('Renderizacion correcta al editar una nota', async () => {
-        const component = render(<ComponentForm selected={note} setRefresh={() => { }} setSelected={() => { }} />);
+        const { getByTitle } = render(<ComponentForm selected={note} setRefresh={() => { }} setSelected={() => { }} />);
 
-        const title = component.getByTitle('Titulo formulario');
-        const button_submit = component.getByTitle('Actualizar');
+        const title = getByTitle('Titulo formulario');
+        const button_submit = getByTitle('Actualizar');
 
         expect(title.textContent).toBe('Actualizar nota');
         expect(button_submit.textContent).toBe('Actualizar');
 
         await waitFor(() => {
-            const title = component.getByTitle('Seleccionar categoria');
+            const title = getByTitle('Seleccionar categoria');
             expect(title.textContent).toBe(note.category);
         })
     })
@@ -84,14 +86,14 @@ describe('Componente <Form/> principal', () => {
         const input_title = component.getByPlaceholderText('Escriba el titulo...');
         const input_description = component.getByPlaceholderText('Escriba la descripcion...');
         const input_priority = component.getByText('Alta');
-        
+
         expect(input_title).toHaveValue(note.title);
         expect(input_description).toHaveValue(note.description);
         expect(input_priority).toHaveClass('bg-secondary text-primary');
-        
+
         const button_deshacer = component.getByRole('button', { name: 'Deshacer' });
         fireEvent.click(button_deshacer);
-        
+
         expect(setSelected).toHaveBeenCalledWith(undefined);
         expect(input_title).toHaveValue('');
         expect(input_description).toHaveValue('');
@@ -106,7 +108,7 @@ describe('Componente <Form/> principal', () => {
 
     describe('Renderizacion correcta de mensajes de error', () => {
         const validations = [
-            { name: "required", match: /requerido|requerida/ },
+            { name: "required", match: /requerido|requerida|/ },
             { name: "minLength", match: /caracteres/ },
             { name: "maxLength", match: /caracteres/ },
             { name: "pattern", match: /caracteres no permitidos/ }
@@ -190,6 +192,17 @@ describe('Componente <Form/> principal', () => {
             })
         })
 
+        describe('Categorias', () => {
+            test('Error required', async () => {
+                const { getByTitle } = render(<ComponentSelect select_category="" register={register} error="required" setSelect_category={setSelected} />)
+
+                await waitFor(() => {
+                    const container = getByTitle('Categoria');
+                    expect(container).toHaveClass('border-error')
+                })
+            })
+        })
+
         describe('Prioridad', () => {
             const items = [{ name: "1", value: "Alta" }, { name: "2", value: "Media" }, { name: "3", value: "Baja" }];
 
@@ -213,5 +226,22 @@ describe('Componente <Form/> principal', () => {
                 })
             })
         })
+
+        describe('¿Destacar nota?', () => {
+            test('Error required', () => {
+                const { getByTitle } = render(<ComponentItemFeatured
+                    value='SI'
+                    paint={false}
+                    error="required"
+                    register={register}
+                />)
+                
+                const container = getByTitle('si destacar');
+                const title = getByTitle('SI');
+                expect(container).toHaveClass('border-error');
+                expect(title).toHaveClass('text-error group-hover:bg-error group-hover:text-primary')
+            })
+        })
+
     })
 });

@@ -10,5 +10,20 @@ export const categorys: Props_category[] = [
         title: 'Estudios',
         use: true,
         icon: 'studies'
+    },
+    {
+        title: 'Proyectos',
+        use: true,
+        icon: 'proyects'
+    },
+    {
+        title: 'Musica',
+        use: true,
+        icon: 'music'
+    },
+    {
+        title: 'Otros',
+        use: true,
+        icon: 'others'
     }
 ] 

@@ -25,5 +25,6 @@ export const notes: Props_note[] = [
 export const labels = [
     { title: "Titulo", name: "title" },
     { title: "Descripcion", name: "description" },
+    { title: "¿Destacar nota?", name: "featured" },
     { title: "Prioridad", name: "priority" }
 ]
