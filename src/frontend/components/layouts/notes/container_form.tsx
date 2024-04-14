@@ -52,6 +52,7 @@ export default function ComponentContainerForm({ setSelected, selected, setRefre
     const onSubmit: SubmitHandler<FieldValues | Props_note> = async (data) => {
         let response;
 
+        console.log(data);
         const form = new FormData();
         form.set('title', data.title);
         form.set('description', data.description);
@@ -70,6 +71,7 @@ export default function ComponentContainerForm({ setSelected, selected, setRefre
             form.set('_id', selected._id as string);
             response = await axios.put("api/notes", form);
         }
+        console.log(response.data);
         setLoading(false);
         open_modal(response.data);
     }
@@ -95,7 +97,7 @@ export default function ComponentContainerForm({ setSelected, selected, setRefre
                     {(!selected) ? 'Crear nota' : 'Actualizar nota'}
                 </span>
             </div>
-            <form method="POST" onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-y-6">
+            <form title="Formulario" method="POST" onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-y-6">
                 <div className="flex flex-col gap-y-3">
                     <div className="flex flex-col gap-y-0.5">
                         <ComponentLabel title="Titulo" html_for="title" validation={validation('title')} error={errors.title?.type} />

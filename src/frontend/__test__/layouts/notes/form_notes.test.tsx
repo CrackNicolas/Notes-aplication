@@ -21,6 +21,20 @@ mock.onGet('/api/categorys/true').reply(200, {
     data: categorys
 });
 
+mock.onPost('/api/notes').reply(201, {
+    status: 201,
+    info: {
+        massage: 'Nota creada'
+    }
+});
+
+mock.onPut('/api/notes').reply(200, {
+    status: 200,
+    info: {
+        massage: 'Nota editada'
+    }
+});
+
 describe('Componente <Form/> principal', () => {
     const register = jest.fn(), setSelected = jest.fn();
 
@@ -65,7 +79,7 @@ describe('Componente <Form/> principal', () => {
     })
 
     test('Renderizacion correcta al editar una nota', async () => {
-        const { getByTitle } = render(<ComponentForm selected={note} setRefresh={() => { }} setSelected={() => { }} />);
+        const { getByTitle, getByRole } = render(<ComponentForm selected={note} setRefresh={() => { }} setSelected={() => { }} />);
 
         const title = getByTitle('Titulo formulario');
         const button_submit = getByTitle('Actualizar');
@@ -76,6 +90,10 @@ describe('Componente <Form/> principal', () => {
         await waitFor(() => {
             const title = getByTitle('Seleccionar categoria');
             expect(title.textContent).toBe(note.category);
+
+            const button_submit = getByRole('button', { name: 'Actualizar' });
+
+            fireEvent.submit(button_submit);
         })
     })
 
@@ -235,7 +253,7 @@ describe('Componente <Form/> principal', () => {
                     error="required"
                     register={register}
                 />)
-                
+
                 const container = getByTitle('si destacar');
                 const title = getByTitle('SI');
                 expect(container).toHaveClass('border-error');
