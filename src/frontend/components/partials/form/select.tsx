@@ -42,7 +42,7 @@ export default function ComponentSelect(props: Props) {
     }, [select_category]);
 
     return (
-        <div title="Categoria" className='relative flex w-full'>
+        <div className='relative flex w-full'>
             {
                 (categorys.length === 0) ?
                     <div title="Cargando categorias" className="flex justify-between items-center w-full py-1 px-2 border-secondary border-[0.1px] border-opacity-50 rounded-md">
@@ -53,16 +53,16 @@ export default function ComponentSelect(props: Props) {
                     </div>
                     :
                     <Fragment>
-                        <div onClick={() => setOpen_category(!open_category)} {...register('category', validation('category'))} className={`flex justify-between items-center bg-primary w-full rounded-md border-[0.1px] ${open_category && 'rounded-b-none'} ${!error ? 'border-secondary' : 'border-error'} border-opacity-50 py-1 px-2 cursor-pointer`}>
+                        <div title="Categoria" onClick={() => setOpen_category(!open_category)} {...register('category', validation('category'))} className={`flex justify-between items-center bg-primary w-full rounded-md border-[0.1px] ${open_category && 'rounded-b-none'} ${!error ? 'border-secondary' : 'border-error'} border-opacity-50 py-1 px-2 cursor-pointer`}>
                             <span title="Seleccionar categoria" className={`${!error ? 'text-secondary' : 'text-error'} text-md`}>
                                 {select_category}
                             </span>
                             <ComponentIcon name={open_category ? 'caret-up' : 'caret-down'} size={20} description_class={`${!error ? 'text-secondary' : 'text-error'}`} />
                         </div>
-                        <ul className={`${(!open_category) && 'hidden'} absolute z-10 mt-[32px] w-full ${(categorys.length > 4) && 'overflow-hidden overflow-y-scroll scroll-select h-[123px]'} bg-primary border-[0.1px] ${!error ? 'border-secondary' : 'border-error'} rounded-b-md border-opacity-50`}>
+                        <ul title="Lista de categorias" className={`${(!open_category) && 'hidden'} absolute z-10 mt-[32px] w-full ${(categorys.length > 4) && 'overflow-hidden overflow-y-scroll scroll-select h-[123px]'} bg-primary border-[0.1px] ${!error ? 'border-secondary' : 'border-error'} rounded-b-md border-opacity-50`}>
                             {
                                 categorys.filter(category => category.title != select_category).map(category => {
-                                    return <li key={category.title} onClick={() => selected(category.title)} className={`${!error ? 'text-secondary hover:bg-secondary' : 'text-error hover:bg-error'} hover:text-primary px-2 py-0.5 select-none cursor-pointer hover:font-semibold`}>
+                                    return <li key={category.title} title={category.title} onClick={() => selected(category.title)} className={`${!error ? 'text-secondary hover:bg-secondary' : 'text-error hover:bg-error'} hover:text-primary px-2 py-0.5 select-none cursor-pointer hover:font-semibold`}>
                                         {category.title}
                                     </li>
                                 })

@@ -44,8 +44,20 @@ describe('Componente <Form/> principal', () => {
         })
 
         await waitFor(() => {
-            const title = component.getByTitle('Seleccionar categoria');
-            expect(title).toBeInTheDocument();
+            const container = component.getByTitle('Categoria');
+    
+            fireEvent.click(container);
+
+            const list_categorys = component.getByTitle('Lista de categorias');
+            
+            expect(list_categorys).toBeInTheDocument();
+            expect(container).toBeInTheDocument();
+            expect(container).toHaveClass('rounded-b-none');
+            
+            const category = component.getByTitle('Viajes');
+            
+            fireEvent.click(category);
+
         })
 
     })
