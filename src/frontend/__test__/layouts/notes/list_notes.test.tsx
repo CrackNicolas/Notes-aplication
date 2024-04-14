@@ -13,6 +13,18 @@ import { note, notes } from '@/frontend/__test__/mocks/notes';
 import ResizeObserver from 'resize-observer-polyfill';
 global.ResizeObserver = ResizeObserver;
 
+import axios from 'axios';
+import MockAdapter from 'axios-mock-adapter';
+
+const mock = new MockAdapter(axios);
+
+mock.onDelete(`/api/notes/${note._id}`).reply(204, {
+    status: 204,
+    info: {
+        message: 'Nota eliminada'
+    }
+});
+
 describe('Componente <List/> de crud', () => {
     const setSelected = jest.fn(), search = jest.fn();
     const date = new Date();
@@ -68,12 +80,16 @@ describe('Componente <List/> de crud', () => {
         describe('Time elapsed al renderizar la nota', () => {
             const times = [
                 {
-                    name: 'mucho',
+                    name: 'demasiado',
                     date: new Date(date.getFullYear() - 24, 6, 21)
                 },
                 {
-                    name: 'mediado',
+                    name: 'mucho',
                     date: new Date(date.getFullYear() - 1, 1, 28)
+                },
+                {
+                    name: 'mediado',
+                    date: new Date(date.getFullYear(), date.getMonth() - 2, date.getDate() - 1)
                 },
                 {
                     name: 'poco',
@@ -119,23 +135,23 @@ describe('Componente <List/> de crud', () => {
 
         test('Funcionamiento correcto del boton view', () => {
             setSelected(undefined);
-            const component = render(<ComponentList notes={notes} setSelected={setSelected} selected={undefined} setRefresh={() => { }} setSearch={() => { }} />);
+            const { getByRole, getByTitle } = render(<ComponentList notes={notes} setSelected={setSelected} selected={undefined} setRefresh={() => { }} setSearch={() => { }} />);
 
-            const button_view = component.getByRole('button', { name: 'Ver' });
+            const button_view = getByRole('button', { name: 'Ver' });
             fireEvent.click(button_view);
 
-            const modal = component.getByTitle('modal');
+            const modal = getByTitle('modal');
             expect(modal).toBeInTheDocument();
 
-            const button_close = component.getByRole('button', { name: 'Boton cerrar' });
+            const button_close = getByRole('button', { name: 'Boton cerrar' });
             fireEvent.click(button_close);
 
             expect(modal).not.toBeInTheDocument();
         })
 
         test('Funcionamiento correcto del boton update', () => {
-            const component = render(<ComponentList notes={notes} setSelected={setSelected} selected={undefined} setRefresh={() => { }} setSearch={() => { }} />);
-            const button_update = component.getByRole('button', { name: 'Editar' });
+            const { getByRole } = render(<ComponentList notes={notes} setSelected={setSelected} selected={undefined} setRefresh={() => { }} setSearch={() => { }} />);
+            const button_update = getByRole('button', { name: 'Editar' });
             fireEvent.click(button_update);
             expect(setSelected).not.toBe(undefined);
         })
@@ -145,7 +161,7 @@ describe('Componente <List/> de crud', () => {
             let button_delete: HTMLElement;
 
             beforeEach(() => {
-                component = render(<ComponentNote note={note} paint={true} action_note={() => { }} />);
+                component = render(<ComponentList notes={notes} setSelected={setSelected} selected={note} setRefresh={() => { }} setSearch={() => { }} />);
                 button_delete = component.getByRole('button', { name: 'Eliminar' });
             })
 
@@ -173,7 +189,7 @@ describe('Componente <List/> de crud', () => {
                     const text_modal = component.getByTitle('¿Seguro que desea eliminar?');
 
                     fireEvent.click(button_no);
-
+                    
                     expect(text_modal).not.toBeInTheDocument();
                 })
             })
