@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom';
-import { RenderResult, fireEvent, render } from '@testing-library/react';
+import { RenderResult, fireEvent, render, waitFor } from '@testing-library/react';
 
 import ComponentForm from '@/frontend/components/layouts/notes/container_form';
 import ComponentLabel from '@/frontend/components/partials/form/label';
@@ -7,19 +7,26 @@ import ComponentInput from '@/frontend/components/partials/form/input';
 import ComponentItemPriority from '@/frontend/components/partials/form/item_priority';
 
 import { labels, note } from '@/frontend/__test__/mocks/notes'
+import { categorys } from '@/frontend/__test__/mocks/categorys';
+
+import axios from 'axios';
+import MockAdapter from 'axios-mock-adapter';
+
+const mock = new MockAdapter(axios);
+mock.onGet('/api/categorys/true').reply(200, {
+    status: 200,
+    data: categorys
+});
 
 describe('Componente <Form/> principal', () => {
-    let component: RenderResult;
-    
-    beforeEach(() => {
-        component = render(<ComponentForm selected={undefined} setRefresh={() => { }} setSelected={() => { }} />)
-    })
-    
     const register = jest.fn(), setSelected = jest.fn();
 
-    test('Renderizacion correcta de elementos sin interaccion', () => {
+    test('Renderizacion correcta de elementos', async () => {
+        const component = render(<ComponentForm selected={undefined} setRefresh={() => { }} setSelected={() => { }} />);
+
         const input_title = component.getByPlaceholderText('Escriba el titulo...');
         const input_description = component.getByPlaceholderText('Escriba la descripcion...');
+        const load_categorys = component.getByTitle('Cargando categorias');
         const inputs_priority = component.getAllByRole('radio');
         const label_title = component.getByTitle('Titulo');
         const label_description = component.getByTitle('Descripcion');
@@ -27,6 +34,7 @@ describe('Componente <Form/> principal', () => {
 
         expect(input_title).toBeInTheDocument();
         expect(input_description).toBeInTheDocument();
+        expect(load_categorys).toBeInTheDocument();
         expect(label_title).toBeInTheDocument();
         expect(label_description).toBeInTheDocument();
         expect(button_deshacer).toBeInTheDocument();
@@ -34,42 +42,54 @@ describe('Componente <Form/> principal', () => {
         inputs_priority.map(input => {
             expect(input).toBeInTheDocument();
         })
-    });
 
+        await waitFor(() => {
+            const title = component.getByTitle('Seleccionar categoria');
+            expect(title).toBeInTheDocument();
+        })
 
-    describe('Renderizacion correcta', () => {
-        const buttons = [{ name: 'Crear' }, { name: 'Actualizar' }];
+    })
 
-        buttons.map(button => {
-            test(`Para ${button.name} nota`, () => {
-                component.rerender(<ComponentForm selected={(button.name === "Crear") ? undefined : note} setRefresh={() => { }} setSelected={() => { }} />)
-                const title = component.getByTitle('Titulo formulario');
-                const button_submit = component.getByTitle(button.name);
-                expect(title.textContent).toBe(`${button.name} nota`);
-                expect(button_submit.textContent).toBe(button.name);
-            })
+    test('Renderizacion correcta al editar una nota', async () => {
+        const component = render(<ComponentForm selected={note} setRefresh={() => { }} setSelected={() => { }} />);
+
+        const title = component.getByTitle('Titulo formulario');
+        const button_submit = component.getByTitle('Actualizar');
+
+        expect(title.textContent).toBe('Actualizar nota');
+        expect(button_submit.textContent).toBe('Actualizar');
+
+        await waitFor(() => {
+            const title = component.getByTitle('Seleccionar categoria');
+            expect(title.textContent).toBe(note.category);
         })
     })
 
-    test('Renderizacion correcta al deshacer una operacion', () => {
+    test('Renderizacion correcta al deshacer la operacion', async () => {
         setSelected(note);
-        component.rerender(<ComponentForm selected={note} setRefresh={() => { }} setSelected={setSelected} />)
+        const component = render(<ComponentForm selected={note} setRefresh={() => { }} setSelected={setSelected} />);
 
         const input_title = component.getByPlaceholderText('Escriba el titulo...');
         const input_description = component.getByPlaceholderText('Escriba la descripcion...');
         const input_priority = component.getByText('Alta');
-
+        
         expect(input_title).toHaveValue(note.title);
         expect(input_description).toHaveValue(note.description);
         expect(input_priority).toHaveClass('bg-secondary text-primary');
-
+        
         const button_deshacer = component.getByRole('button', { name: 'Deshacer' });
         fireEvent.click(button_deshacer);
-
+        
         expect(setSelected).toHaveBeenCalledWith(undefined);
         expect(input_title).toHaveValue('');
         expect(input_description).toHaveValue('');
         expect(input_priority).toHaveClass('text-secondary group-hover:bg-secondary group-hover:text-primary');
+
+        await waitFor(() => {
+            const title = component.getByTitle('Seleccionar categoria');
+            expect(title.textContent).toBe('Seleccionar categoria...');
+        })
+
     })
 
     describe('Renderizacion correcta de mensajes de error', () => {
@@ -84,8 +104,8 @@ describe('Componente <Form/> principal', () => {
             describe(`Error ${validation.name}`, () => {
                 labels.forEach(label => {
                     test(`${label.title}`, () => {
-                        component.rerender(<ComponentLabel title={label.title} html_for={label.name} validation={{}} error={validation.name} />)
-                        const label_element = component.getByTitle(label.title);
+                        const { getByTitle } = render(<ComponentLabel title={label.title} html_for={label.name} validation={{}} error={validation.name} />)
+                        const label_element = getByTitle(label.title);
                         expect(label_element.textContent).toMatch(validation.match);
                     })
                 })
@@ -95,8 +115,8 @@ describe('Componente <Form/> principal', () => {
         describe('Sin errores', () => {
             labels.forEach(label => {
                 test(`${label.title}`, () => {
-                    component.rerender(<ComponentLabel title={label.title} html_for={label.name} validation={{}} error={undefined} />)
-                    const label_element = component.getByTitle(label.title);
+                    const { getByTitle } = render(<ComponentLabel title={label.title} html_for={label.name} validation={{}} error={undefined} />)
+                    const label_element = getByTitle(label.title);
                     expect(label_element.textContent).toMatch(new RegExp(label.title));
                 })
             })
@@ -107,7 +127,7 @@ describe('Componente <Form/> principal', () => {
         const inputs = labels;
         inputs.forEach(input => {
             test(`${input.name}`, () => {
-                component.rerender(<ComponentInput
+                const { getByPlaceholderText } = render(<ComponentInput
                     type="text"
                     name={input.name}
                     placeholder="Escriba..."
@@ -115,7 +135,7 @@ describe('Componente <Form/> principal', () => {
                     error={undefined}
                     description_class="border-opacity-50 bg-primary w-full rounded-md border-[0.1px] py-1.5 px-2 outline-none tracking-wide placeholder:opacity-70 sm:text-md"
                 />)
-                const input_element = component.getByPlaceholderText('Escriba...');
+                const input_element = getByPlaceholderText('Escriba...');
                 expect(input_element).toHaveClass('border-secondary text-secondary placeholder:text-secondary');
             })
         })
@@ -127,7 +147,7 @@ describe('Componente <Form/> principal', () => {
         describe('Titulo', () => {
             validations.forEach(validation => {
                 test(`Error ${validation.name}`, () => {
-                    component.rerender(<ComponentInput
+                    const { getByPlaceholderText } = render(<ComponentInput
                         type="text"
                         name="title"
                         placeholder="Escriba el titulo..."
@@ -135,7 +155,7 @@ describe('Componente <Form/> principal', () => {
                         error={validation.name}
                         description_class="border-opacity-50 bg-primary w-full rounded-md border-[0.1px] py-1.5 px-2 outline-none tracking-wide placeholder:opacity-70 sm:text-md"
                     />)
-                    const input_title = component.getByPlaceholderText('Escriba el titulo...');
+                    const input_title = getByPlaceholderText('Escriba el titulo...');
                     expect(input_title).toHaveClass('border-error text-error placeholder:text-error');
                 })
             })
@@ -144,7 +164,7 @@ describe('Componente <Form/> principal', () => {
         describe('Descripcion', () => {
             validations.forEach(validation => {
                 test(`Error ${validation.name}`, () => {
-                    component.rerender(<ComponentInput
+                    const { getByPlaceholderText } = render(<ComponentInput
                         rows={3}
                         name="description"
                         placeholder="Escriba la descripcion..."
@@ -152,7 +172,7 @@ describe('Componente <Form/> principal', () => {
                         error={validation.name}
                         description_class="border-opacity-50 bg-primary w-full rounded-md border-[0.1px] min-h-[80px] scroll py-1.5 px-2 outline-none tracking-wide placeholder:opacity-70 sm:text-md"
                     />)
-                    const input_description = component.getByPlaceholderText('Escriba la descripcion...');
+                    const input_description = getByPlaceholderText('Escriba la descripcion...');
                     expect(input_description).toHaveClass('border-error text-error placeholder:text-error');
                 })
             })
@@ -164,7 +184,7 @@ describe('Componente <Form/> principal', () => {
             describe('Error required', () => {
                 items.forEach(item => {
                     test(`Opcion ${item.name}`, () => {
-                        component.rerender(<ComponentItemPriority
+                        const { getByTitle, getByText } = render(<ComponentItemPriority
                             id={item.name}
                             value={item.value}
                             class_icon="text-red-500 rotate-[-180deg]"
@@ -172,8 +192,8 @@ describe('Componente <Form/> principal', () => {
                             error="required"
                             register={register}
                         />)
-                        const label = component.getByTitle(`${item.value} prioridad`);
-                        const text_label = component.getByText(item.value);
+                        const label = getByTitle(`${item.value} prioridad`);
+                        const text_label = getByText(item.value);
 
                         expect(label).toHaveClass('border-error');
                         expect(text_label).toHaveClass('text-error group-hover:bg-error group-hover:text-primary');

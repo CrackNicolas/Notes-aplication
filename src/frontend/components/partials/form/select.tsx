@@ -45,7 +45,7 @@ export default function ComponentSelect(props: Props) {
         <div title="Categoria" className='relative flex w-full'>
             {
                 (categorys.length === 0) ?
-                    <div className="flex justify-between items-center w-full py-1 px-2 border-secondary border-[0.1px] border-opacity-50 rounded-md">
+                    <div title="Cargando categorias" className="flex justify-between items-center w-full py-1 px-2 border-secondary border-[0.1px] border-opacity-50 rounded-md">
                         <span className="text-secondary">
                             Cargando categorias...
                         </span>
@@ -54,7 +54,7 @@ export default function ComponentSelect(props: Props) {
                     :
                     <Fragment>
                         <div onClick={() => setOpen_category(!open_category)} {...register('category', validation('category'))} className={`flex justify-between items-center bg-primary w-full rounded-md border-[0.1px] ${open_category && 'rounded-b-none'} ${!error ? 'border-secondary' : 'border-error'} border-opacity-50 py-1 px-2 cursor-pointer`}>
-                            <span className={`${!error ? 'text-secondary' : 'text-error'} text-md`}>
+                            <span title="Seleccionar categoria" className={`${!error ? 'text-secondary' : 'text-error'} text-md`}>
                                 {select_category}
                             </span>
                             <ComponentIcon name={open_category ? 'caret-up' : 'caret-down'} size={20} description_class={`${!error ? 'text-secondary' : 'text-error'}`} />
