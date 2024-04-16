@@ -28,8 +28,8 @@ export async function PUT(req: Request): Promise<NextResponse> {
     try {
         if (!use) {
             const categorys_with_true = await Category.countDocuments({ use: true });
-            if (categorys_with_true === 1) {
-                return NextResponse.json<Props_response>({ status: 200, info: { message: 'Debes tener por lo menos una categoria en uso' } });
+            if (categorys_with_true === 2) {
+                return NextResponse.json<Props_response>({ status: 200, info: { message: 'Debes tener por lo menos 2 categorias en uso' } });
             }
         }
 

@@ -52,8 +52,6 @@ export default function ComponentContainerForm({ setSelected, selected, setRefre
     const onSubmit: SubmitHandler<FieldValues | Props_note> = async (data) => {
         let response;
 
-        console.log(data)
-
         const form = new FormData();
         form.set('title', data.title);
         form.set('description', data.description);
@@ -68,11 +66,9 @@ export default function ComponentContainerForm({ setSelected, selected, setRefre
         setLoading(true);
         if (!selected) {
             response = await axios.post("api/notes", form);
-            console.log(response.data);
         } else {
             form.set('_id', selected._id as string);
             response = await axios.put("api/notes", form);
-            console.log(response.data);
         }
         setLoading(false);
         open_modal(response.data);

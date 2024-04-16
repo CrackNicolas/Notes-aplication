@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom';
-import { fireEvent, getAllByLabelText, render, waitFor } from '@testing-library/react';
+import { fireEvent, getByLabelText, getByText, render, waitFor } from '@testing-library/react';
 
 import ComponentForm from '@/frontend/components/layouts/notes/container_form';
 import ComponentLabel from '@/frontend/components/partials/form/label';
@@ -35,6 +35,9 @@ mock.onPut('/api/notes').reply(200, {
     }
 });
 
+import ResizeObserver from 'resize-observer-polyfill';
+global.ResizeObserver = ResizeObserver;
+
 describe('Componente <Form/> principal', () => {
     const register = jest.fn(), setSelected = jest.fn();
 
@@ -43,10 +46,11 @@ describe('Componente <Form/> principal', () => {
 
         const input_title = component.getByPlaceholderText('Escriba el titulo...');
         const input_description = component.getByPlaceholderText('Escriba la descripcion...');
-        const load_categorys = component.getByTitle('Cargando categorias');
         const inputs_priority = component.getAllByRole('radio');
+        const input_file = component.getByLabelText('Subir archivo...');
         const label_title = component.getByTitle('Titulo');
         const label_description = component.getByTitle('Descripcion');
+        const load_categorys = component.getByTitle('Cargando categorias');
         const button_deshacer = component.getByRole('button', { name: 'Deshacer' });
 
         expect(input_title).toBeInTheDocument();
@@ -54,6 +58,7 @@ describe('Componente <Form/> principal', () => {
         expect(load_categorys).toBeInTheDocument();
         expect(label_title).toBeInTheDocument();
         expect(label_description).toBeInTheDocument();
+        expect(input_file).toBeInTheDocument();
         expect(button_deshacer).toBeInTheDocument();
 
         inputs_priority.map(input => {
@@ -80,7 +85,7 @@ describe('Componente <Form/> principal', () => {
 
     test('Renderizacion correcta al crear una nota', async () => {
         setSelected(undefined);
-        const { getByTitle, getByRole, getByPlaceholderText } = render(
+        const { getByTitle, getByRole, getByPlaceholderText, getByLabelText } = render(
             <ComponentForm selected={undefined} setRefresh={() => { }} setSelected={setSelected} />
         );
 
@@ -102,9 +107,15 @@ describe('Componente <Form/> principal', () => {
         expect(input_description).toHaveValue(note.description);
         expect(input_priority).toBeChecked();
 
+        const input_file = getByLabelText('Subir archivo...');
+
+        fireEvent.change(input_file, {
+            target: { files: [new File(['archivo de prueba'], 'test-file.png', { type: 'image/png' })] },
+        });
+
         await waitFor(() => {
             const container = getByTitle('Categoria');
-            fireEvent.click(container);            
+            fireEvent.click(container);
 
             const category = getByTitle('Viajes');
             fireEvent.click(category);
@@ -112,15 +123,17 @@ describe('Componente <Form/> principal', () => {
             fireEvent.submit(button_submit);
         })
     })
-    
+
     test('Renderizacion correcta al editar una nota', async () => {
-        const { getByTitle} = render(<ComponentForm selected={note} setRefresh={() => { }} setSelected={() => { }} />);
+        const { getByTitle, getByText } = render(<ComponentForm selected={note} setRefresh={() => { }} setSelected={() => { }} />);
 
         const title = getByTitle('Titulo formulario');
+        const select_file = getByText(`${note.file?.name} cargado`);
         const button_submit = getByTitle('Actualizar');
 
         expect(title.textContent).toBe('Actualizar nota');
         expect(button_submit.textContent).toBe('Actualizar');
+        expect(select_file).toBeInTheDocument();
 
         await waitFor(() => {
             const title = getByTitle('Seleccionar categoria');
@@ -245,7 +258,7 @@ describe('Componente <Form/> principal', () => {
 
         describe('Categorias', () => {
             test('Error required', async () => {
-                const { getByTitle } = render(<ComponentSelect clearErrors={() => {}} setValue={() => {}} select_category="" register={register} error="required" setSelect_category={setSelected} />)
+                const { getByTitle } = render(<ComponentSelect clearErrors={() => { }} setValue={() => { }} select_category="" register={register} error="required" setSelect_category={setSelected} />)
 
                 await waitFor(() => {
                     const container = getByTitle('Categoria');

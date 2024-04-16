@@ -68,9 +68,14 @@ export default function ComponentSelect(props: Props) {
                         <ul title="Lista de categorias" className={`${(!open_category) && 'hidden'} absolute z-10 mt-[32px] w-full ${(categorys.length > 4) && 'overflow-hidden overflow-y-scroll scroll-select h-[123px]'} bg-primary border-[0.1px] ${!error ? 'border-secondary' : 'border-error'} rounded-b-md border-opacity-50`}>
                             {
                                 categorys.filter(category => category.title != select_category).map(category => {
-                                    return <li key={category.title} title={category.title} onClick={() => selected(category.title)} className={`${!error ? 'text-secondary hover:bg-secondary' : 'text-error hover:bg-error'} hover:text-primary px-2 py-0.5 select-none cursor-pointer hover:font-semibold`}>
-                                        {category.title}
-                                    </li>
+                                    return (
+                                        <li key={category.title} title={category.title} onClick={() => selected(category.title)} className={`flex justify-between items-center group ${!error ? 'text-secondary hover:bg-secondary' : 'text-error hover:bg-error'} hover:text-primary px-2 py-1 cursor-pointer hover:font-semibold`}>
+                                            <span className="text-md font-normal group-hover:font-semibold">
+                                                {category.title}
+                                            </span>
+                                            <ComponentIcon name={category.icon} size={17} view_box="0 0 16 16" description_class={`group-hover:text-primary  text-secondary duration-500 `} />
+                                        </li>
+                                    )
                                 })
                             }
                         </ul>

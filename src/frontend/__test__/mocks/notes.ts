@@ -7,7 +7,12 @@ export const note: Props_note = {
     category: 'Viajes',
     priority: 'Alta',
     featured: true,
-    createdAt: new Date()
+    createdAt: new Date(),
+    file:{
+        id:'1234',
+        name:'Archivo',
+        url:'url'
+    }
 }
 
 export const notes: Props_note[] = [
@@ -18,7 +23,12 @@ export const notes: Props_note[] = [
         category: 'Viajes',
         priority: 'Alta',
         featured: true,
-        createdAt: new Date()
+        createdAt: new Date(),
+        file:{
+            id:'1234',
+            name:'Archivo',
+            url:'url'
+        }
     }
 ]
 
