@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom';
-import { fireEvent, render, waitFor } from '@testing-library/react';
+import { fireEvent, getAllByLabelText, render, waitFor } from '@testing-library/react';
 
 import ComponentForm from '@/frontend/components/layouts/notes/container_form';
 import ComponentLabel from '@/frontend/components/partials/form/label';
@@ -78,8 +78,43 @@ describe('Componente <Form/> principal', () => {
 
     })
 
+    test('Renderizacion correcta al crear una nota', async () => {
+        setSelected(undefined);
+        const { getByTitle, getByRole, getByPlaceholderText } = render(
+            <ComponentForm selected={undefined} setRefresh={() => { }} setSelected={setSelected} />
+        );
+
+        const title = getByTitle('Titulo formulario');
+        const button_submit = getByTitle('Crear');
+
+        expect(title.textContent).toBe('Crear nota');
+        expect(button_submit.textContent).toBe('Crear');
+
+        const input_title = getByPlaceholderText('Escriba el titulo...');
+        const input_description = getByPlaceholderText('Escriba la descripcion...');
+        const input_priority = getByRole('radio', { name: 'Alta' });
+
+        fireEvent.change(input_title, { target: { value: note.title } });
+        fireEvent.change(input_description, { target: { value: note.description } });
+        fireEvent.click(input_priority);
+
+        expect(input_title).toHaveValue(note.title);
+        expect(input_description).toHaveValue(note.description);
+        expect(input_priority).toBeChecked();
+
+        await waitFor(() => {
+            const container = getByTitle('Categoria');
+            fireEvent.click(container);            
+
+            const category = getByTitle('Viajes');
+            fireEvent.click(category);
+
+            fireEvent.submit(button_submit);
+        })
+    })
+    
     test('Renderizacion correcta al editar una nota', async () => {
-        const { getByTitle, getByRole } = render(<ComponentForm selected={note} setRefresh={() => { }} setSelected={() => { }} />);
+        const { getByTitle} = render(<ComponentForm selected={note} setRefresh={() => { }} setSelected={() => { }} />);
 
         const title = getByTitle('Titulo formulario');
         const button_submit = getByTitle('Actualizar');
@@ -90,8 +125,6 @@ describe('Componente <Form/> principal', () => {
         await waitFor(() => {
             const title = getByTitle('Seleccionar categoria');
             expect(title.textContent).toBe(note.category);
-
-            const button_submit = getByRole('button', { name: 'Actualizar' });
 
             fireEvent.submit(button_submit);
         })
@@ -212,7 +245,7 @@ describe('Componente <Form/> principal', () => {
 
         describe('Categorias', () => {
             test('Error required', async () => {
-                const { getByTitle } = render(<ComponentSelect select_category="" register={register} error="required" setSelect_category={setSelected} />)
+                const { getByTitle } = render(<ComponentSelect clearErrors={() => {}} setValue={() => {}} select_category="" register={register} error="required" setSelect_category={setSelected} />)
 
                 await waitFor(() => {
                     const container = getByTitle('Categoria');

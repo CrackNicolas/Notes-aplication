@@ -33,7 +33,7 @@ export default function ComponentContainerForm({ setSelected, selected, setRefre
     const [file, setFile] = useState<File | undefined>(undefined);
     const [select_category, setSelect_category] = useState<string>('Seleccionar categoria...');
 
-    const { register, handleSubmit, formState: { errors }, setValue, reset, watch } = useForm();
+    const { register, handleSubmit, formState: { errors }, setValue, reset, watch, clearErrors } = useForm();
 
     const restart = (): void => {
         setRefresh();
@@ -52,7 +52,8 @@ export default function ComponentContainerForm({ setSelected, selected, setRefre
     const onSubmit: SubmitHandler<FieldValues | Props_note> = async (data) => {
         let response;
 
-        console.log(data);
+        console.log(data)
+
         const form = new FormData();
         form.set('title', data.title);
         form.set('description', data.description);
@@ -67,11 +68,12 @@ export default function ComponentContainerForm({ setSelected, selected, setRefre
         setLoading(true);
         if (!selected) {
             response = await axios.post("api/notes", form);
+            console.log(response.data);
         } else {
             form.set('_id', selected._id as string);
             response = await axios.put("api/notes", form);
+            console.log(response.data);
         }
-        console.log(response.data);
         setLoading(false);
         open_modal(response.data);
     }
@@ -97,7 +99,7 @@ export default function ComponentContainerForm({ setSelected, selected, setRefre
                     {(!selected) ? 'Crear nota' : 'Actualizar nota'}
                 </span>
             </div>
-            <form title="Formulario" method="POST" onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-y-6">
+            <form method="POST" onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-y-6">
                 <div className="flex flex-col gap-y-3">
                     <div className="flex flex-col gap-y-0.5">
                         <ComponentLabel title="Titulo" html_for="title" validation={validation('title')} error={errors.title?.type} />
@@ -126,6 +128,8 @@ export default function ComponentContainerForm({ setSelected, selected, setRefre
                         select_category={select_category}
                         setSelect_category={setSelect_category}
                         register={register}
+                        setValue={setValue}
+                        clearErrors={clearErrors}
                     />
                     <div className="flex flex-col gap-y-0.5">
                         <ComponentLabel title="Prioridad" html_for="priority" error={errors.priority?.type} />

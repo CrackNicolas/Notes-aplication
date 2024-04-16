@@ -4,7 +4,7 @@ export const note: Props_note = {
     _id: '1234',
     title: 'Titulo de prueba',
     description: 'Descripcion de prueba',
-    category: 'Viaje',
+    category: 'Viajes',
     priority: 'Alta',
     featured: true,
     createdAt: new Date()
@@ -15,7 +15,7 @@ export const notes: Props_note[] = [
         _id: '1234',
         title: 'Titulo de prueba',
         description: 'Descripcion de prueba',
-        category: 'Viaje',
+        category: 'Viajes',
         priority: 'Alta',
         featured: true,
         createdAt: new Date()

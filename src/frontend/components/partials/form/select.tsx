@@ -1,5 +1,5 @@
 import { Dispatch, Fragment, SetStateAction, useEffect, useState } from "react";
-import { FieldError, FieldErrorsImpl, FieldValues, LiteralUnion, Merge, UseFormRegister } from "react-hook-form";
+import { FieldError, FieldErrorsImpl, FieldValues, LiteralUnion, Merge, UseFormClearErrors, UseFormRegister, UseFormSetValue } from "react-hook-form";
 
 import axios from "axios";
 
@@ -12,18 +12,22 @@ type Props = {
     error?: FieldError | Merge<FieldError, FieldErrorsImpl<any>> | LiteralUnion<"required", string> | undefined,
     select_category: string,
     setSelect_category: Dispatch<SetStateAction<string>>
-    register: UseFormRegister<FieldValues>
+    register: UseFormRegister<FieldValues>,
+    setValue: UseFormSetValue<FieldValues>,
+    clearErrors: UseFormClearErrors<FieldValues>
 }
 
 export default function ComponentSelect(props: Props) {
-    const { error, select_category, setSelect_category, register } = props;
+    const { error, select_category, setSelect_category, register, setValue, clearErrors } = props;
 
     const [open_category, setOpen_category] = useState<boolean>(false);
     const [categorys, setCategorys] = useState<Props_category[] | []>([]);
 
     const selected = (category: string) => {
+        setValue('category', category);
         setSelect_category(category);
         setOpen_category(false);
+        clearErrors('category');
     }
 
     useEffect(() => {
@@ -38,7 +42,9 @@ export default function ComponentSelect(props: Props) {
     }, []);
 
     useEffect(() => {
-        setOpen_category(false);
+        if (select_category === 'Seleccionar categoria...') {
+            setValue('category', undefined);
+        }
     }, [select_category]);
 
     return (
