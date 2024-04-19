@@ -2,7 +2,6 @@ import axios from "axios";
 
 import { Dispatch, SetStateAction, useState } from "react";
 
-import ComponentView from "@/frontend/components/layouts/notes/view";
 import ComponentNote from "@/frontend/components/layouts/notes/note";
 import ComponentHeader from "@/frontend/components/layouts/notes/header";
 import ComponentLoading from "./loading";
@@ -21,21 +20,15 @@ type Props = {
 }
 
 export default function ComponentList({ notes, setSelected, selected, setRefresh, setSearch }: Props) {
-    const [open_modal_view, setOpen_modal_view] = useState<boolean>(false);
     const [open_modal_confirmation, setOpen_modal_confirmation] = useState<boolean>(false);
-    const [view_note, setView_note] = useState<Props_note | undefined>(undefined);
     const [response, setResponse] = useState<Props_response>();
     const [loading, setLoading] = useState<boolean>(false);
 
     const action_note = async (action: string, note: Props_note) => {
         switch (action) {
-            case 'view':
-                setOpen_modal_view(true);
-                setView_note(note);
-                break;
             case 'delete':
                 setLoading(true);
-                const { data } = await axios.delete(`api/notes/${note._id}`);
+                const { data } = await axios.delete(`/api/notes/${note._id}`);
                 setOpen_modal_confirmation(true);
                 setResponse(data);
                 setLoading(false);
@@ -57,16 +50,11 @@ export default function ComponentList({ notes, setSelected, selected, setRefresh
                         :
                         notes.map((note: Props_note) => {
                             return (
-                                <div key={note._id} className="rounded-md">
-                                    <ComponentNote note={note} paint={selected?._id === note._id} action_note={action_note} />
-                                </div>
+                                <ComponentNote key={note._id} note={note} paint={selected?._id === note._id} action_note={action_note} />
                             )
                         })
                 }
             </div>
-            {
-                (view_note) && <ComponentView open={open_modal_view} setOpen={setOpen_modal_view} note={view_note} />
-            }
             {
                 (response) && <ComponentMessageConfirmation open={open_modal_confirmation} setOpen={setOpen_modal_confirmation} response={response} />
             }

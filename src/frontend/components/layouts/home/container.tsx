@@ -8,10 +8,10 @@ export default function ComponentHome() {
             <div className="mt-[150px] flex flex-col items-center gap-y-9">
                 <ComponentIcon testid="icon-home" name="logo" size={70} description_class="text-secondary" />
                 <div className="flex flex-col gap-y-2">
-                    <span className="text-center text-4xl font-bold tracking-wider text-tertiary sm:text-6xl">
+                    <span className="text-center text-4xl font-bold tracking-wider text-tertiary text-2xl sm:text-6xl">
                         Aplicacion de notas
                     </span>
-                    <span className="text-center text-lg leading-8 text-tertiary opacity-60 tracking-wider">
+                    <span className="text-center text-md sm:text-lg leading-8 text-tertiary opacity-60 tracking-wider">
                         ¡Organiza tu vida, toma notas sin límites!
                     </span>
                 </div>

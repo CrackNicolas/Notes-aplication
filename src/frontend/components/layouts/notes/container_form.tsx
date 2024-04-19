@@ -18,6 +18,7 @@ import { Props_note } from '@/context/types/note';
 import { Props_response } from '@/context/types/response';
 
 import { validation } from '@/frontend/validations/form';
+import { useSearchParams } from 'next/navigation';
 
 type Props = {
     setSelected: Dispatch<SetStateAction<Props_note | undefined>>,
@@ -26,6 +27,8 @@ type Props = {
 }
 
 export default function ComponentContainerForm({ setSelected, selected, setRefresh }: Props) {
+    const search_params = useSearchParams()
+
     const [open, setOpen] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
     const [response, setResponse] = useState<Props_response>();
@@ -65,14 +68,21 @@ export default function ComponentContainerForm({ setSelected, selected, setRefre
 
         setLoading(true);
         if (!selected) {
-            response = await axios.post("api/notes", form);
+            response = await axios.post("/api/notes", form);
         } else {
             form.set('_id', selected._id as string);
-            response = await axios.put("api/notes", form);
+            response = await axios.put("/api/notes", form);
         }
         setLoading(false);
         open_modal(response.data);
     }
+
+    useEffect(() => {
+        if (search_params.get('data') !== null) {
+            const { note } = JSON.parse(search_params.get('data') as string);
+            setSelected(note);
+        }
+    }, []);
 
     useEffect(() => {
         reset();

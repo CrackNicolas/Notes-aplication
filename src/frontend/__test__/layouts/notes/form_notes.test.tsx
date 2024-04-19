@@ -1,5 +1,13 @@
 import '@testing-library/jest-dom';
-import { fireEvent, getByLabelText, getByText, render, waitFor } from '@testing-library/react';
+import { fireEvent, render, waitFor } from '@testing-library/react';
+
+import ResizeObserver from 'resize-observer-polyfill';
+global.ResizeObserver = ResizeObserver;
+
+import axios from 'axios';
+import MockAdapter from 'axios-mock-adapter';
+
+import { Props_response } from '@/context/types/response';
 
 import ComponentForm from '@/frontend/components/layouts/notes/container_form';
 import ComponentLabel from '@/frontend/components/partials/form/label';
@@ -11,32 +19,31 @@ import ComponentItemFeatured from '@/frontend/components/partials/form/item_feat
 import { labels, note } from '@/frontend/__test__/mocks/notes'
 import { categorys } from '@/frontend/__test__/mocks/categorys';
 
-import axios from 'axios';
-import MockAdapter from 'axios-mock-adapter';
-
 const mock = new MockAdapter(axios);
 
-mock.onGet('/api/categorys/true').reply(200, {
+mock.onGet('/api/categorys/true').reply<Props_response>(200, {
     status: 200,
     data: categorys
 });
 
-mock.onPost('/api/notes').reply(201, {
+mock.onPost('/api/notes').reply<Props_response>(201, {
     status: 201,
     info: {
-        massage: 'Nota creada'
+        message: 'Nota creada'
     }
 });
 
 mock.onPut('/api/notes').reply(200, {
     status: 200,
     info: {
-        massage: 'Nota editada'
+        message: 'Nota editada'
     }
 });
 
-import ResizeObserver from 'resize-observer-polyfill';
-global.ResizeObserver = ResizeObserver;
+jest.mock("next/navigation", () => ({
+    ...jest.requireActual('next/navigation'),
+    useSearchParams: () => new URLSearchParams({ role_type: 'key' }),
+}))
 
 describe('Componente <Form/> principal', () => {
     const register = jest.fn(), setSelected = jest.fn();

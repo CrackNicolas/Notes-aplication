@@ -26,7 +26,7 @@ export default function ComponentNotes() {
 
     useEffect(() => {
         const load_notes = async () => {
-            const { data } = await axios.get(`api/notes${(search !== "") ? `/${search}` : ''}`);
+            const { data } = await axios.get(`/api/notes${(search !== "") ? `/${search}` : ''}`);
             if (data.status === 200) {
                 setList_notes(data.data);
             }
@@ -40,7 +40,7 @@ export default function ComponentNotes() {
     }, [load, search])
 
     return (
-        <section className="flex min-h-full flex-col justify-center mt-4 px-5 pt-12 sm:px-10  mx-auto max-w-7xl">
+        <section className="flex flex-col justify-center mt-4 pt-12 pb-5">
             <article className="grid grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-8">
                 <ComponentContainerForm selected={selected_note} setSelected={setSelected_note} setRefresh={refresh} />
                 <ComponentList notes={list_notes} setSelected={setSelected_note} selected={selected_note} setRefresh={refresh} setSearch={setSearch} />

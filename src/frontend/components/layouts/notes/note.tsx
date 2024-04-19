@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 import ComponentIcon from "@/frontend/components/partials/icon";
+import ComponentView from "@/frontend/components/layouts/notes/view";
 import ComponentMessageConfirmationDelete from "../messages/confirmation_delete";
 
 import { Props_note } from "@/context/types/note";
@@ -8,16 +9,24 @@ import { Time_elapsed } from "@/frontend/logic/time";
 
 type Props = {
     note: Props_note,
-    paint: boolean,
+    paint?: boolean,
     action_note: (action: string, note: Props_note) => void
 }
 
 export default function ComponentNote(props: Props) {
-    const { note, paint, action_note } = props;
+    const { note, paint = false, action_note } = props;
     const { title, description, priority, createdAt } = note;
 
     const [open_confirmation, setOpen_confirmation] = useState<boolean>(false);
     const [confirmation, setConfirmation] = useState<boolean>(false);
+
+    const [open_modal_view, setOpen_modal_view] = useState<boolean>(false);
+    const [view_note, setView_note] = useState<Props_note | undefined>(undefined);
+
+    const open_view = (note: Props_note) => {
+        setView_note(note);
+        setOpen_modal_view(true);
+    }
 
     useEffect(() => {
         if(confirmation){
@@ -52,11 +61,14 @@ export default function ComponentNote(props: Props) {
                     <button onClick={() => action_note('update', note)} type="button" title="Editar" className="outline-none border-none">
                         <ComponentIcon name="update" size={18} description_class="text-fifth hover:text-secondary cursor-pointer" />
                     </button>
-                    <button onClick={() => action_note('view', note)} type="button" title="Ver" className="outline-none border-none">
+                    <button onClick={() => open_view(note)} type="button" title="Ver" className="outline-none border-none">
                         <ComponentIcon name="see" size={19} description_class="text-fifth hover:text-secondary cursor-pointer" />
                     </button>
                 </div>
             </div>
+            {
+                (view_note) && <ComponentView open={open_modal_view} setOpen={setOpen_modal_view} note={view_note} />
+            }
             {
                 <ComponentMessageConfirmationDelete open={open_confirmation} setOpen={setOpen_confirmation} setConfirmation={setConfirmation} />
             }

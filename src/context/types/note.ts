@@ -10,5 +10,5 @@ export type Props_note = {
         name: string,
         url: string
     },
-    createdAt?: Date,
+    createdAt: Date,
 }

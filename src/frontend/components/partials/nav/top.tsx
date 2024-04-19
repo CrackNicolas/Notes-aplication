@@ -16,10 +16,10 @@ export default function ComponentNavTop(props: Props_context) {
 
     return (
         <nav className="fixed w-full bg-primary mt-[-7px] z-50">
-            <div className="mx-auto max-w-7xl px-2 sm:px-10">
+            <div className="mx-auto max-w-7xl px-3 sm:px-10">
                 <div className="relative flex h-16 items-center justify-between">
                     <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
-                        <button type="button" title="Toggle" onClick={() => setView_toggle(!view_toggle)} className="relative inline-flex items-center justify-center rounded-md p-2 outline-none">
+                        <button type="button" title="Toggle" onClick={() => setView_toggle(!view_toggle)} className="relative inline-flex items-center justify-center rounded-md py-2 outline-none">
                             <ComponentIcon name="toggle" size={27} view_box="0 0 16 16" description_class="hover:text-secondary text-fifth" />
                         </button>
                     </div>
@@ -33,7 +33,7 @@ export default function ComponentNavTop(props: Props_context) {
                             </div>
                         </div>
                     </div>
-                    <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+                    <div className="absolute inset-y-0 right-0 flex items-center pr-1 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                         {
                             (user) ?
                                 <div className="flex gap-x-4">

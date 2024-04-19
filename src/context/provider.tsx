@@ -32,7 +32,7 @@ export default function Provider({ children }: Props_layouts) {
 
     return (
         <Context.Provider value={{ section_current: path.substring(1), user, button_sesion: <UserButton afterSignOutUrl="/" /> }}>
-            <ProgressBar color="#00ffff" />
+            <ProgressBar color="#00ffff" options={{ showSpinner: false }} />
             <Template>
                 {children}
             </Template>
