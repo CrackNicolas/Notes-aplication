@@ -40,9 +40,12 @@ mock.onPut('/api/notes').reply(200, {
     }
 });
 
+const params = new URLSearchParams();
+params.append('data', JSON.stringify({ note }));
+
 jest.mock("next/navigation", () => ({
     ...jest.requireActual('next/navigation'),
-    useSearchParams: () => new URLSearchParams({ role_type: 'key' }),
+    useSearchParams: () => params,
 }))
 
 describe('Componente <Form/> principal', () => {
