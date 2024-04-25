@@ -6,6 +6,7 @@ import { Props_response } from '@/context/types/response';
 import { Conect_database } from "@/backend/utils/db";
 import { File_delete } from '@/backend/utils/cloudinary';
 
+import { Query } from '@/backend/api/query';
 import Notes from '@/backend/schemas/notes'
 
 export async function GET(req: Request, { params: { segments } }: { params: { segments: string[] } }): Promise<NextResponse> {
@@ -13,14 +14,8 @@ export async function GET(req: Request, { params: { segments } }: { params: { se
     if (!connection) return NextResponse.json<Props_response>({ status: 500, info: { message: "Error al conectarse a la base de datos" } });
 
     try {
-        const search: Props_note[] = await Notes.find(
-            {
-                $or: [
-                    { title: { $regex: `(?i)^${segments[0]}` } },
-                    { description: { $regex: `(?i)^${segments[0]}` } }
-                ]
-            }
-        );
+        const search: Props_note[] = await Notes.find(Query(segments));
+        
         return NextResponse.json<Props_response>({ status: 200, data: search });
     } catch (error) {
         return NextResponse.json<Props_response>({ status: 500, info: { message: "Errores con el servidor" } })

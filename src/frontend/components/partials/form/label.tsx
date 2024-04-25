@@ -1,38 +1,20 @@
-import { FieldError, FieldErrorsImpl, LiteralUnion, Merge } from "react-hook-form";
-
-import { Props_inputs } from "@/frontend/types/props";
+import { FieldErrors, FieldValues } from "react-hook-form";
 
 type Props = {
     title: string,
     html_for: string,
-    validation?: Props_inputs
-    error: FieldError | Merge<FieldError, FieldErrorsImpl<any>> | LiteralUnion<"required" | "pattern" | "maxLength" | "minLength", string> | undefined
+    errors?: FieldErrors<FieldValues>
 }
 
 export default function ComponentLabel(props: Props) {
-    const { title, html_for, validation, error } = props;
+    const { title, html_for, errors } = props;
 
-    const connector_primary = (title === "Titulo") ? "El" : "La"
-
-    const message = (): string => {
-        switch (error) {
-            case 'required':
-                return `${title} ${(title === "¿Destacar nota?") ? '' : `requerid${(title === "Descripcion" || title === "Prioridad") ? 'a' : 'o'}`}`;
-            case 'minLength':
-                return `${connector_primary} ${title.toLowerCase()} debe ser mayor a ${validation?.minLength} caracteres`;
-            case 'maxLength':
-                return `${connector_primary} ${title.toLowerCase()} debe ser menor a ${validation?.maxLength} caracteres`;
-            case 'pattern':
-                return `Se detectaron caracteres no permitidos`;
-            default:
-                return title;
-        }
-    }
+    const exists_error = errors && errors[html_for];
 
     return (
-        <label title={title} htmlFor={html_for} className={`line-clamp-1 text-sm font-normal ${(!error) ? 'text-secondary' : 'text-error'} tracking-wider`}>
+        <label title={title} htmlFor={html_for} className={`line-clamp-1 text-sm font-normal ${(!exists_error) ? 'text-secondary' : 'text-error'} tracking-wider`}>
             {
-                message()
+                exists_error ? `${errors[html_for]?.message}` : title
             }
         </label>
     )

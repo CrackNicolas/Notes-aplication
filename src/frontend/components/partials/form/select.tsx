@@ -13,12 +13,13 @@ type Props = {
     select_category: string,
     setSelect_category: Dispatch<SetStateAction<string>>
     register: UseFormRegister<FieldValues>,
-    setValue: UseFormSetValue<FieldValues>,
-    clearErrors: UseFormClearErrors<FieldValues>
+    setValue?: UseFormSetValue<FieldValues>,
+    clearErrors?: UseFormClearErrors<FieldValues>,
+    required?: boolean
 }
 
 export default function ComponentSelect(props: Props) {
-    const { error, select_category, setSelect_category, register, setValue, clearErrors } = props;
+    const { error, select_category, setSelect_category, register, required, setValue = () => { }, clearErrors = () => { } } = props;
 
     const [open_category, setOpen_category] = useState<boolean>(false);
     const [categorys, setCategorys] = useState<Props_category[] | []>([]);
@@ -59,13 +60,13 @@ export default function ComponentSelect(props: Props) {
                     </div>
                     :
                     <Fragment>
-                        <div title="Categoria" onClick={() => setOpen_category(!open_category)} {...register('category', validation('category'))} className={`flex justify-between items-center bg-primary w-full rounded-md border-[0.1px] ${open_category && 'rounded-b-none'} ${!error ? 'border-secondary' : 'border-error'} border-opacity-50 py-1 px-2 cursor-pointer`}>
+                        <div title="Categoria" onClick={() => setOpen_category(!open_category)} {...register('category', validation('category', required))} className={`flex justify-between items-center bg-primary w-full rounded-md border-[0.1px] ${open_category && 'rounded-b-none'} ${!error ? 'border-secondary' : 'border-error'} border-opacity-50 py-1 px-2 cursor-pointer`}>
                             <span title="Seleccionar categoria" className={`${!error ? 'text-secondary' : 'text-error'} text-md`}>
                                 {select_category}
                             </span>
                             <ComponentIcon name={open_category ? 'caret-up' : 'caret-down'} size={20} description_class={`${!error ? 'text-secondary' : 'text-error'}`} />
                         </div>
-                        <ul title="Lista de categorias" className={`${(!open_category) && 'hidden'} absolute z-10 mt-[32px] w-full ${(categorys.length > 4) && 'overflow-hidden overflow-y-scroll scroll-select h-[123px]'} bg-primary border-[0.1px] ${!error ? 'border-secondary' : 'border-error'} rounded-b-md border-opacity-50`}>
+                        <ul title="Lista de categorias" className={`${(!open_category) && 'hidden'} absolute z-10 mt-[32px] w-full ${(categorys.length >= 4) && 'overflow-hidden overflow-y-scroll scroll-select h-[130px]'} bg-primary border-[0.1px] ${!error ? 'border-secondary' : 'border-error'} rounded-b-md border-opacity-50`}>
                             {
                                 categorys.filter(category => category.title != select_category).map(category => {
                                     return (
@@ -73,7 +74,7 @@ export default function ComponentSelect(props: Props) {
                                             <span className="text-md font-normal group-hover:font-semibold">
                                                 {category.title}
                                             </span>
-                                            <ComponentIcon name={category.icon} size={17} view_box="0 0 16 16" description_class={`group-hover:text-primary  text-secondary duration-500 `} />
+                                            <ComponentIcon name={category.icon} size={17} view_box="0 0 16 16" description_class={`group-hover:text-primary ${!error ? 'text-secondary' : 'text-error'} duration-300 `} />
                                         </li>
                                     )
                                 })

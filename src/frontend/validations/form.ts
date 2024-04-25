@@ -1,24 +1,60 @@
-import { Props_inputs } from "@/frontend/types/props"
-
-export const validation = (name: string): Props_inputs | any => {
+export const validation = (name: string, required: boolean = true): any => {
     switch (name) {
         case 'title':
             return {
-                required: true,
-                minLength: 5,
-                maxLength: 45,
-                pattern: /^[A-Z a-z._áéíóú]+$/i
+                required: {
+                    value: required,
+                    message: 'Titulo requerido'
+                },
+                minLength: {
+                    value: 5,
+                    message: 'El titulo deber ser mayor a 5 caracteres'
+                },
+                maxLength: {
+                    value: 45,
+                    message: 'El titulo deber ser menor a 45 caracteres'
+                },
+                pattern: {
+                    value: /^[A-Z a-z._áéíóú]+$/i,
+                    message: 'Se detectaron caracteres no permitidos'
+                }
             }
         case 'description':
             return {
-                required: true,
-                minLength: 15,
-                maxLength: 500,
-                pattern: /^[A-Z a-z,._áéíóú]+$/i
+                required: {
+                    value: required,
+                    message: 'Descripcion requerida'
+                },
+                minLength: {
+                    value: 15,
+                    message: 'La descripcion deber ser mayor a 15 caracteres'
+                },
+                maxLength: {
+                    value: 500,
+                    message: 'La descripcion deber ser menor a 500 caracteres'
+                },
+                pattern: {
+                    value: /^[A-Z a-z,._áéíóú]+$/i,
+                    message: 'Se detectaron caracteres no permitidos'
+                }
             }
-        case "priority": case 'featured': case 'category':
+        case "priority":
             return {
-                required: true
+                required: {
+                    value: required,
+                    message: 'Prioridad requerida'
+                }
+            }
+        case 'featured':
+            return {
+                required: {
+                    value: required,
+                    message: 'Selecciona una opcion'
+                }
+            }
+        case 'category':
+            return {
+                required: required
             }
     }
 }

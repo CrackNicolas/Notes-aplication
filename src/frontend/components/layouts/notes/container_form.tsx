@@ -1,5 +1,7 @@
 'use client'
 
+import { useSearchParams } from 'next/navigation';
+
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
@@ -17,9 +19,6 @@ import ComponentMessageConfirmation from '@/frontend/components/layouts/messages
 import { Props_note } from '@/context/types/note';
 import { Props_response } from '@/context/types/response';
 
-import { validation } from '@/frontend/validations/form';
-import { useSearchParams } from 'next/navigation';
-
 type Props = {
     setSelected: Dispatch<SetStateAction<Props_note | undefined>>,
     selected: Props_note | undefined,
@@ -32,7 +31,6 @@ export default function ComponentContainerForm({ setSelected, selected, setRefre
     const [open, setOpen] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
     const [response, setResponse] = useState<Props_response>();
-
     const [file, setFile] = useState<File | undefined>(undefined);
     const [select_category, setSelect_category] = useState<string>('Seleccionar categoria...');
 
@@ -108,7 +106,7 @@ export default function ComponentContainerForm({ setSelected, selected, setRefre
             <form method="POST" onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-y-6">
                 <div className="flex flex-col gap-y-3">
                     <div className="flex flex-col gap-y-0.5">
-                        <ComponentLabel title="Titulo" html_for="title" validation={validation('title')} error={errors.title?.type} />
+                        <ComponentLabel title="Titulo" html_for="title" errors={errors} />
                         <ComponentInput
                             type="text"
                             name="title"
@@ -119,7 +117,7 @@ export default function ComponentContainerForm({ setSelected, selected, setRefre
                         />
                     </div>
                     <div className="flex flex-col gap-y-0.5">
-                        <ComponentLabel title="Descripcion" html_for="description" validation={validation('description')} error={errors.description?.type} />
+                        <ComponentLabel title="Descripcion" html_for="description" errors={errors} />
                         <ComponentInput
                             rows={3}
                             name="description"
@@ -138,7 +136,7 @@ export default function ComponentContainerForm({ setSelected, selected, setRefre
                         clearErrors={clearErrors}
                     />
                     <div className="flex flex-col gap-y-0.5">
-                        <ComponentLabel title="Prioridad" html_for="priority" error={errors.priority?.type} />
+                        <ComponentLabel title="Prioridad" html_for="priority" errors={errors} />
                         <div className="grid grid-cols-3 gap-x-1">
                             <ComponentItemPriority
                                 id="option_1"
@@ -167,7 +165,7 @@ export default function ComponentContainerForm({ setSelected, selected, setRefre
                         </div>
                     </div>
                     <div className="grid grid-cols-2 items-center my-1">
-                        <ComponentLabel title="¿Destacar nota?" html_for="featured" validation={validation('featured')} error={errors.featured?.type} />
+                        <ComponentLabel title="¿Destacar nota?" html_for="featured" errors={errors} />
                         <div className='flex w-full gap-x-2'>
                             <ComponentItemFeatured
                                 value='SI'

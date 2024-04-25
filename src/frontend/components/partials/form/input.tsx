@@ -12,15 +12,16 @@ type Props = {
     rows?: number
     error?: FieldError | Merge<FieldError, FieldErrorsImpl<any>> | LiteralUnion<"required" | "pattern" | "maxLength" | "minLength", string> | undefined
     register: UseFormRegister<FieldValues>,
+    required?: boolean
 }
 
 export default function ComponentInput(props: Props) {
-    const { type, name, id = name, placeholder, description_class, value, rows, error, register } = props;
+    const { type, name, id = name, placeholder, description_class, value, rows, error, register, required = true } = props;
 
     return (
         (!rows) ?
             <input
-                {...register(name, validation(name))}
+                {...register(name, validation(name, required))}
                 type={type}
                 id={id}
                 name={name}

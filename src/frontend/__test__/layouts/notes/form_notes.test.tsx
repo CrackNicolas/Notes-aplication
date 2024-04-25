@@ -18,6 +18,7 @@ import ComponentItemFeatured from '@/frontend/components/partials/form/item_feat
 
 import { labels, note } from '@/frontend/__test__/mocks/notes'
 import { categorys } from '@/frontend/__test__/mocks/categorys';
+import { validation } from '@/frontend/validations/form';
 
 const mock = new MockAdapter(axios);
 
@@ -83,7 +84,7 @@ describe('Componente <Form/> principal', () => {
             const list_categorys = component.getByTitle('Lista de categorias');
 
             expect(list_categorys).toBeInTheDocument();
-            expect(list_categorys).toHaveClass('overflow-hidden overflow-y-scroll scroll-select h-[123px]');
+            expect(list_categorys).toHaveClass('overflow-hidden overflow-y-scroll scroll-select h-[130px]');
             expect(container).toBeInTheDocument();
             expect(container).toHaveClass('rounded-b-none');
 
@@ -182,17 +183,23 @@ describe('Componente <Form/> principal', () => {
 
     describe('Renderizacion correcta de mensajes de error', () => {
         const validations = [
-            { name: "required", match: /requerido|requerida|/ },
-            { name: "minLength", match: /caracteres/ },
-            { name: "maxLength", match: /caracteres/ },
-            { name: "pattern", match: /caracteres no permitidos/ }
+            { name: "required", message: "requerido", match: /requerido/ },
+            { name: "minLength", message: "caracteres", match: /caracteres/ },
+            { name: "maxLength", message: "caracteres", match: /caracteres/ },
+            { name: "pattern", message: "caracteres no permitidos", match: /caracteres no permitidos/ }
         ]
+
+        const errors = (name: string, message: string) => {
+            return {
+                [name]: { type: name, message: message }
+            }
+        }
 
         validations.forEach(validation => {
             describe(`Error ${validation.name}`, () => {
                 labels.forEach(label => {
                     test(`${label.title}`, () => {
-                        const { getByTitle } = render(<ComponentLabel title={label.title} html_for={label.name} validation={{}} error={validation.name} />)
+                        const { getByTitle } = render(<ComponentLabel title={label.title} html_for={label.name} errors={errors(label.name, validation.message)} />)
                         const label_element = getByTitle(label.title);
                         expect(label_element.textContent).toMatch(validation.match);
                     })
@@ -203,7 +210,7 @@ describe('Componente <Form/> principal', () => {
         describe('Sin errores', () => {
             labels.forEach(label => {
                 test(`${label.title}`, () => {
-                    const { getByTitle } = render(<ComponentLabel title={label.title} html_for={label.name} validation={{}} error={undefined} />)
+                    const { getByTitle } = render(<ComponentLabel title={label.title} html_for={label.name} errors={undefined} />)
                     const label_element = getByTitle(label.title);
                     expect(label_element.textContent).toMatch(new RegExp(label.title));
                 })
