@@ -20,6 +20,7 @@ import { Props_note } from "@/context/types/note";
 import { Props_response } from "@/context/types/response";
 
 import { Url } from "@/frontend/logic/url";
+import { Props_params_search } from "@/frontend/types/props";
 
 export default function ComponentSearch() {
     const router = useRouter();
@@ -33,7 +34,7 @@ export default function ComponentSearch() {
     const [response, setResponse] = useState<Props_response>();
     const [search, setSearch] = useState<string>('');
     const [select_category, setSelect_category] = useState<string>('Seleccionar categoria...');
-    const [notes_featured, setNotes_featured] = useState<boolean | undefined>(undefined);
+    const [params, setParams] = useState<Props_params_search>();
 
     const action_note = async (action: string, note: Props_note) => {
         switch (action) {
@@ -74,33 +75,53 @@ export default function ComponentSearch() {
 
             let criteria = `/${(!errors.title?.type && title !== '') ? title : undefined}`
                 + `/${(select_category !== 'Seleccionar categoria...') ? select_category : undefined}`
-                + `/${notes_featured}`;
+                + `/${params?.priority}`
+                + `/${params?.featured}`;
 
             setSearch(Url(criteria));
         }
         listen_to_changes();
-    }, [title, select_category, notes_featured]);
+    }, [title, select_category, params]);
+
+    const listen_params = (type: string, value: string | boolean) => {
+        const updated_params = { ...params };
+
+        if (updated_params[type] === value) {
+            delete updated_params[type];
+        } else {
+            updated_params[type] = value;
+        }
+        setParams(updated_params);
+    }
 
     return (
         <section className="flex flex-col gap-5 mt-[30px] pt-7 pb-12">
             <article className="flex flex-col gap-y-3 items-center p-3 bg-primary border-secondary border-opacity-50 border-[0.1px] rounded-md">
-                <div className="flex justify-between w-full">
+                <div className="flex justify-between items-center w-full">
+                    <div className="flex gap-x-3 py-1">
+                        <span title="Prioridad Alta" onClick={() => listen_params('priority', 'Alta')} className={`${(params?.priority === 'Alta') && 'shadow-md shadow-secondary'} grid place-items-center rounded-full p-1 bg-sixth hover:shadow-md hover:shadow-secondary cursor-pointer`}>
+                            <ComponentIcon name="arrow" size={16} description_class="text-red-500 rotate-[-180deg] cursor-pointer" />
+                        </span>
+                        <span title="Prioridad Media" onClick={() => listen_params('priority', 'Media')} className={`${(params?.priority === 'Media') && 'shadow-md shadow-secondary'} grid place-items-center rounded-full p-1 bg-sixth hover:shadow-md hover:shadow-secondary cursor-pointer`}>
+                            <ComponentIcon name="arrow" size={16} description_class="text-orange-500 rotate-[-180deg] cursor-pointer" />
+                        </span>
+                        <span title="Prioridad Baja" onClick={() => listen_params('priority', 'Baja')} className={`${(params?.priority === 'Baja') && 'shadow-md shadow-secondary'} grid place-items-center rounded-full p-1 bg-sixth hover:shadow-md hover:shadow-secondary cursor-pointer`}>
+                            <ComponentIcon name="arrow" size={16} description_class="text-green-500 cursor-pointer" />
+                        </span>
+                    </div>
                     <span className="text-secondary text-center font-semibold text-lg tracking-wider">
                         Criterios de busqueda
                     </span>
-                    <div className="flex gap-x-2">
-                        <span title="Todas las notas" onClick={() => setNotes_featured(undefined)} className={`cursor-pointer ${(notes_featured === undefined) ? '' : 'opacity-30'}`}>
-                            <ComponentIcon name="star" size={20} description_class={`text-secondary`} />
+                    <div className="flex gap-x-3">
+                        <span title="Notas no destacadas" onClick={() => listen_params('featured', false)} className={`hover:opacity-100 ${(params?.['featured'] === false) ? '' : 'opacity-30'}`}>
+                            <ComponentIcon name="star-half" size={22} description_class="text-secondary cursor-pointer" />
                         </span>
-                        <span title="Notas no destacadas" onClick={() => setNotes_featured(false)} className={`cursor-pointer ${(notes_featured === false) ? '' : 'opacity-30'}`}>
-                            <ComponentIcon name="star-half" size={20} description_class={`text-secondary`} />
-                        </span>
-                        <span title="Notas destacadas" onClick={() => setNotes_featured(true)} className={`cursor-pointer ${(notes_featured === true) ? '' : 'opacity-30'}`}>
-                            <ComponentIcon name="star-fill" size={20} description_class={`text-secondary`} />
+                        <span title="Notas destacadas" onClick={() => listen_params('featured', true)} className={`hover:opacity-100 ${(params?.['featured'] === true) ? '' : 'opacity-30'}`}>
+                            <ComponentIcon name="star-fill" size={22} description_class="text-secondary cursor-pointer" />
                         </span>
                     </div>
                 </div>
-                <div className="grid grid-cols-5 gap-3 w-full">
+                <div className="grid grid-cols-3 gap-3 w-full">
                     <div className="col-span-1 flex flex-col gap-y-0.5">
                         <ComponentLabel title="Titulo" html_for="title" errors={errors} />
                         <ComponentInput

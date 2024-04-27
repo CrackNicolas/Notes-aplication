@@ -1,5 +1,5 @@
 export type Props_category = {
     title: string,
-    use: boolean,
-    icon: string
+    use?: boolean,
+    icon?: string
 }

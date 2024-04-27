@@ -22,13 +22,18 @@ export default function ComponentSelect(props: Props) {
     const { error, select_category, setSelect_category, register, required, setValue = () => { }, clearErrors = () => { } } = props;
 
     const [open_category, setOpen_category] = useState<boolean>(false);
-    const [categorys, setCategorys] = useState<Props_category[] | []>([]);
+    const [categorys, setCategorys] = useState<Props_category[]>([]);
+
+    const item_default: Props_category = {
+        title: 'Seleccionar categoria...'
+    }
 
     const selected = (category: string) => {
         setValue('category', category);
         setSelect_category(category);
         setOpen_category(false);
         clearErrors('category');
+        setCategorys(prev => prev.some(item => item.title === item_default.title) ? prev : [item_default,...prev]);
     }
 
     useEffect(() => {
