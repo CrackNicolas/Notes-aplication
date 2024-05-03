@@ -1,15 +1,13 @@
-export function Query(segments: string[]) {
-    const title = segments[0];
-    const category = segments[1];
-    const priority = segments[2];
-    const featured = segments[3];
+export function Query(segments: string) {
+    const criteria = JSON.parse(segments);
 
     return {
-        $or: [
-            { title: { $regex: `(?i)^${title}` } },
-            { category: category },
-            { priority: priority },
-            { featured: featured }
+        $or: [  
+            { title: { $regex: `(?i)^${criteria?.title}` } },
+            { category: criteria?.category },
+            { priority: criteria?.priority },
+            { createdAt: { $gte: criteria?.dates?.startDate, $lte: criteria?.dates?.endDate } },
+            { featured: criteria?.featured }
         ]
     }
 }

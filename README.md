@@ -56,18 +56,18 @@
     - Axios
 
   * Frontend
-    - NextJS - Access the url ["https://nextjs.org/docs/"] 
+    - NextJS - Access the url ["https://nextjs.org/docs"] 
     - React
     - TypeScript
     - JavaScript
-    - Tailwind - Access the url ["https://tailwindcss.com/"]
+    - Tailwind - Access the urls ["https://tailwindcss.com","https://react-tailwindcss-datepicker.vercel.app"]
 
 ## Testing
-  * Testing Library - Access the url ["https://testing-library.com/"]
-  * Mock Service Worker - Access the url ["https://mswjs.io/"]
+  * Testing Library - Access the url ["https://testing-library.com"]
+  * Mock Service Worker - Access the url ["https://mswjs.io"]
 
 ## External file upload service
-  * Access the url ["https://cloudinary.com/"]
+  * Access the url ["https://cloudinary.com"]
 
 ## External authentication service
-  * Access the url ["http://clerk.com/"]
+  * Access the url ["http://clerk.com"]

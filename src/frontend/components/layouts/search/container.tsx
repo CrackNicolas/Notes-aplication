@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 
+import Datepicker, { DateValueType } from "react-tailwindcss-datepicker";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 
@@ -19,7 +20,6 @@ import ComponentMessageConfirmation from "@/frontend/components/layouts/messages
 import { Props_note } from "@/context/types/note";
 import { Props_response } from "@/context/types/response";
 
-import { Url } from "@/frontend/logic/url";
 import { Props_params_search } from "@/frontend/types/props";
 
 export default function ComponentSearch() {
@@ -34,6 +34,7 @@ export default function ComponentSearch() {
     const [response, setResponse] = useState<Props_response>();
     const [search, setSearch] = useState<string>('');
     const [select_category, setSelect_category] = useState<string>('Seleccionar categoria...');
+    const [select_date, setSelect_date] = useState<DateValueType>({ startDate: null, endDate: null });
     const [params, setParams] = useState<Props_params_search>();
 
     const action_note = async (action: string, note: Props_note) => {
@@ -54,7 +55,7 @@ export default function ComponentSearch() {
 
     useEffect(() => {
         const load_notes = async () => {
-            const { data } = await axios.get(`/api/notes${search}`);
+            const { data } = await axios.get(`/api/notes${(search !== '{}') ? `/${search}` : ''}`);
             if (data.status === 200) {
                 setList_notes(data.data);
             }
@@ -73,15 +74,18 @@ export default function ComponentSearch() {
         const listen_to_changes = async () => {
             await trigger('title');
 
-            let criteria = `/${(!errors.title?.type && title !== '') ? title : undefined}`
-                + `/${(select_category !== 'Seleccionar categoria...') ? select_category : undefined}`
-                + `/${params?.priority}`
-                + `/${params?.featured}`;
+            const criteria: Props_params_search = {
+                title: (!errors.title?.type && title !== '') ? title : undefined,
+                category: (select_category !== 'Seleccionar categoria...') ? select_category : undefined,
+                priority: params?.priority,
+                dates: (select_date?.startDate) ? select_date : undefined,
+                featured: params?.featured
+            }
 
-            setSearch(Url(criteria));
+            setSearch(JSON.stringify(criteria));
         }
         listen_to_changes();
-    }, [title, select_category, params]);
+    }, [title, select_category, params, select_date]);
 
     const listen_params = (type: string, value: string | boolean) => {
         const updated_params = { ...params };
@@ -95,7 +99,7 @@ export default function ComponentSearch() {
     }
 
     return (
-        <section className="flex flex-col gap-5 mt-[30px] pt-7 pb-12">
+        <section className="flex flex-col gap-5 mt-[30px] pt-7 h-[calc(100vh-50px)]">
             <article className="flex flex-col gap-y-3 items-center p-3 bg-primary border-secondary border-opacity-50 border-[0.1px] rounded-md">
                 <div className="flex justify-between items-center w-full">
                     <div className="flex gap-x-3 py-1">
@@ -141,6 +145,35 @@ export default function ComponentSearch() {
                             setSelect_category={setSelect_category}
                             register={register}
                         />
+                    </div>
+                    <div className="col-span-1 flex flex-col gap-y-0.5">
+                        <ComponentLabel title="Fecha" html_for="date" />
+                        <Datepicker
+                            value={select_date}
+                            onChange={(event) => setSelect_date(event)}
+                            i18n={"es"}
+                            primaryColor={'cyan'}
+                            separator=" hasta "
+                            placeholder="Selecciona el rango de fechas"
+                            readOnly={true}
+                            minDate={new Date("2024-01-01")}
+                            maxDate={new Date()}
+                            startFrom={new Date()}
+                            configs={{
+                                shortcuts: {
+                                    today: "Hoy",
+                                    yesterday: "Ayer",
+                                    past: period => `Últimos ${period} dias`,
+                                    currentMonth: "Mes actual",
+                                    pastMonth: "Mes pasado"
+                                }
+                            }}
+                            popoverDirection="down"
+                            showShortcuts={true}
+                            toggleClassName={"absolute bg-primary rounded-r-md border border-secondary border-opacity-70 text-secondary right-0 h-full px-3 hover:bg-secondary hover:text-primary focus:outline-none disabled:opacity-40 disabled:cursor-not-allowed"}
+                            inputClassName={"w-full placeholder:text-secondary placeholder:opacity-70 bg-primary text-secondary border border-secondary border-opacity-50 border-[0.1px] rounded-md py-1 px-2 outline-none "}
+                        />
+
                     </div>
                 </div>
             </article>

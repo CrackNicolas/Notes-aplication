@@ -9,7 +9,7 @@ import { File_delete } from '@/backend/utils/cloudinary';
 import { Query } from '@/backend/api/query';
 import Notes from '@/backend/schemas/notes'
 
-export async function GET(req: Request, { params: { segments } }: { params: { segments: string[] } }): Promise<NextResponse> {
+export async function GET(req: Request, { params: { segments } }: { params: { segments: string } }): Promise<NextResponse> {
     const connection: boolean = await Conect_database();
     if (!connection) return NextResponse.json<Props_response>({ status: 500, info: { message: "Error al conectarse a la base de datos" } });
 
