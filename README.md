@@ -32,7 +32,7 @@
     3 - Lista de Notas: [ X ]
         - Muestra una lista de notas del usuario en el panel principal.
         - Proporciona opciones para crear nuevas notas y ver detalles de cada nota.
-    4 - Búsqueda y Filtros: [ ]
+    4 - Búsqueda y Filtros: [ X ]
         - Implementa un sistema de búsqueda para que los usuarios puedan encontrar notas fácilmente.
         - Añade filtros por categoría, fecha, etc.
     5 - Estilos con Tailwind CSS: [ X ]

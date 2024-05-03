@@ -3,8 +3,8 @@
 import { useRouter } from "next/navigation";
 
 import Datepicker, { DateValueType } from "react-tailwindcss-datepicker";
-import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 
 import axios from "axios";
 
@@ -19,6 +19,7 @@ import ComponentMessageConfirmation from "@/frontend/components/layouts/messages
 
 import { Props_note } from "@/context/types/note";
 import { Props_response } from "@/context/types/response";
+import { Props_category } from "@/context/types/category";
 
 import { Props_params_search } from "@/frontend/types/props";
 
@@ -35,7 +36,7 @@ export default function ComponentSearch() {
     const [response, setResponse] = useState<Props_response>();
     const [params, setParams] = useState<Props_params_search>();
     const [list_notes, setList_notes] = useState<Props_note[]>([]);
-    const [select_category, setSelect_category] = useState<string>('Seleccionar categoria...');
+    const [select_category, setSelect_category] = useState<Props_category>({title:'Seleccionar categoria...'});
     const [select_date, setSelect_date] = useState<DateValueType>({ startDate: null, endDate: null });
 
     const action_note = async (action: string, note: Props_note) => {
@@ -75,7 +76,7 @@ export default function ComponentSearch() {
 
             const criteria: Props_params_search = {
                 title: (!errors.title?.type && title !== '') ? title : undefined,
-                category: (select_category !== 'Seleccionar categoria...') ? select_category : undefined,
+                category: (select_category.title !== 'Seleccionar categoria...') ? select_category : undefined,
                 priority: params?.priority,
                 dates: (select_date?.startDate) ? select_date : undefined,
                 featured: params?.featured
@@ -112,8 +113,8 @@ export default function ComponentSearch() {
                             <ComponentIcon name="arrow" size={16} description_class="text-green-500 cursor-pointer" />
                         </span>
                     </div>
-                    <span className="text-secondary text-center font-semibold text-lg tracking-wider">
-                        Criterios de busqueda
+                    <span className="text-secondary text-center font-semibold text-md sm:text-lg tracking-wider">
+                        Criterios
                     </span>
                     <div className="flex gap-x-3">
                         <span title="Notas no destacadas" onClick={() => listen_params('featured', false)} className={`hover:opacity-100 ${(params?.['featured'] === false) ? '' : 'opacity-30'}`}>
@@ -124,7 +125,7 @@ export default function ComponentSearch() {
                         </span>
                     </div>
                 </div>
-                <div className="grid grid-cols-3 gap-3 w-full">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 w-full">
                     <div className="col-span-1 flex flex-col gap-y-0.5">
                         <ComponentLabel title="Titulo" html_for="title" errors={errors} />
                         <ComponentInput

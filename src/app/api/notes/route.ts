@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 
 import { Props_note } from "@/context/types/note";
+import { Props_category } from "@/context/types/category";
 import { Props_response } from "@/context/types/response";
 
 import { Conect_database } from "@/backend/utils/db";
@@ -29,10 +30,16 @@ export async function POST(req: Request): Promise<NextResponse> {
     try {
         const file = data.get('file') as File;
 
+        const category_prev = data.get('category');
+        const category: Props_category = category_prev && typeof category_prev === 'string' ? JSON.parse(category_prev) : null;
+
         const note_data: any = {
             title: data.get('title'),
             description: data.get('description'),
-            category: data.get('category'),
+            category: {
+                title: category.title,
+                icon: category.icon
+            },
             priority: data.get('priority'),
             featured: (data.get('featured') === 'SI')
         };
@@ -70,9 +77,15 @@ export async function PUT(req: Request): Promise<NextResponse> {
             return NextResponse.json<Props_response>({ status: 404, info: { message: "Id Nota no encontrada" } });
         }
 
+        const category_prev = data.get('category');
+        const category: Props_category = category_prev && typeof category_prev === 'string' ? JSON.parse(category_prev) : null;
+
         exists_note.title = data.get('title');
         exists_note.description = data.get('description');
-        exists_note.category = data.get('category');
+        exists_note.category = {
+            title: category.title,
+            icon: category.icon
+        };
         exists_note.priority = data.get('priority');
         exists_note.featured = (data.get('featured') === 'SI');
 

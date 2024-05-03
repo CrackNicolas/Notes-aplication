@@ -10,8 +10,8 @@ import { Props_category } from "@/context/types/category";
 
 type Props = {
     error?: FieldError | Merge<FieldError, FieldErrorsImpl<any>> | LiteralUnion<"required", string> | undefined,
-    select_category: string,
-    setSelect_category: Dispatch<SetStateAction<string>>
+    select_category: Props_category,
+    setSelect_category: Dispatch<SetStateAction<Props_category>>
     register: UseFormRegister<FieldValues>,
     setValue?: UseFormSetValue<FieldValues>,
     clearErrors?: UseFormClearErrors<FieldValues>,
@@ -30,7 +30,7 @@ export default function ComponentSelect(props: Props) {
         title: 'Seleccionar categoria...'
     }
 
-    const selected = (category: string) => {
+    const selected = (category: Props_category) => {
         list.current?.scrollTo(0,0);
         setValue('category', category);
         setSelect_category(category);
@@ -51,7 +51,7 @@ export default function ComponentSelect(props: Props) {
     }, []);
 
     useEffect(() => {
-        if (select_category === 'Seleccionar categoria...') {
+        if (select_category.title === 'Seleccionar categoria...') {
             setValue('category', undefined);
         }
     }, [select_category]);
@@ -70,15 +70,15 @@ export default function ComponentSelect(props: Props) {
                     <Fragment>
                         <div title="Categoria" onClick={() => setOpen_category(!open_category)} {...register('category', validation('category', required))} className={`flex justify-between items-center bg-primary w-full rounded-md border-[0.1px] ${open_category && 'rounded-b-none'} ${!error ? 'border-secondary' : 'border-error'} border-opacity-50 py-1 px-2 cursor-pointer`}>
                             <span title="Seleccionar categoria" className={`${!error ? 'text-secondary' : 'text-error'} text-md`}>
-                                {select_category}
+                                {select_category.title}
                             </span>
                             <ComponentIcon name={open_category ? 'caret-up' : 'caret-down'} size={20} description_class={`${!error ? 'text-secondary' : 'text-error'}`} />
                         </div>
                         <ul ref={list} title="Lista de categorias" className={`${(!open_category) && 'hidden'} absolute z-10 mt-[32px] w-full ${(categorys.length >= 4) && 'overflow-hidden overflow-y-scroll scroll-select h-[130px]'} bg-primary border-[0.1px] ${!error ? 'border-secondary' : 'border-error'} rounded-b-md border-opacity-50`}>
                             {
-                                categorys.filter(category => category.title != select_category).map(category => {
+                                categorys.filter(category => category.title != select_category.title).map(category => {
                                     return (
-                                        <li key={category.title} title={category.title} onClick={() => selected(category.title)} className={`flex justify-between items-center group ${!error ? 'text-secondary hover:bg-secondary' : 'text-error hover:bg-error'} hover:text-primary px-2 py-1 cursor-pointer hover:font-semibold`}>
+                                        <li key={category.title} title={category.title} onClick={() => selected(category)} className={`flex justify-between items-center group ${!error ? 'text-secondary hover:bg-secondary' : 'text-error hover:bg-error'} hover:text-primary px-2 py-1 cursor-pointer hover:font-semibold`}>
                                             <span className="text-md font-normal group-hover:font-semibold">
                                                 {category.title}
                                             </span>

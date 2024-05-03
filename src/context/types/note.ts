@@ -1,8 +1,10 @@
+import { Props_category } from "./category"
+
 export type Props_note = {
     _id?: string,
     title: string,
     description: string,
-    category: string,
+    category: Props_category,
     priority: string,
     featured: boolean
     file?: {

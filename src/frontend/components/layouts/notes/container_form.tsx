@@ -18,6 +18,7 @@ import ComponentMessageConfirmation from '@/frontend/components/layouts/messages
 
 import { Props_note } from '@/context/types/note';
 import { Props_response } from '@/context/types/response';
+import { Props_category } from '@/context/types/category';
 
 type Props = {
     setSelected: Dispatch<SetStateAction<Props_note | undefined>>,
@@ -32,7 +33,7 @@ export default function ComponentContainerForm({ setSelected, selected, setRefre
     const [loading, setLoading] = useState<boolean>(false);
     const [response, setResponse] = useState<Props_response>();
     const [file, setFile] = useState<File | undefined>(undefined);
-    const [select_category, setSelect_category] = useState<string>('Seleccionar categoria...');
+    const [select_category, setSelect_category] = useState<Props_category>({ title: 'Seleccionar categoria...' });
 
     const { register, handleSubmit, formState: { errors }, setValue, reset, watch, clearErrors } = useForm();
 
@@ -41,7 +42,7 @@ export default function ComponentContainerForm({ setSelected, selected, setRefre
         reset();
         setSelected(undefined);
         setFile(undefined);
-        setSelect_category('Seleccionar categoria...');
+        setSelect_category({ title: 'Seleccionar categoria...' });
     }
 
     const open_modal = (data: Props_response): void => {
@@ -58,7 +59,7 @@ export default function ComponentContainerForm({ setSelected, selected, setRefre
         form.set('description', data.description);
         form.set('priority', data.priority);
         form.set('featured', data.featured);
-        form.set('category', data.category);
+        form.set('category', JSON.stringify(data.category));
 
         if (file !== undefined) {
             form.set('file', file as File);
