@@ -1,4 +1,4 @@
-import { Dispatch, Fragment, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, Fragment, SetStateAction, useEffect, useRef, useState } from "react";
 import { FieldError, FieldErrorsImpl, FieldValues, LiteralUnion, Merge, UseFormClearErrors, UseFormRegister, UseFormSetValue } from "react-hook-form";
 
 import axios from "axios";
@@ -19,6 +19,8 @@ type Props = {
 }
 
 export default function ComponentSelect(props: Props) {
+    const list = useRef<HTMLUListElement>(null);
+
     const { error, select_category, setSelect_category, register, required, setValue = () => { }, clearErrors = () => { } } = props;
 
     const [open_category, setOpen_category] = useState<boolean>(false);
@@ -29,6 +31,7 @@ export default function ComponentSelect(props: Props) {
     }
 
     const selected = (category: string) => {
+        list.current?.scrollTo(0,0);
         setValue('category', category);
         setSelect_category(category);
         setOpen_category(false);
@@ -71,7 +74,7 @@ export default function ComponentSelect(props: Props) {
                             </span>
                             <ComponentIcon name={open_category ? 'caret-up' : 'caret-down'} size={20} description_class={`${!error ? 'text-secondary' : 'text-error'}`} />
                         </div>
-                        <ul title="Lista de categorias" className={`${(!open_category) && 'hidden'} absolute z-10 mt-[32px] w-full ${(categorys.length >= 4) && 'overflow-hidden overflow-y-scroll scroll-select h-[130px]'} bg-primary border-[0.1px] ${!error ? 'border-secondary' : 'border-error'} rounded-b-md border-opacity-50`}>
+                        <ul ref={list} title="Lista de categorias" className={`${(!open_category) && 'hidden'} absolute z-10 mt-[32px] w-full ${(categorys.length >= 4) && 'overflow-hidden overflow-y-scroll scroll-select h-[130px]'} bg-primary border-[0.1px] ${!error ? 'border-secondary' : 'border-error'} rounded-b-md border-opacity-50`}>
                             {
                                 categorys.filter(category => category.title != select_category).map(category => {
                                     return (

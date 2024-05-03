@@ -25,7 +25,7 @@ export default function ComponentHeader(props: Props) {
                     type="text"
                     id="search"
                     placeholder="Buscar..."
-                    onChange={(e) => search(e.target.value)}
+                    onChange={(e) => search(JSON.stringify({ title: e.target.value }))}
                     className="sm:w-auto w-full bg-sixth border-y-[0.1px] border-r-[0.1px] border-l-none border-secondary border-opacity-40 rounded-r-md outline-none px-2 py-0.5 text-fifth placeholder:opacity-60 placeholdel:text-sm"
                 />
             </div>

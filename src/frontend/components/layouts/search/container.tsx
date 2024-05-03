@@ -24,18 +24,19 @@ import { Props_params_search } from "@/frontend/types/props";
 
 export default function ComponentSearch() {
     const router = useRouter();
-
+    
     const { register, formState: { errors }, watch, trigger } = useForm();
-
-    const [list_notes, setList_notes] = useState<Props_note[]>([]);
+    
+    const title = watch('title');
 
     const [open, setOpen] = useState<boolean>(false);
+    const [search, setSearch] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(false);
     const [response, setResponse] = useState<Props_response>();
-    const [search, setSearch] = useState<string>('');
+    const [params, setParams] = useState<Props_params_search>();
+    const [list_notes, setList_notes] = useState<Props_note[]>([]);
     const [select_category, setSelect_category] = useState<string>('Seleccionar categoria...');
     const [select_date, setSelect_date] = useState<DateValueType>({ startDate: null, endDate: null });
-    const [params, setParams] = useState<Props_params_search>();
 
     const action_note = async (action: string, note: Props_note) => {
         switch (action) {
@@ -67,8 +68,6 @@ export default function ComponentSearch() {
         }
         load_notes();
     }, [response, search]);
-
-    const title = watch('title');
 
     useEffect(() => {
         const listen_to_changes = async () => {
@@ -154,7 +153,7 @@ export default function ComponentSearch() {
                             i18n={"es"}
                             primaryColor={'cyan'}
                             separator=" hasta "
-                            placeholder="Selecciona el rango de fechas"
+                            placeholder="Selecciona fecha"
                             readOnly={true}
                             minDate={new Date("2024-01-01")}
                             maxDate={new Date()}
