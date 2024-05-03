@@ -4,6 +4,7 @@ import ComponentIcon from "@/frontend/components/partials/icon";
 import ComponentModal from "@/frontend/components/partials/modal";
 
 import { Props_note } from "@/context/types/note";
+import { Time_elapsed } from "@/frontend/logic/format_time";
 
 type Props = {
     open: boolean,
@@ -13,23 +14,36 @@ type Props = {
 
 export default function ComponentView(props: Props) {
     const { open, setOpen, note } = props;
-    
+
     return (
         <ComponentModal open={open} setOpen={setOpen}>
-            <div className="flex flex-col w-full items-center sm:mt-0 sm:text-left">
-                <span className="absolute top-[5px] text-tertiary opacity-30 text-[12px]">
-                    Creada el 12 de jul de 2020
+            <div className="flex flex-col w-full items-center sm:mt-0 sm:text-left py-1">
+                <span title="Fecha de creacion" className="absolute top-[5px] text-tertiary opacity-30 text-[12px]">
+                    {Time_elapsed(note.createdAt)}
                 </span>
-                <span className="font-normal tracking-wide text-secondary">
-                    {note.title}
-                </span>
-                <p className="text-start text-sm text-gray-500 w-full mb-2">
+                <div className="flex justify-between items-center w-full">
+                    <span className="text-start line-clamp-1 font-normal tracking-wide text-secondary text-lg">
+                        {note.title}
+                    </span>
+                    <span className="rounded-full" title={`Categoria ${note.category.title.toLowerCase()}`}>
+                        <ComponentIcon name={note.category.icon} size={20} description_class="text-secondary cursor-pointer" />
+                    </span>
+                </div>
+                <p className="text-start text-sm text-gray-500 w-full mb-4">
                     {note.description}
                 </p>
-                <div className="flex justify-between items-center w-full ">
-                <ComponentIcon name={note.category.icon} size={22} description_class="text-secondary cursor-pointer" />
-                    <ComponentIcon name="arrow" size={16} description_class={`text-${(note.priority === 'Alta') ? 'red' : (note.priority === 'Media') ? 'orange' : 'green'}-500 ${(note.priority !== 'Baja') && 'rotate-[-180deg]'} cursor-pointer`} />
-                    <ComponentIcon name={`star-${note.featured ? 'fill' : 'half'}`} size={22} description_class="text-secondary cursor-pointer" />
+                <div className="flex justify-between items-center w-full">
+                    <button type="button" title="Ver archivo" className="bg-primary outline-none border border-[0.1px] border-secondary rounded text-secondary px-2 font-bold py-1 hover:bg-secondary hover:text-primary transition duration-500">
+                        Ver archivo
+                    </button>
+                    <div className="flex gap-x-2 items-center">
+                        <span className="rounded-full" title={`Prioridad ${note.priority}`}>
+                            <ComponentIcon name="arrow" size={21} description_class={`text-${(note.priority === 'Alta') ? 'red' : (note.priority === 'Media') ? 'orange' : 'green'}-500 ${(note.priority !== 'Baja') && 'rotate-[-180deg]'} cursor-pointer`} />
+                        </span>
+                        <span className="rounded-full" title={`Nota ${(note.featured ? 'destacada' : 'no destacada')}`}>
+                            <ComponentIcon name={`star-${note.featured ? 'fill' : 'half'}`} size={19} description_class="text-secondary cursor-pointer" />
+                        </span>
+                    </div>
                 </div>
             </div>
         </ComponentModal>
