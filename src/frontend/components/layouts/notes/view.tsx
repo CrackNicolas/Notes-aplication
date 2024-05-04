@@ -1,11 +1,13 @@
+import Image from "next/image";
+
 import { Dispatch, SetStateAction, useState } from "react";
 
 import ComponentIcon from "@/frontend/components/partials/icon";
 import ComponentModal from "@/frontend/components/partials/modal";
 
 import { Props_note } from "@/context/types/note";
+
 import { Time_elapsed } from "@/frontend/logic/format_time";
-import Image from "next/image";
 
 type Props = {
     open: boolean,
@@ -32,14 +34,16 @@ export default function ComponentView(props: Props) {
                         <ComponentIcon name={note.category.icon} size={20} description_class="text-secondary cursor-pointer" />
                     </span>
                 </div>
-                <p className="text-start text-sm text-gray-500 w-full mb-4">
+                <p className="text-start text-sm text-gray-500 w-full mb-5">
                     {note.description}
                 </p>
                 <div className="flex justify-between items-center w-full">
                     {
                         (note.file) && (
-                            <button onClick={() => setView_file(true)} type="button" title="Ver archivo" className="bg-primary outline-none border border-[0.1px] border-secondary rounded text-secondary px-2 font-bold py-1 hover:bg-secondary hover:text-primary transition duration-500">
-                                Ver archivo
+                            <button onClick={() => setView_file(!view_file)} type="button" title="Ver archivo" className="bg-primary outline-none border border-[0.1px] border-secondary rounded text-secondary px-2 font-bold py-1 hover:bg-secondary hover:text-primary transition duration-500">
+                                {
+                                    view_file ? 'Cerrar archivo':'Ver archivo'
+                                }
                             </button>
                         )
                     }
@@ -54,8 +58,8 @@ export default function ComponentView(props: Props) {
                 </div>
                 {
                     view_file && (
-                        <div className="grid place-items-center w-full mt-4">
-                            <Image src={(note.file) ? note.file?.url : ''} alt="" width={100} height={100}/>
+                        <div className="grid place-items-center w-full mt-5">
+                            <Image src={(note.file) ? note.file?.url : ''} alt="Archivo guardado" width={200} height={200} className="h-[265px] w-[265px] sm:h-[350px] sm:w-[350px]" title={note.file?.name} />
                         </div>
                     )
                 }
