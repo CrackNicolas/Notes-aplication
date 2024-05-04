@@ -3,7 +3,7 @@
 import { useSearchParams } from 'next/navigation';
 
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { ChangeEvent, Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 import axios from 'axios';
 
@@ -51,6 +51,14 @@ export default function ComponentContainerForm({ setSelected, selected, setRefre
         setResponse(data);
     }
 
+    const capture_file = (event: ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (file) {
+            if (!file.type.startsWith('image/')) return;
+            setFile(file);
+        }
+    }
+
     const onSubmit: SubmitHandler<FieldValues | Props_note> = async (data) => {
         let response;
 
@@ -94,6 +102,8 @@ export default function ComponentContainerForm({ setSelected, selected, setRefre
         if (selected?.category) {
             setSelect_category(selected.category);
         }
+
+        window.scrollTo(0,0);
 
     }, [selected])
 
@@ -190,7 +200,7 @@ export default function ComponentContainerForm({ setSelected, selected, setRefre
                                     (selected?.file?.id) ? `${selected.file.name} cargado` : "Subir archivo..."
                             }
                         </span>
-                        <input id="file-upload" name="file-upload" type="file" onChange={(e) => setFile(e.target.files?.[0])} className="sr-only" />
+                        <input id="file-upload" accept="image/*" name="file-upload" type="file" onChange={(e) => capture_file(e)} className="sr-only" />
                     </label>
                 </div>
                 <div className="flex gap-x-10">
