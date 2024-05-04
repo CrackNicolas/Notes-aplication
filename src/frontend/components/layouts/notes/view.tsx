@@ -1,10 +1,11 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 
 import ComponentIcon from "@/frontend/components/partials/icon";
 import ComponentModal from "@/frontend/components/partials/modal";
 
 import { Props_note } from "@/context/types/note";
 import { Time_elapsed } from "@/frontend/logic/format_time";
+import Image from "next/image";
 
 type Props = {
     open: boolean,
@@ -14,6 +15,8 @@ type Props = {
 
 export default function ComponentView(props: Props) {
     const { open, setOpen, note } = props;
+
+    const [view_file, setView_file] = useState<boolean>(false);
 
     return (
         <ComponentModal open={open} setOpen={setOpen}>
@@ -33,9 +36,13 @@ export default function ComponentView(props: Props) {
                     {note.description}
                 </p>
                 <div className="flex justify-between items-center w-full">
-                    <button type="button" title="Ver archivo" className="bg-primary outline-none border border-[0.1px] border-secondary rounded text-secondary px-2 font-bold py-1 hover:bg-secondary hover:text-primary transition duration-500">
-                        Ver archivo
-                    </button>
+                    {
+                        (note.file) && (
+                            <button onClick={() => setView_file(true)} type="button" title="Ver archivo" className="bg-primary outline-none border border-[0.1px] border-secondary rounded text-secondary px-2 font-bold py-1 hover:bg-secondary hover:text-primary transition duration-500">
+                                Ver archivo
+                            </button>
+                        )
+                    }
                     <div className="flex gap-x-2 items-center">
                         <span className="rounded-full" title={`Prioridad ${note.priority}`}>
                             <ComponentIcon name="arrow" size={21} description_class={`text-${(note.priority === 'Alta') ? 'red' : (note.priority === 'Media') ? 'orange' : 'green'}-500 ${(note.priority !== 'Baja') && 'rotate-[-180deg]'} cursor-pointer`} />
@@ -45,6 +52,13 @@ export default function ComponentView(props: Props) {
                         </span>
                     </div>
                 </div>
+                {
+                    view_file && (
+                        <div className="grid place-items-center w-full mt-4">
+                            <Image src={(note.file) ? note.file?.url : ''} alt="" width={100} height={100}/>
+                        </div>
+                    )
+                }
             </div>
         </ComponentModal>
     )
