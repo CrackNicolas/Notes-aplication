@@ -7,6 +7,8 @@ import { AppProgressBar as ProgressBar } from "next-nprogress-bar";
 
 import { createContext, useEffect } from "react";
 
+import axios from "axios";
+
 import { Props_context } from "@/context/types/context";
 import { Props_layouts } from "@/frontend/types/props";
 
@@ -29,6 +31,24 @@ export default function Provider({ children }: Props_layouts) {
             router.push("/without_internet")
         }
     }, [path])
+
+    useEffect(() => {
+        const add_user = async () => {
+            if (user && user.fullName && user.emailAddresses) {
+                const form = new FormData();
+                form.set('name', user.fullName);
+                form.set('email', user.emailAddresses.toString());
+
+                const { data } = await axios.post("/api/users", form);
+                if (data.status === 201) {
+                    console.log(data.info.message)
+                }
+                if (data.status === 500) {
+                }
+            }
+        }
+        add_user();
+    }, [user])
 
     return (
         <Context.Provider value={{ section_current: path.substring(1), user, button_sesion: <UserButton afterSignOutUrl="/" /> }}>
