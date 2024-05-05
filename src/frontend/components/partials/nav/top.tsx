@@ -43,14 +43,9 @@ export default function ComponentNavTop(props: Props_context) {
                                     {button_sesion}
                                 </div>
                                 :
-                                <div className="flex gap-x-3">
-                                    <Link href="/sign-in" title="Login" className="group flex px-[1.5px] py-[2.5px] outline-none">
-                                        <span className="group-hover:text-secondary text-md tracking-wider text-tertiary">Login</span>
-                                    </Link>
-                                    <Link href="/sign-up" title="Registrar" className="group flex px-[1.5px] py-[2.5px] outline-none">
-                                        <span className="group-hover:text-secondary text-md tracking-wider text-tertiary">Registrar</span>
-                                    </Link>
-                                </div>
+                                <Link href="/sign-in" title="Login" className="group flex px-[1.5px] py-[2.5px] outline-none">
+                                    <span className="group-hover:text-secondary text-md tracking-wider text-tertiary">Login</span>
+                                </Link>
                         }
                     </div>
                 </div>

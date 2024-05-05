@@ -40,11 +40,8 @@ export default function Provider({ children }: Props_layouts) {
                 form.set('email', user.emailAddresses.toString());
 
                 const { data } = await axios.post("/api/users", form);
-                if (data.status === 201) {
-                    console.log(data.info.message)
-                }
-                if (data.status === 500) {
-                }
+                
+                console.log(data.info.message);
             }
         }
         add_user();
