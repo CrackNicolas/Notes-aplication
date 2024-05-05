@@ -1,9 +1,11 @@
-import { Dispatch, Fragment, SetStateAction, useEffect, useRef, useState } from "react";
+import { Dispatch, Fragment, SetStateAction, useContext, useEffect, useRef, useState } from "react";
 import { FieldError, FieldErrorsImpl, FieldValues, LiteralUnion, Merge, UseFormClearErrors, UseFormRegister, UseFormSetValue } from "react-hook-form";
 
 import axios from "axios";
 
 import ComponentIcon from '@/frontend/components/partials/icon';
+
+import { Context } from "@/context/provider";
 
 import { validation } from "@/frontend/validations/form";
 import { Props_category } from "@/context/types/category";
@@ -19,6 +21,8 @@ type Props = {
 }
 
 export default function ComponentSelect(props: Props) {
+    const {session} = useContext(Context);
+
     const list = useRef<HTMLUListElement>(null);
 
     const { error, select_category, setSelect_category, register, required, setValue = () => { }, clearErrors = () => { } } = props;
@@ -41,7 +45,7 @@ export default function ComponentSelect(props: Props) {
 
     useEffect(() => {
         const load_categorys = async () => {
-            const { data } = await axios.get("/api/categorys/true");
+            const { data } = await axios.get(`/api/categorys/${session.user.id}/true`);
 
             if (data.status === 200) {
                 setCategorys(data.data);

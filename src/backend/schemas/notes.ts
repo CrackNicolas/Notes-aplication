@@ -54,7 +54,6 @@ const schema_notes = new Schema<Props_note>({
     user_id: {
         type: String,
         require: [true, 'Required user_id'],
-        unique: true,
         trim: true
     }
 },

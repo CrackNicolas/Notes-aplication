@@ -16,6 +16,11 @@ const schema_category = new Schema<Props_category>({
     icon: {
         type: String,
         require: [true, 'Required icon']
+    },
+    user_id: {
+        type: String,
+        require: [true, 'Required user_id'],
+        trim: true
     }
 },
     {

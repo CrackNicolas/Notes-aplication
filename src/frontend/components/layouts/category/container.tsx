@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 
 import axios from "axios";
 
@@ -8,10 +8,13 @@ import ComponentList from "./list/container"
 import ComponentHeader from "@/frontend/components/partials/template/dashboard/header"
 import ComponentMessageConfirmation from "@/frontend/components/layouts/messages/confirmation";
 
+import { Context } from "@/context/provider";
 import { Props_category } from "@/context/types/category"
 import { Props_response } from "@/context/types/response";
 
 export default function ComponentCategory() {
+    const { session } = useContext(Context);
+    
     const [list_categorys, setList_categorys] = useState<Props_category[]>([]);
 
     const [restart, setRestart] = useState<boolean>(false);
@@ -20,8 +23,8 @@ export default function ComponentCategory() {
 
     useEffect(() => {
         const load_categorys = async () => {
-            const { data } = await axios.get("/api/categorys");
-           
+            const { data } = await axios.get(`/api/categorys/${session.user.id}`);
+
             if (data.status === 200) {
                 setList_categorys(data.data);
             }

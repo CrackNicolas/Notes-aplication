@@ -5,8 +5,8 @@ export function Query(segments: string[]) {
 
     const criteria = JSON.parse(segments[1]);
 
-    console.log(criteria);
-    //2024-05-05T04:42:31.959+00:00
+    //TENER EN CUENTA QUE LA FECHA NO FUNCIONA BIEN PROBAR LA BUSQUEDA DE HOY
+
     return {
         user_id: user_id,
         $or: [
