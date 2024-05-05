@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 
 import Datepicker, { DateValueType } from "react-tailwindcss-datepicker";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import axios from "axios";
@@ -17,6 +17,7 @@ import ComponentLoading from "@/frontend/components/layouts/notes/list/loading";
 import ComponentMessageWait from "@/frontend/components/layouts/messages/wait";
 import ComponentMessageConfirmation from "@/frontend/components/layouts/messages/confirmation";
 
+import { Context } from "@/context/provider";
 import { Props_note } from "@/context/types/note";
 import { Props_response } from "@/context/types/response";
 import { Props_category } from "@/context/types/category";
@@ -24,6 +25,8 @@ import { Props_category } from "@/context/types/category";
 import { Props_params_search } from "@/frontend/types/props";
 
 export default function ComponentSearch() {
+    const {session} = useContext(Context);
+    
     const router = useRouter();
     
     const { register, formState: { errors }, watch, trigger } = useForm();
@@ -57,7 +60,7 @@ export default function ComponentSearch() {
 
     useEffect(() => {
         const load_notes = async () => {
-            const { data } = await axios.get(`/api/notes${(search !== '{}') ? `/${search}` : ''}`);
+            const { data } = await axios.get(`/api/notes/${session.user.id}${(search !== '{}') ? `/${search}` : ''}`);
             if (data.status === 200) {
                 setList_notes(data.data);
             }

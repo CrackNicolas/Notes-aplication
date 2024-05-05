@@ -1,5 +1,5 @@
 export type Props_user = {
-    _id?: string,
+    id: string,
     name: string,
     email: string
 }

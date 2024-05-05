@@ -13,13 +13,14 @@ export async function POST(req: Request): Promise<NextResponse> {
     if (!connection) return NextResponse.json<Props_response>({ status: 500, info: { message: "Error al conectarse a la base de datos" } })
 
     try {
-        const existing_user = await User.findOne({ email: data.get('email') });
+        const exists_user = await User.findOne({ email: data.get('email') });
 
-        if (existing_user) {
+        if (exists_user) {
             return NextResponse.json<Props_response>({ status: 400, info: { message: "El usuario ya está registrado" } });
         }
 
         const new_user = new User({
+            id: data.get('id'),
             name: data.get('name'),
             email: data.get('email')
         });

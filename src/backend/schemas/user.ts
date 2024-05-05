@@ -3,6 +3,12 @@ import { Schema, model, models } from "mongoose";
 import { Props_user } from "@/context/types/user";
 
 const schema_user = new Schema<Props_user>({
+    id: {
+        type: String,
+        require: [true, 'Required id'],
+        unique: true,
+        trim: true
+    },
     name: {
         type: String,
         require: [true, 'Required name'],

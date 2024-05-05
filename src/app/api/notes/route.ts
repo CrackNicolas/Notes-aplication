@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server"
 
-import { Props_note } from "@/context/types/note";
 import { Props_category } from "@/context/types/category";
 import { Props_response } from "@/context/types/response";
 
@@ -8,18 +7,6 @@ import { Conect_database } from "@/backend/utils/db";
 import { File_transformer, File_edit } from '@/backend/utils/cloudinary';
 
 import Notes from '@/backend/schemas/notes'
-
-export async function GET(): Promise<NextResponse> {
-    const connection: boolean = await Conect_database();
-    if (!connection) return NextResponse.json<Props_response>({ status: 500, info: { message: "Error al conectarse a la base de datos" } })
-
-    try {
-        const notes: Props_note[] = await Notes.find();
-        return NextResponse.json<Props_response>({ status: 200, data: notes });
-    } catch (error) {
-        return NextResponse.json<Props_response>({ status: 500, info: { message: "Errores con el servidor" } });
-    }
-}
 
 export async function POST(req: Request): Promise<NextResponse> {
     const data = await req.formData();
@@ -41,7 +28,8 @@ export async function POST(req: Request): Promise<NextResponse> {
                 icon: category.icon
             },
             priority: data.get('priority'),
-            featured: (data.get('featured') === 'SI')
+            featured: (data.get('featured') === 'SI'),
+            user_id: data.get('user_id')
         };
 
         if (file) {

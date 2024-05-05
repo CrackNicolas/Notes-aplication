@@ -11,22 +11,26 @@ import ComponentIcon from '@/frontend/components/partials/icon';
 import ComponentInput from '@/frontend/components/partials/form/input';
 import ComponentLabel from '@/frontend/components/partials/form/label';
 import ComponentSelect from '@/frontend/components/partials/form/select';
+import ComponentMessageWait from '@/frontend/components/layouts/messages/wait';
 import ComponentItemPriority from '@/frontend/components/partials/form/item_priority';
 import ComponentItemFeatured from '@/frontend/components/partials/form/item_featured';
-import ComponentMessageWait from '@/frontend/components/layouts/messages/wait';
 import ComponentMessageConfirmation from '@/frontend/components/layouts/messages/confirmation';
 
 import { Props_note } from '@/context/types/note';
 import { Props_response } from '@/context/types/response';
 import { Props_category } from '@/context/types/category';
+import { Props_user } from '@/context/types/user';
 
 type Props = {
     setSelected: Dispatch<SetStateAction<Props_note | undefined>>,
     selected: Props_note | undefined,
-    setRefresh: () => void
+    setRefresh: () => void,
+    user?:Props_user
 }
 
-export default function ComponentContainerForm({ setSelected, selected, setRefresh }: Props) {
+export default function ComponentContainerForm(props: Props) {
+    const {setSelected, selected, setRefresh, user} = props;
+
     const search_params = useSearchParams()
 
     const [open, setOpen] = useState<boolean>(false);
@@ -68,7 +72,10 @@ export default function ComponentContainerForm({ setSelected, selected, setRefre
         form.set('priority', data.priority);
         form.set('featured', data.featured);
         form.set('category', JSON.stringify(data.category));
-
+        
+        if(user){
+            form.set('user_id', user.id);
+        }
         if (file !== undefined) {
             form.set('file', file as File);
         }
@@ -103,7 +110,7 @@ export default function ComponentContainerForm({ setSelected, selected, setRefre
             setSelect_category(selected.category);
         }
 
-        window.scrollTo(0,0);
+        window.scrollTo(0, 0);
 
     }, [selected])
 

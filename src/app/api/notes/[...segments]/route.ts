@@ -9,7 +9,7 @@ import { File_delete } from '@/backend/utils/cloudinary';
 import { Query } from '@/backend/api/query';
 import Notes from '@/backend/schemas/notes'
 
-export async function GET(req: Request, { params: { segments } }: { params: { segments: string } }): Promise<NextResponse> {
+export async function GET(req: Request, { params: { segments } }: { params: { segments: string[] } }): Promise<NextResponse> {
     const connection: boolean = await Conect_database();
     if (!connection) return NextResponse.json<Props_response>({ status: 500, info: { message: "Error al conectarse a la base de datos" } });
 
@@ -21,8 +21,8 @@ export async function GET(req: Request, { params: { segments } }: { params: { se
         return NextResponse.json<Props_response>({ status: 500, info: { message: "Errores con el servidor" } })
     }
 }
-export async function DELETE(req: Request, { params: { segments } }: { params: { segments: string } }): Promise<NextResponse> {
-    const _id = segments;
+export async function DELETE(req: Request, { params: { segments } }: { params: { segments: string[] } }): Promise<NextResponse> {
+    const _id = segments[1];
 
     const connection: boolean = await Conect_database();
     if (!connection) return NextResponse.json<Props_response>({ status: 500, info: { message: "Error al conectarse a la base de datos" } });
