@@ -31,7 +31,7 @@ export async function GET(req: Request, { params: { segments } }: { params: { se
             ])
         }
 
-        const categorys: Props_category[] = await Category.find({ "use.user_id": user_id });
+        const categorys: Props_category[] = await Category.find((use) ? { "use.user_id": user_id, "use.value": use } : { "use.user_id": user_id });
 
         return NextResponse.json<Props_response>({ status: 200, data: categorys });
     } catch (error) {
