@@ -30,6 +30,13 @@ export async function GET(req: Request, { params: { segments } }: { params: { se
                 { title: 'Otros', use: [{ value: false, user_id }], icon: 'others' }
             ])
         }
+        
+        const exists_user = await Category.findOne({ "use.user_id": user_id });
+
+        if(!exists_user){
+            
+        }
+        
 
         const categorys: Props_category[] = await Category.find((use) ? { "use.user_id": user_id, "use.value": use } : { "use.user_id": user_id });
 
