@@ -1,6 +1,10 @@
 export type Props_category = {
     title: string,
-    use?: boolean,
-    icon?: string,
-    user_id?: string
+    use?: [
+        {
+            value: boolean,
+            user_id: string
+        }
+    ],
+    icon?: string
 }

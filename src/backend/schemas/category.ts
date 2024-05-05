@@ -9,18 +9,22 @@ const schema_category = new Schema<Props_category>({
         unique: true,
         trim: true
     },
-    use: {
-        type: Boolean,
-        require: [true, 'Required use']
-    },
+    use: [
+        {
+            value: {
+                type: Boolean,
+                require: [true, 'Required use']
+            },
+            user_id: {
+                type: String,
+                require: [true, 'Required user_id'],
+                trim: true
+            }
+        }
+    ],
     icon: {
         type: String,
         require: [true, 'Required icon']
-    },
-    user_id: {
-        type: String,
-        require: [true, 'Required user_id'],
-        trim: true
     }
 },
     {

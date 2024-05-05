@@ -18,20 +18,20 @@ export async function GET(req: Request, { params: { segments } }: { params: { se
         const count: number = await Category.countDocuments();
         if (count === 0) {
             await Category.create([
-                { title: 'Proyecto', use: true, icon: 'proyects', user_id },
-                { title: 'Trabajo', use: true, icon: 'briefcase', user_id },
-                { title: 'Inversion', use: false, icon: 'investment', user_id },
-                { title: 'Estudios', use: false, icon: 'studies', user_id },
-                { title: 'Personal', use: false, icon: 'person', user_id },
-                { title: 'Viajes', use: false, icon: 'plane', user_id },
-                { title: 'Historias', use: false, icon: 'stories', user_id },
-                { title: 'Peliculas', use: false, icon: 'film', user_id },
-                { title: 'Musicas', use: false, icon: 'music', user_id },
-                { title: 'Otros', use: false, icon: 'others', user_id }
+                { title: 'Proyecto', use: [{ value: true, user_id }], icon: 'proyects' },
+                { title: 'Trabajo', use: [{ value: true, user_id }], icon: 'briefcase' },
+                { title: 'Inversion', use: [{ value: false, user_id }], icon: 'investment' },
+                { title: 'Estudios', use: [{ value: false, user_id }], icon: 'studies' },
+                { title: 'Personal', use: [{ value: false, user_id }], icon: 'person' },
+                { title: 'Viajes', use: [{ value: false, user_id }], icon: 'plane' },
+                { title: 'Historias', use: [{ value: false, user_id }], icon: 'stories' },
+                { title: 'Peliculas', use: [{ value: false, user_id }], icon: 'film' },
+                { title: 'Musicas', use: [{ value: false, user_id }], icon: 'music' },
+                { title: 'Otros', use: [{ value: false, user_id }], icon: 'others' }
             ])
         }
 
-        const categorys: Props_category[] = await Category.find((use)? { user_id, use } : { user_id });
+        const categorys: Props_category[] = await Category.find({ "use.user_id": user_id });
 
         return NextResponse.json<Props_response>({ status: 200, data: categorys });
     } catch (error) {
