@@ -7,15 +7,20 @@ import { Conect_database } from "@/backend/utils/db";
 import Category from '@/backend/schemas/category'
 
 export async function PUT(req: Request): Promise<NextResponse> {
-    const { title, use } = await req.json();
+    const { title, use, user_id } = await req.json();
 
     const connection: boolean = await Conect_database();
     if (!connection) return NextResponse.json<Props_response>({ status: 500, info: { message: "Error al conectarse a la base de datos" } });
 
     try {
         if (!use) {
-            const categorys_with_true = await Category.countDocuments({ use: true });
-            if (categorys_with_true === 2) {
+            const user_categorys = await Category.find({ "use.user_id": user_id });
+
+            const count = user_categorys.filter(category =>
+                category.use.some((prev: { user_id: string, value: boolean }) => prev.user_id === user_id && prev.value === true)
+            ).length
+
+            if (count === 2) {
                 return NextResponse.json<Props_response>({ status: 200, info: { message: 'Debes tener por lo menos 2 categorias en uso' } });
             }
         }
@@ -26,7 +31,8 @@ export async function PUT(req: Request): Promise<NextResponse> {
             return NextResponse.json<Props_response>({ status: 404, info: { message: "Categoria no encontrada" } });
         }
 
-        exists_category.use = use;
+        const user_category = exists_category.use.find((prev: { user_id: string }) => prev.user_id === user_id);
+        user_category.value = use;
 
         await exists_category.save();
 

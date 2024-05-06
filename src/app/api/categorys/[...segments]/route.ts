@@ -30,13 +30,17 @@ export async function GET(req: Request, { params: { segments } }: { params: { se
                 { title: 'Otros', use: [{ value: false, user_id }], icon: 'others' }
             ])
         }
-        
+
         const exists_user = await Category.findOne({ "use.user_id": user_id });
 
-        if(!exists_user){
-            
+        if (!exists_user) {
+            await Category.updateMany({}, { $push: { use: { value: false, user_id } } });
+            await Category.updateMany(
+                { title: { $in: ["Proyecto", "Trabajo"] } },
+                { $set: { "use.$[elem].value": true } },
+                { arrayFilters: [{ "elem.user_id": user_id }] }
+            );
         }
-        
 
         const categorys: Props_category[] = await Category.find((use) ? { "use.user_id": user_id, "use.value": use } : { "use.user_id": user_id });
 
