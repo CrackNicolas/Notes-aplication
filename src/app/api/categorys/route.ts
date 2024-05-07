@@ -16,7 +16,7 @@ export async function PUT(req: Request): Promise<NextResponse> {
         if (!use) {
             const user_categorys = await Category.find({ "use.user_id": user_id });
 
-            const count = user_categorys.filter(category =>
+            const count: number = user_categorys.filter(category =>
                 category.use.some((prev: { user_id: string, value: boolean }) => prev.user_id === user_id && prev.value === true)
             ).length
 
@@ -31,8 +31,8 @@ export async function PUT(req: Request): Promise<NextResponse> {
             return NextResponse.json<Props_response>({ status: 404, info: { message: "Categoria no encontrada" } });
         }
 
-        const user_category = exists_category.use.find((prev: { user_id: string }) => prev.user_id === user_id);
-        user_category.value = use;
+        const category = exists_category.use.find((prev: { user_id: string }) => prev.user_id === user_id);
+        category.value = use;
 
         await exists_category.save();
 

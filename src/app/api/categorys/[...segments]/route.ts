@@ -31,9 +31,9 @@ export async function GET(req: Request, { params: { segments } }: { params: { se
             ])
         }
 
-        const exists_user = await Category.findOne({ "use.user_id": user_id });
+        const user_category = await Category.findOne({ "use.user_id": user_id });
 
-        if (!exists_user) {
+        if (!user_category) {
             await Category.updateMany({}, { $push: { use: { value: false, user_id } } });
             await Category.updateMany(
                 { title: { $in: ["Proyecto", "Trabajo"] } },
@@ -42,7 +42,16 @@ export async function GET(req: Request, { params: { segments } }: { params: { se
             );
         }
 
-        const categorys: Props_category[] = await Category.find((use) ? { "use.user_id": user_id, "use.value": use } : { "use.user_id": user_id });
+        if(use){
+            const user_categorys = await Category.find({ "use.user_id": user_id });
+
+            const categorys_with_true = user_categorys.filter(category =>
+                category.use.some((prev: { user_id: string, value: boolean }) => prev.user_id === user_id && prev.value === true)
+            )
+            return NextResponse.json<Props_response>({ status: 200, data: categorys_with_true });
+        }
+
+        const categorys: Props_category[] = await Category.find({ "use.user_id": user_id });
 
         return NextResponse.json<Props_response>({ status: 200, data: categorys });
     } catch (error) {
