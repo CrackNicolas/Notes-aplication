@@ -13,7 +13,7 @@ export function Query(segments: string[]) {
             { title: { $regex: `(?i)^${criteria?.title}` } },
             { 'category.title': criteria?.category?.title },
             { priority: criteria?.priority },
-            { createdAt: { $gte: new Date(criteria?.dates?.startDate), $lte: new Date(criteria?.dates?.endDate) } },
+            { createdAt: { $gte: criteria?.dates?.startDate, $lte: criteria?.dates?.endDate } },
             { featured: criteria?.featured }
         ]
     }
