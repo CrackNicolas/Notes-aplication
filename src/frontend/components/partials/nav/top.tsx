@@ -27,11 +27,15 @@ export default function ComponentNavTop(props: Props_context) {
                         <Link href="/" className="sm:flex hidden flex-shrink-0 items-center" title="Logo" onMouseOver={() => setFocus(true)} onMouseLeave={() => setFocus(false)}>
                             <ComponentIcon testid="icon-home" name={`${focus ? 'logo-fill' : 'logo'}`} size={27} description_class="icon-home text-secondary cursor-pointer" />
                         </Link>
-                        <div className="hidden sm:ml-4 sm:block">
-                            <div className="flex space-x-1">
-                                <Link href="/dashboard/main" className={`${(section_current === "dashboard") && 'text-secondary'} hover:text-secondary tracking-wider text-fifth px-1 py-2 text-md font-normal transition duration-500`} title="Panel">Panel</Link>
-                            </div>
-                        </div>
+                        {
+                            (session.user.id !== '') && (
+                                <div className="hidden sm:ml-4 sm:block">
+                                    <div className="flex space-x-1">
+                                        <Link href="/dashboard/main" className={`${(section_current === "dashboard") && 'text-secondary'} hover:text-secondary tracking-wider text-fifth px-1 py-2 text-md font-normal transition duration-500`} title="Panel">Panel</Link>
+                                    </div>
+                                </div>
+                            )
+                        }
                     </div>
                     <div className="absolute inset-y-0 right-0 flex items-center pr-1 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                         {

@@ -40,13 +40,6 @@ export default function Provider({ children }: Props_layouts) {
     useEffect(() => {
         const add_user = async () => {
             if (user && user.fullName && user.emailAddresses && user.id) {
-                const form = new FormData();
-                form.set('id', user.id);
-                form.set('name', user.fullName);
-                form.set('email', user.emailAddresses.toString());
-
-                await axios.post("/api/users", form);
-
                 setSession({
                     user: {
                         id: user.id,
@@ -54,6 +47,15 @@ export default function Provider({ children }: Props_layouts) {
                         email: user.emailAddresses.toString()
                     }
                 })
+                
+                const form = new FormData();
+                form.set('id', user.id);
+                form.set('name', user.fullName);
+                form.set('email', user.emailAddresses.toString());
+
+                await axios.post("/api/users", form); 
+            } else {
+                router.push('/');
             }
         }
         add_user();
