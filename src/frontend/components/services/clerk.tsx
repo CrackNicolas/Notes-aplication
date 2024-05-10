@@ -3,7 +3,7 @@ import { UserButton, SignIn } from "@clerk/nextjs";
 export function ComponentUserButton() {
     return <UserButton afterSignOutUrl="/" appearance={{
         elements: {
-            userButtonPopoverActionButton: ""
+            userButtonPopoverActionButtonText__signOut: "text-transparent before:text-tertiary before:content-['Cerrar_sesión']"
         }
     }} />
 }
