@@ -25,14 +25,14 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Props_layouts) {
   return (
-    <ClerkProvider appearance={{ baseTheme: dark }}>
-      <html lang="en">
-        <body className={roboto.className}>
+    <html lang="en">
+      <body className={roboto.className}>
+        <ClerkProvider appearance={{ baseTheme: dark }} >
           <Provider>
             {children}
           </Provider>
-        </body>
-      </html>
-    </ClerkProvider>
+        </ClerkProvider>
+      </body>
+    </html>
   )
 }

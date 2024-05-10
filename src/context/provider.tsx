@@ -1,6 +1,6 @@
 'use client'
 
-import { useUser, UserButton } from "@clerk/nextjs";
+import { useUser } from "@clerk/nextjs";
 
 import { usePathname, useRouter } from "next/navigation";
 import { AppProgressBar as ProgressBar } from "next-nprogress-bar";
@@ -13,6 +13,8 @@ import { Props_user } from "./types/user";
 import { Props_context } from "@/context/types/context";
 import { Props_layouts } from "@/frontend/types/props";
 
+import { ComponentUserButton } from "@/frontend/components/services/clerk";
+
 import Template from '@/frontend/template/init'
 
 export const Context = createContext<Props_context>({
@@ -20,7 +22,7 @@ export const Context = createContext<Props_context>({
     session: {
         user: { id: '', name: '', email: '' }
     },
-    button_sesion: <UserButton afterSignOutUrl="/" />
+    button_sesion: <ComponentUserButton/>
 });
 
 export default function Provider({ children }: Props_layouts) {
@@ -62,7 +64,7 @@ export default function Provider({ children }: Props_layouts) {
     }, [user])
 
     return (
-        <Context.Provider value={{ section_current: path.substring(1), session, button_sesion: <UserButton afterSignOutUrl="/" /> }}>
+        <Context.Provider value={{ section_current: path.substring(1), session, button_sesion: <ComponentUserButton/> }}>
             <ProgressBar color="#00ffff" options={{ showSpinner: false }} />
             <Template>
                 {children}
