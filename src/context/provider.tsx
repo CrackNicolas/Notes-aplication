@@ -22,13 +22,13 @@ export const Context = createContext<Props_context>({
     session: {
         user: { id: '', name: '', email: '' }
     },
-    button_sesion: <ComponentUserButton/>
+    button_sesion: <ComponentUserButton />
 });
 
 export default function Provider({ children }: Props_layouts) {
     const [session, setSession] = useState<{ user: Props_user }>({ user: { id: '', name: '', email: '' } });
 
-    const { user } = useUser();
+    const data_user = useUser();
 
     const router = useRouter();
     const path = usePathname();
@@ -41,30 +41,28 @@ export default function Provider({ children }: Props_layouts) {
 
     useEffect(() => {
         const add_user = async () => {
-            if (user && user.fullName && user.emailAddresses && user.id) {
-                setSession({
-                    user: {
-                        id: user.id,
-                        name: user.fullName,
-                        email: user.emailAddresses.toString()
-                    }
-                })
-                
-                const form = new FormData();
-                form.set('id', user.id);
-                form.set('name', user.fullName);
-                form.set('email', user.emailAddresses.toString());
+            setSession({
+                user: {
+                    id: (data_user.isSignedIn) ? data_user.user.id : '',
+                    name: (data_user.isSignedIn && data_user.user.fullName) ? data_user.user.fullName : '',
+                    email: (data_user.isSignedIn) ? data_user.user.emailAddresses.toString() : ''
+                }
+            });
 
-                await axios.post("/api/users", form); 
-            } else {
-                router.push('/');
+            if (data_user.isSignedIn) {
+                const form = new FormData();
+                form.set('id', data_user.user.id);
+                form.set('name', (data_user.user.fullName) ? data_user.user.fullName : '');
+                form.set('email', data_user.user.emailAddresses.toString());
+                await axios.post("/api/users", form);
             }
+
         }
         add_user();
-    }, [user])
+    }, [data_user.isSignedIn])
 
     return (
-        <Context.Provider value={{ section_current: path.substring(1), session, button_sesion: <ComponentUserButton/> }}>
+        <Context.Provider value={{ section_current: path.substring(1), session, button_sesion: <ComponentUserButton /> }}>
             <ProgressBar color="#00ffff" options={{ showSpinner: false }} />
             <Template>
                 {children}
