@@ -152,6 +152,7 @@ export default function ComponentContainerForm(props: Props) {
                         register={register}
                         setValue={setValue}
                         clearErrors={clearErrors}
+                        restart={restart}
                     />
                     <div className="flex flex-col gap-y-0.5">
                         <ComponentLabel title="Prioridad" html_for="priority" errors={errors} />

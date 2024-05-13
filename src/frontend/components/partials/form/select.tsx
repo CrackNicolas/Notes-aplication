@@ -17,7 +17,8 @@ type Props = {
     register: UseFormRegister<FieldValues>,
     setValue?: UseFormSetValue<FieldValues>,
     clearErrors?: UseFormClearErrors<FieldValues>,
-    required?: boolean
+    required?: boolean,
+    restart?: () => void
 }
 
 export default function ComponentSelect(props: Props) {
@@ -25,7 +26,7 @@ export default function ComponentSelect(props: Props) {
 
     const list = useRef<HTMLUListElement>(null);
 
-    const { error, select_category, setSelect_category, register, required, setValue = () => { }, clearErrors = () => { } } = props;
+    const { error, select_category, setSelect_category, register, required, setValue = () => { }, clearErrors = () => { }, restart = () => {}} = props;
 
     const [open_category, setOpen_category] = useState<boolean>(false);
     const [categorys, setCategorys] = useState<Props_category[]>([]);
@@ -42,6 +43,10 @@ export default function ComponentSelect(props: Props) {
         clearErrors('category');
         setCategorys(prev => prev.some(item => item.title === item_default.title) ? prev : [item_default,...prev]);
     }
+
+    useEffect(() => {
+        setOpen_category(false);
+    },[restart]);
 
     useEffect(() => {
         const load_categorys = async () => {
