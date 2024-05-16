@@ -23,7 +23,11 @@ export default function ComponentCategory() {
 
     useEffect(() => {
         const load_categorys = async () => {
-            const { data } = await axios.get(`/api/categorys/${session.user.id}`);
+            const { data } = await axios.get(`/api/categorys`,{
+                headers:{
+                    Authorization: `Bearer ${session.token}`
+                }
+            });
 
             if (data.status === 200) {
                 setList_categorys(data.data);
@@ -43,7 +47,7 @@ export default function ComponentCategory() {
     return (
         <section className="flex flex-col gap-10 mt-[65px] py-7">
             <ComponentHeader title="Categorias de notas" subtitle="Selecciona las categorias que deseas agregar o quitar de tus notas" />
-            <ComponentList categorys={list_categorys} setRestart={setRestart} user_id={session.user.id} />
+            <ComponentList categorys={list_categorys} setRestart={setRestart} session={session} />
             {
                 (response) && <ComponentMessageConfirmation open={open} setOpen={setOpen} response={response} />
             }

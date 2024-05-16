@@ -1,4 +1,7 @@
+import { getAuth } from "@clerk/nextjs/server";
+
 import { NextResponse } from "next/server"
+import { NextApiRequest } from "next";
 
 import { Props_response } from "@/context/types/response";
 
@@ -7,6 +10,10 @@ import { Conect_database } from "@/backend/utils/db";
 import User from '@/backend/schemas/user'
 
 export async function POST(req: Request): Promise<NextResponse> {
+    const { userId } = getAuth(req as any);
+
+    if (!userId) return NextResponse.json<Props_response>({ status: 401, info: { message: "Credenciales invalidas" } });
+
     const data = await req.formData();
 
     const connection: boolean = await Conect_database();

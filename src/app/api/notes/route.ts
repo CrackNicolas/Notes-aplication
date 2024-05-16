@@ -1,4 +1,7 @@
+import { getAuth } from "@clerk/nextjs/server";
+
 import { NextResponse } from "next/server"
+import { NextApiRequest } from "next";
 
 import { Props_category } from "@/context/types/category";
 import { Props_response } from "@/context/types/response";
@@ -8,8 +11,12 @@ import { File_transformer, File_edit } from '@/backend/utils/cloudinary';
 
 import Notes from '@/backend/schemas/notes'
 
-export async function POST(req: Request): Promise<NextResponse> {
-    const data = await req.formData();
+export async function POST(req: NextApiRequest): Promise<NextResponse> {
+    const { userId } = getAuth(req);
+
+    if(!userId) return NextResponse.json<Props_response>({ status: 401, info: { message: "Credenciales invalidas" } });
+
+    const data = await req.body;
 
     const connection: boolean = await Conect_database();
     if (!connection) return NextResponse.json<Props_response>({ status: 500, info: { message: "Error al conectarse a la base de datos" } });
@@ -29,7 +36,7 @@ export async function POST(req: Request): Promise<NextResponse> {
             },
             priority: data.get('priority'),
             featured: (data.get('featured') === 'SI'),
-            user_id: data.get('user_id')
+            user_id: userId
         };
 
         if (file) {
@@ -53,8 +60,12 @@ export async function POST(req: Request): Promise<NextResponse> {
     }
 }
 
-export async function PUT(req: Request): Promise<NextResponse> {
-    const data = await req.formData();
+export async function PUT(req: NextApiRequest): Promise<NextResponse> {
+    const { userId } = getAuth(req);
+
+    if(!userId) return NextResponse.json<Props_response>({ status: 401, info: { message: "Credenciales invalidas" } });
+    
+    const data = await req.body;
 
     const connection: boolean = await Conect_database();
     if (!connection) return NextResponse.json<Props_response>({ status: 500, info: { message: "Error al conectarse a la base de datos" } });
@@ -76,6 +87,7 @@ export async function PUT(req: Request): Promise<NextResponse> {
         };
         exists_note.priority = data.get('priority');
         exists_note.featured = (data.get('featured') === 'SI');
+        exists_note.user_id = userId;
 
         const file = data.get('file') as File;
 

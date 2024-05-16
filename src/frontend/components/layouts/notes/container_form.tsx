@@ -19,17 +19,17 @@ import ComponentMessageConfirmation from '@/frontend/components/layouts/messages
 import { Props_note } from '@/context/types/note';
 import { Props_response } from '@/context/types/response';
 import { Props_category } from '@/context/types/category';
-import { Props_user } from '@/context/types/user';
+import { Props_session } from '@/context/types/session';
 
 type Props = {
     setSelected: Dispatch<SetStateAction<Props_note | undefined>>,
     selected: Props_note | undefined,
     setRefresh: () => void,
-    user: Props_user
+    session: Props_session
 }
 
 export default function ComponentContainerForm(props: Props) {
-    const { setSelected, selected, setRefresh, user } = props;
+    const { setSelected, selected, setRefresh, session } = props;
 
     const search_params = useSearchParams()
 
@@ -73,19 +73,24 @@ export default function ComponentContainerForm(props: Props) {
         form.set('featured', data.featured);
         form.set('category', JSON.stringify(data.category));
 
-        if (user) {
-            form.set('user_id', user.id);
-        }
         if (file !== undefined) {
             form.set('file', file as File);
         }
 
         setLoading(true);
         if (!selected) {
-            response = await axios.post("/api/notes", form);
+            response = await axios.post("/api/notes", form, {
+                headers: {
+                    Authorization: `Bearer ${session.token}`
+                }
+            });
         } else {
             form.set('_id', selected._id as string);
-            response = await axios.put("/api/notes", form);
+            response = await axios.put("/api/notes", form, {
+                headers : {
+                    Authorization: `Bearer ${session.token}`
+                }
+            });
         }
         setLoading(false);
         open_modal(response.data);

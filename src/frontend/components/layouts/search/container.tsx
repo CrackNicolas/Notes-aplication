@@ -25,12 +25,12 @@ import { Props_category } from "@/context/types/category";
 import { Props_params_search } from "@/frontend/types/props";
 
 export default function ComponentSearch() {
-    const {session} = useContext(Context);
-    
+    const { session } = useContext(Context);
+
     const router = useRouter();
-    
+
     const { register, formState: { errors }, watch, trigger } = useForm();
-    
+
     const title = watch('title');
 
     const [open, setOpen] = useState<boolean>(false);
@@ -39,14 +39,18 @@ export default function ComponentSearch() {
     const [response, setResponse] = useState<Props_response>();
     const [params, setParams] = useState<Props_params_search>();
     const [list_notes, setList_notes] = useState<Props_note[]>([]);
-    const [select_category, setSelect_category] = useState<Props_category>({title:'Seleccionar categoria...'});
+    const [select_category, setSelect_category] = useState<Props_category>({ title: 'Seleccionar categoria...' });
     const [select_date, setSelect_date] = useState<DateValueType>({ startDate: null, endDate: null });
 
     const action_note = async (action: string, note: Props_note) => {
         switch (action) {
             case 'delete':
                 setLoading(true);
-                const { data } = await axios.delete(`/api/notes/${note._id}`);
+                const { data } = await axios.delete(`/api/notes/${note._id}`, {
+                    headers: {
+                        Authorization: `Bearer ${session.token}`
+                    }
+                });
                 setOpen(true);
                 setResponse(data);
                 setLoading(false);
@@ -60,7 +64,11 @@ export default function ComponentSearch() {
 
     useEffect(() => {
         const load_notes = async () => {
-            const { data } = await axios.get(`/api/notes/${session.user.id}${(search !== '{}') ? `/${search}` : ''}`);
+            const { data } = await axios.get(`/api/notes${(search !== '{}') ? `/${search}` : ''}`, {
+                headers: {
+                    Authorization: `Bearer ${session.token}`
+                }
+            });
             if (data.status === 200) {
                 setList_notes(data.data);
             }

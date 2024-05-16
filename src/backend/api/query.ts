@@ -1,9 +1,7 @@
-export function Query(segments: string[]) {
-    const user_id = segments[0];
+export function Query(user_id: string, segment: string) {
+    if (!segment) return { user_id: user_id };
 
-    if(!segments[1]) return { user_id: user_id };
-
-    const criteria = JSON.parse(segments[1]);
+    const criteria = JSON.parse(segment);
 
     //TENER EN CUENTA QUE LA FECHA NO FUNCIONA BIEN PROBAR LA BUSQUEDA DE HOY
 

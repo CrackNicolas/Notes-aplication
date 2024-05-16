@@ -9,47 +9,39 @@ import ComponentMessageConfirmation from "@/frontend/components/layouts/messages
 
 import { Props_category } from "@/context/types/category"
 import { Props_response } from "@/context/types/response";
+import { Props_session } from "@/context/types/session";
 
 type Props = {
     categorys: Props_category[],
     setRestart: Dispatch<SetStateAction<boolean>>,
-    user_id: string
+    session: Props_session
 }
 
 export default function ComponentList(props: Props) {
-    const { categorys, setRestart, user_id } = props;
+    const { categorys, setRestart, session } = props;
 
     const [loading, setLoading] = useState<boolean>(false);
     const [open, setOpen] = useState<boolean>(false);
     const [response, setResponse] = useState<Props_response>();
 
-    const [request_cout, setRequest_cout] = useState<number>(0);
-
     const select = async (category: Props_category) => {
-        //Cuidado con el Rate Limiting -- Tener en cuenat Delay Manual
-
         try {
-            console.log(request_cout);
-            if (request_cout <= 3) {
-                setLoading(true);
-                const { data } = await axios.put('/api/categorys', {
-                    title: category.title,
-                    use: !category.use?.filter(prev => prev.user_id === user_id)[0].value,
-                    user_id
-                });
-                console.log("si")
-                setResponse(data);
-                setRequest_cout(request_cout + 1);
-            }else{
-                console.log("no")
-            }
-
+            setLoading(true);
+            const { data } = await axios.put('/api/categorys', {
+                title: category.title,
+                use: !category.use?.filter(prev => prev.user_id === session.user.id)[0].value
+            }, {
+                headers: {
+                    Authorization: `Bearer ${session.token}`
+                }
+            });
+            setResponse(data);
         } catch (error) {
             console.log(error);
         } finally {
             setLoading(false);
             setOpen(true);
-            //setRestart(true);
+            setRestart(true);
         }
     }
 
@@ -61,10 +53,10 @@ export default function ComponentList(props: Props) {
             {
                 categorys.map(category => {
                     return (
-                        <div key={category.title} onClick={() => select(category)} className={`group col-span-1 grid place-items-center h-[100px] rounded-md cursor-pointer hover:bg-secondary transition duration-500 ${category.use?.filter(prev => prev.user_id === user_id)[0].value ? 'bg-secondary' : 'bg-primary border-secondary  border-[0.1px]'}`}>
+                        <div key={category.title} onClick={() => select(category)} className={`group col-span-1 grid place-items-center h-[100px] rounded-md cursor-pointer hover:bg-secondary transition duration-500 ${category.use?.filter(prev => prev.user_id === session.user.id)[0].value ? 'bg-secondary' : 'bg-primary border-secondary  border-[0.1px]'}`}>
                             <div className="flex flex-col items-center gap-y-1">
-                                <ComponentIcon name={category.icon} size={27} view_box="0 0 16 16" description_class={`group-hover:text-primary ${category.use?.filter(prev => prev.user_id === user_id)[0].value ? 'text-primary' : 'text-secondary'} duration-500 group-hover:translate-y-[-5px] `} />
-                                <span className={`group-hover:text-primary text-lg group-hover:font-bold font-semibold ${category.use?.filter(prev => prev.user_id === user_id)[0].value ? 'text-primary' : 'text-secondary'} tracking-wider duration-500`}>
+                                <ComponentIcon name={category.icon} size={27} view_box="0 0 16 16" description_class={`group-hover:text-primary ${category.use?.filter(prev => prev.user_id === session.user.id)[0].value ? 'text-primary' : 'text-secondary'} duration-500 group-hover:translate-y-[-5px] `} />
+                                <span className={`group-hover:text-primary text-lg group-hover:font-bold font-semibold ${category.use?.filter(prev => prev.user_id === session.user.id)[0].value ? 'text-primary' : 'text-secondary'} tracking-wider duration-500`}>
                                     {category.title}
                                 </span>
                             </div>

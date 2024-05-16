@@ -10,16 +10,20 @@ import ComponentMessageConfirmation from "@/frontend/components/layouts/messages
 
 import { Props_note } from "@/context/types/note";
 import { Props_response } from "@/context/types/response";
+import { Props_session } from "@/context/types/session";
 
 type Props = {
     notes: Props_note[],
     setSelected: Dispatch<SetStateAction<Props_note | undefined>>,
     selected: Props_note | undefined,
     setRefresh: () => void,
-    setSearch: Dispatch<SetStateAction<string>>
+    setSearch: Dispatch<SetStateAction<string>>,
+    session: Props_session
 }
 
-export default function ComponentList({ notes, setSelected, selected, setRefresh, setSearch }: Props) {
+export default function ComponentList(props: Props) {
+    const { notes, setSelected, selected, setRefresh, setSearch, session } = props;
+
     const [open_modal_confirmation, setOpen_modal_confirmation] = useState<boolean>(false);
     const [response, setResponse] = useState<Props_response>();
     const [loading, setLoading] = useState<boolean>(false);
@@ -28,7 +32,11 @@ export default function ComponentList({ notes, setSelected, selected, setRefresh
         switch (action) {
             case 'delete':
                 setLoading(true);
-                const { data } = await axios.delete(`/api/notes/${note._id}`);
+                const { data } = await axios.delete(`/api/notes/${note._id}`, {
+                    headers: {
+                        Authorization: `Bearer ${session.token}`
+                    }
+                });
                 setOpen_modal_confirmation(true);
                 setResponse(data);
                 setLoading(false);

@@ -1,9 +1,7 @@
-import { Props_user } from "./user"
+import { Props_session } from "./session"
 
 export type Props_context = {
     section_current: string,
-    session: {
-        user: Props_user
-    },
+    session: Props_session,
     button_sesion: JSX.Element
-} 
+}
