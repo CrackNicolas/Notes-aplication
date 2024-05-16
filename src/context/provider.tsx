@@ -40,26 +40,40 @@ export default function Provider({ children }: Props_layouts) {
     }, [path])
 
     useEffect(() => {
-        const add_user =  () => {
-            setSession({
+        const add_user = async () => {
+            const user_init = {
                 user: {
                     id: (data_user.isSignedIn) ? data_user.user.id : '',
                     name: (data_user.isSignedIn && data_user.user.fullName) ? data_user.user.fullName : '',
                     email: (data_user.isSignedIn) ? data_user.user.emailAddresses.toString() : ''
                 }
-            });
+            }
 
-            /*if (data_user.isSignedIn) {
+            setSession(user_init);
+
+            if (user_init.user.id !== '') {
+                localStorage.setItem('user', JSON.stringify(user_init));
                 const form = new FormData();
-                form.set('id', data_user.user.id);
-                form.set('name', (data_user.user.fullName) ? data_user.user.fullName : '');
-                form.set('email', data_user.user.emailAddresses.toString());
+                form.set('id', user_init.user.id);
+                form.set('name', user_init.user.name);
+                form.set('email', user_init.user.email);
                 await axios.post("/api/users", form);
-            }*/
-
+            }
         }
-        add_user();
-    }, [data_user.isSignedIn])
+
+        const user = localStorage.getItem('user');
+        if (!user) {
+            add_user();
+        }
+        if (user) {
+            setSession(JSON.parse(user));
+        }
+        if (!data_user.isSignedIn) {
+            setSession({ user: { id: '', name: '', email: '' } })
+            localStorage.removeItem('user');
+        }
+
+    }, [data_user.user])
 
     return (
         <Context.Provider value={{ section_current: path.substring(1), session, button_sesion: <ComponentUserButton /> }}>
