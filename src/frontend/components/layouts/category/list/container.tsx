@@ -4,6 +4,7 @@ import axios from "axios";
 
 import ComponentIcon from "@/frontend/components/partials/icon";
 import ComponentLoading from "./loading";
+import ComponentMessageWait from '@/frontend/components/layouts/messages/wait';
 import ComponentMessageConfirmation from "@/frontend/components/layouts/messages/confirmation";
 
 import { Props_category } from "@/context/types/category"
@@ -18,19 +19,38 @@ type Props = {
 export default function ComponentList(props: Props) {
     const { categorys, setRestart, user_id } = props;
 
+    const [loading, setLoading] = useState<boolean>(false);
     const [open, setOpen] = useState<boolean>(false);
     const [response, setResponse] = useState<Props_response>();
 
-    const select = async (category: Props_category) => {
-        const { data } = await axios.put('/api/categorys', {
-            title: category.title,
-            use: !category.use?.filter(prev => prev.user_id === user_id)[0].value,
-            user_id
-        });
+    const [request_cout, setRequest_cout] = useState<number>(0);
 
-        setOpen(true);
-        setResponse(data);
-        setRestart(true);
+    const select = async (category: Props_category) => {
+        //Cuidado con el Rate Limiting -- Tener en cuenat Delay Manual
+
+        try {
+            console.log(request_cout);
+            if (request_cout <= 3) {
+                setLoading(true);
+                const { data } = await axios.put('/api/categorys', {
+                    title: category.title,
+                    use: !category.use?.filter(prev => prev.user_id === user_id)[0].value,
+                    user_id
+                });
+                console.log("si")
+                setResponse(data);
+                setRequest_cout(request_cout + 1);
+            }else{
+                console.log("no")
+            }
+
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setLoading(false);
+            setOpen(true);
+            //setRestart(true);
+        }
     }
 
     return (
@@ -54,6 +74,9 @@ export default function ComponentList(props: Props) {
             }
             {
                 (response) && <ComponentMessageConfirmation open={open} setOpen={setOpen} response={response} />
+            }
+            {
+                (loading) && <ComponentMessageWait open={loading} setOpen={setLoading} />
             }
         </article>
     )

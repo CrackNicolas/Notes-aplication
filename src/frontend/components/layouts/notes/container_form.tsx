@@ -25,11 +25,11 @@ type Props = {
     setSelected: Dispatch<SetStateAction<Props_note | undefined>>,
     selected: Props_note | undefined,
     setRefresh: () => void,
-    user?:Props_user
+    user: Props_user
 }
 
 export default function ComponentContainerForm(props: Props) {
-    const {setSelected, selected, setRefresh, user} = props;
+    const { setSelected, selected, setRefresh, user } = props;
 
     const search_params = useSearchParams()
 
@@ -72,8 +72,8 @@ export default function ComponentContainerForm(props: Props) {
         form.set('priority', data.priority);
         form.set('featured', data.featured);
         form.set('category', JSON.stringify(data.category));
-        
-        if(user){
+
+        if (user) {
             form.set('user_id', user.id);
         }
         if (file !== undefined) {

@@ -22,11 +22,11 @@ type Props = {
 }
 
 export default function ComponentSelect(props: Props) {
-    const {session} = useContext(Context);
+    const { session } = useContext(Context);
 
     const list = useRef<HTMLUListElement>(null);
 
-    const { error, select_category, setSelect_category, register, required, setValue = () => { }, clearErrors = () => { }, restart = () => {}} = props;
+    const { error, select_category, setSelect_category, register, required, setValue = () => { }, clearErrors = () => { }, restart = () => { } } = props;
 
     const [open_category, setOpen_category] = useState<boolean>(false);
     const [categorys, setCategorys] = useState<Props_category[]>([]);
@@ -36,17 +36,17 @@ export default function ComponentSelect(props: Props) {
     }
 
     const selected = (category: Props_category) => {
-        list.current?.scrollTo(0,0);
+        list.current?.scrollTo(0, 0);
         setValue('category', category);
         setSelect_category(category);
         setOpen_category(false);
         clearErrors('category');
-        setCategorys(prev => prev.some(item => item.title === item_default.title) ? prev : [item_default,...prev]);
+        setCategorys(prev => prev.some(item => item.title === item_default.title) ? prev : [item_default, ...prev]);
     }
 
     useEffect(() => {
         setOpen_category(false);
-    },[restart]);
+    }, [restart]);
 
     useEffect(() => {
         const load_categorys = async () => {
@@ -56,8 +56,12 @@ export default function ComponentSelect(props: Props) {
                 setCategorys(data.data);
             }
         }
-        load_categorys();
-    }, []);
+
+        if (session.user.id !== '') {
+            load_categorys();
+        }
+
+    }, [session.user]);
 
     useEffect(() => {
         if (select_category.title === 'Seleccionar categoria...') {

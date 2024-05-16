@@ -14,7 +14,7 @@ import { Props_response } from "@/context/types/response";
 
 export default function ComponentCategory() {
     const { session } = useContext(Context);
-    
+
     const [list_categorys, setList_categorys] = useState<Props_category[]>([]);
 
     const [restart, setRestart] = useState<boolean>(false);
@@ -35,8 +35,10 @@ export default function ComponentCategory() {
             }
             setRestart(false);
         }
-        load_categorys();
-    }, [restart])
+        if (session.user.id !== '') {
+            load_categorys();
+        }
+    }, [restart, session.user])
 
     return (
         <section className="flex flex-col gap-10 mt-[65px] py-7">
