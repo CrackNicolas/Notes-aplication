@@ -35,7 +35,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
     if (!token) return NextResponse.json<Props_response>({ status: 401, info: { message: "Credenciales invalidas" } });
 
-    const data = await req.json();
+    const data = await req.formData();
 
     const connection: boolean = await Conect_database();
     if (!connection) return NextResponse.json<Props_response>({ status: 500, info: { message: "Error al conectarse a la base de datos" } });
@@ -85,7 +85,7 @@ export async function PUT(req: NextRequest): Promise<NextResponse> {
 
     if (!token) return NextResponse.json<Props_response>({ status: 401, info: { message: "Credenciales invalidas" } });
 
-    const data = await req.json();
+    const data = await req.formData();
 
     const connection: boolean = await Conect_database();
     if (!connection) return NextResponse.json<Props_response>({ status: 500, info: { message: "Error al conectarse a la base de datos" } });

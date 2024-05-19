@@ -60,6 +60,7 @@ export default function Provider({ children }: Props_layouts) {
                 form.set('email', user_init.user.email);
 
                 await axios.post("/api/users", form);
+                await axios.get(`/api/categorys`);
             }
         }
 

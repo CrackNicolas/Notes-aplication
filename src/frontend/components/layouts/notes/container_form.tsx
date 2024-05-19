@@ -79,18 +79,10 @@ export default function ComponentContainerForm(props: Props) {
 
         setLoading(true);
         if (!selected) {
-            response = await axios.post("/api/notes", form, {
-                headers: {
-                    Authorization: `Bearer ${session.token}`
-                }
-            });
+            response = await axios.post("/api/notes", form);
         } else {
             form.set('_id', selected._id as string);
-            response = await axios.put("/api/notes", form, {
-                headers : {
-                    Authorization: `Bearer ${session.token}`
-                }
-            });
+            response = await axios.put("/api/notes", form);
         }
         setLoading(false);
         open_modal(response.data);

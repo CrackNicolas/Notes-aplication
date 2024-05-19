@@ -46,11 +46,7 @@ export default function ComponentSearch() {
         switch (action) {
             case 'delete':
                 setLoading(true);
-                const { data } = await axios.delete(`/api/notes/${note._id}`, {
-                    headers: {
-                        Authorization: `Bearer ${session.token}`
-                    }
-                });
+                const { data } = await axios.delete(`/api/notes/${note._id}`);
                 setOpen(true);
                 setResponse(data);
                 setLoading(false);
@@ -64,11 +60,7 @@ export default function ComponentSearch() {
 
     useEffect(() => {
         const load_notes = async () => {
-            const { data } = await axios.get(`/api/notes${(search !== '{}') ? `/${search}` : ''}`, {
-                headers: {
-                    Authorization: `Bearer ${session.token}`
-                }
-            });
+            const { data } = await axios.get(`/api/notes${(search !== '{}') ? `/${search}` : ''}`);
             if (data.status === 200) {
                 setList_notes(data.data);
             }
