@@ -32,11 +32,7 @@ export default function ComponentList(props: Props) {
         switch (action) {
             case 'delete':
                 setLoading(true);
-                const { data } = await axios.delete(`/api/notes/${note._id}`, {
-                    headers: {
-                        Authorization: `Bearer ${session.token}`
-                    }
-                });
+                const { data } = await axios.delete(`/api/notes/${note._id}`);
                 setOpen_modal_confirmation(true);
                 setResponse(data);
                 setLoading(false);
