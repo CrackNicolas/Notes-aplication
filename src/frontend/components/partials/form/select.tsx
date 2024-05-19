@@ -46,15 +46,12 @@ export default function ComponentSelect(props: Props) {
 
     useEffect(() => {
         setOpen_category(false);
+        console.log("GATOS")
     }, [restart]);
 
     useEffect(() => {
         const load_categorys = async () => {
-            const { data } = await axios.get("/api/categorys/true", {
-                headers: {
-                    Authorization: `Bearer ${session.token}`
-                }
-            });
+            const { data } = await axios.get("/api/categorys/true");
 
             if (data.status === 200) {
                 setCategorys(data.data);

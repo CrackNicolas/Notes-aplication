@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 
 import Datepicker, { DateValueType } from "react-tailwindcss-datepicker";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import axios from "axios";
@@ -17,7 +17,6 @@ import ComponentLoading from "@/frontend/components/layouts/notes/list/loading";
 import ComponentMessageWait from "@/frontend/components/layouts/messages/wait";
 import ComponentMessageConfirmation from "@/frontend/components/layouts/messages/confirmation";
 
-import { Context } from "@/context/provider";
 import { Props_note } from "@/context/types/note";
 import { Props_response } from "@/context/types/response";
 import { Props_category } from "@/context/types/category";
@@ -25,11 +24,9 @@ import { Props_category } from "@/context/types/category";
 import { Props_params_search } from "@/frontend/types/props";
 
 export default function ComponentSearch() {
-    const { session } = useContext(Context);
-
     const router = useRouter();
 
-    const { register, formState: { errors }, watch, trigger } = useForm();
+    const { register, formState: { errors }, watch, trigger, reset } = useForm();
 
     const title = watch('title');
 
@@ -101,9 +98,24 @@ export default function ComponentSearch() {
         setParams(updated_params);
     }
 
+    const restart = () => {
+        reset({ title: '' });
+        setParams(undefined);
+    }
+
     return (
         <section className="flex flex-col gap-5 mt-[30px] pt-7 h-[calc(100vh-50px)]">
-            <article className="flex flex-col gap-y-3 items-center p-3 bg-primary border-secondary border-opacity-50 border-[0.1px] rounded-md">
+            <article className="relative flex flex-col gap-y-1 items-center p-3 bg-primary border-secondary border-opacity-50 border-[0.1px] rounded-md">
+                <div className="relative w-full">
+                    <span onClick={() => restart()} className="absolute bg-error rounded-full cursor-pointer" title="Reiniciar criterios de busqueda">
+                        <ComponentIcon name="close" size={20} description_class="text-tertiary cursor-pointer" />
+                    </span>
+                </div>
+                <div className="w-full text-center">
+                    <span className="text-secondary text-[14px] tracking-wider" title="Criterios de busqueda">
+                        Criterios de busqueda
+                    </span>
+                </div>
                 <div className="flex justify-between items-center w-full">
                     <div className="flex gap-x-3 py-1">
                         <span title="Prioridad Alta" onClick={() => listen_params('priority', 'Alta')} className={`${(params?.priority === 'Alta') && 'shadow-md shadow-secondary'} grid place-items-center rounded-full p-1 bg-sixth hover:shadow-md hover:shadow-secondary cursor-pointer`}>
@@ -116,9 +128,6 @@ export default function ComponentSearch() {
                             <ComponentIcon name="arrow" size={16} description_class="text-green-500 cursor-pointer" />
                         </span>
                     </div>
-                    <span className="text-secondary text-center font-semibold text-md sm:text-lg tracking-wider">
-                        Criterios
-                    </span>
                     <div className="flex gap-x-3">
                         <span title="Notas no destacadas" onClick={() => listen_params('featured', false)} className={`hover:opacity-100 ${(params?.['featured'] === false) ? '' : 'opacity-30'}`}>
                             <ComponentIcon name="star-half" size={22} description_class="text-secondary cursor-pointer" />
@@ -147,6 +156,7 @@ export default function ComponentSearch() {
                             select_category={select_category}
                             setSelect_category={setSelect_category}
                             register={register}
+                            restart={restart}
                         />
                     </div>
                     <div className="col-span-1 flex flex-col gap-y-0.5">
