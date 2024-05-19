@@ -1,7 +1,7 @@
-import { getAuth } from "@clerk/nextjs/server";
+import jwt from 'jsonwebtoken';
 
-import { NextResponse } from "next/server"
-import { NextApiRequest } from "next";
+import { type NextRequest } from 'next/server';
+import { NextResponse } from "next/server";
 
 import { Props_response } from "@/context/types/response";
 import { Props_category } from "@/context/types/category";
@@ -10,10 +10,11 @@ import { Conect_database } from "@/backend/utils/db";
 
 import Category from '@/backend/schemas/category'
 
-export async function GET(req: NextApiRequest): Promise<NextResponse> {
-    const { userId } = getAuth(req);
+export async function GET(req: NextRequest): Promise<NextResponse> {
+    const token = req.cookies.get('__session')?.value as string;
+    const user_id = jwt.decode(token)?.sub;
 
-    if (!userId) return NextResponse.json<Props_response>({ status: 401, info: { message: "Credenciales invalidas" } });
+    if (!token) return NextResponse.json<Props_response>({ status: 401, info: { message: "Credenciales invalidas" } });
 
     const connection: boolean = await Conect_database();
     if (!connection) return NextResponse.json<Props_response>({ status: 500, info: { message: "Error al conectarse a la base de datos" } });
@@ -22,31 +23,31 @@ export async function GET(req: NextApiRequest): Promise<NextResponse> {
         const count: number = await Category.countDocuments();
         if (count === 0) {
             await Category.create([
-                { title: 'Proyecto', use: [{ value: true, userId }], icon: 'proyects' },
-                { title: 'Trabajo', use: [{ value: true, userId }], icon: 'briefcase' },
-                { title: 'Inversion', use: [{ value: false, userId }], icon: 'investment' },
-                { title: 'Estudios', use: [{ value: false, userId }], icon: 'studies' },
-                { title: 'Personal', use: [{ value: false, userId }], icon: 'person' },
-                { title: 'Viajes', use: [{ value: false, userId }], icon: 'plane' },
-                { title: 'Historias', use: [{ value: false, userId }], icon: 'stories' },
-                { title: 'Peliculas', use: [{ value: false, userId }], icon: 'film' },
-                { title: 'Musicas', use: [{ value: false, userId }], icon: 'music' },
-                { title: 'Otros', use: [{ value: false, userId }], icon: 'others' }
+                { title: 'Proyecto', use: [{ value: true, user_id }], icon: 'proyects' },
+                { title: 'Trabajo', use: [{ value: true, user_id }], icon: 'briefcase' },
+                { title: 'Inversion', use: [{ value: false, user_id }], icon: 'investment' },
+                { title: 'Estudios', use: [{ value: false, user_id }], icon: 'studies' },
+                { title: 'Personal', use: [{ value: false, user_id }], icon: 'person' },
+                { title: 'Viajes', use: [{ value: false, user_id }], icon: 'plane' },
+                { title: 'Historias', use: [{ value: false, user_id }], icon: 'stories' },
+                { title: 'Peliculas', use: [{ value: false, user_id }], icon: 'film' },
+                { title: 'Musicas', use: [{ value: false, user_id }], icon: 'music' },
+                { title: 'Otros', use: [{ value: false, user_id }], icon: 'others' }
             ])
         }
 
-        const user_category = await Category.findOne({ "use.user_id": userId });
+        const user_category = await Category.findOne({ "use.user_id": user_id });
 
         if (!user_category) {
-            await Category.updateMany({}, { $push: { use: { value: false, userId } } });
+            await Category.updateMany({}, { $push: { use: { value: false, user_id } } });
             await Category.updateMany(
                 { title: { $in: ["Proyecto", "Trabajo"] } },
                 { $set: { "use.$[elem].value": true } },
-                { arrayFilters: [{ "elem.user_id": userId }] }
+                { arrayFilters: [{ "elem.user_id": user_id }] }
             );
         }
 
-        const categorys: Props_category[] = await Category.find({ "use.user_id": userId });
+        const categorys: Props_category[] = await Category.find({ "use.user_id": user_id });
 
         return NextResponse.json<Props_response>({ status: 200, data: categorys });
     } catch (error) {
@@ -54,12 +55,13 @@ export async function GET(req: NextApiRequest): Promise<NextResponse> {
     }
 }
 
-export async function PUT(req: Request): Promise<NextResponse> {
-    const { userId } = getAuth(req as any);
+export async function PUT(req: NextRequest): Promise<NextResponse> {
+    const token = req.cookies.get('__session')?.value as string;
+    const user_id = jwt.decode(token)?.sub;
 
-    if (!userId) return NextResponse.json<Props_response>({ status: 401, info: { message: "Credenciales invalidas" } });
+    if (!token) return NextResponse.json<Props_response>({ status: 401, info: { message: "Credenciales invalidas" } });
 
-    const { title, use, user_id } = await req.json();
+    const { title, use } = await req.json();
 
     const connection: boolean = await Conect_database();
     if (!connection) return NextResponse.json<Props_response>({ status: 500, info: { message: "Error al conectarse a la base de datos" } });

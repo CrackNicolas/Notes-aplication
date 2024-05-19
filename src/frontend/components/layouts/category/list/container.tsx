@@ -7,9 +7,9 @@ import ComponentLoading from "./loading";
 import ComponentMessageWait from '@/frontend/components/layouts/messages/wait';
 import ComponentMessageConfirmation from "@/frontend/components/layouts/messages/confirmation";
 
+import { Props_session } from "@/context/types/session";
 import { Props_category } from "@/context/types/category"
 import { Props_response } from "@/context/types/response";
-import { Props_session } from "@/context/types/session";
 
 type Props = {
     categorys: Props_category[],
@@ -25,24 +25,17 @@ export default function ComponentList(props: Props) {
     const [response, setResponse] = useState<Props_response>();
 
     const select = async (category: Props_category) => {
-        try {
-            setLoading(true);
-            const { data } = await axios.put('/api/categorys', {
-                title: category.title,
-                use: !category.use?.filter(prev => prev.user_id === session.user.id)[0].value
-            }, {
-                headers: {
-                    Authorization: `Bearer ${session.token}`
-                }
-            });
-            setResponse(data);
-        } catch (error) {
-            console.log(error);
-        } finally {
-            setLoading(false);
-            setOpen(true);
-            setRestart(true);
-        }
+        setLoading(true);
+
+        const { data } = await axios.put('/api/categorys', {
+            title: category.title,
+            use: !category.use?.filter(prev => prev.user_id === session.user.id)[0].value
+        });
+
+        setLoading(false);
+        setResponse(data);
+        setOpen(true);
+        setRestart(true);
     }
 
     return (

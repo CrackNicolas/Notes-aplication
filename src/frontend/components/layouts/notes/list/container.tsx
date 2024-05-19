@@ -9,8 +9,8 @@ import ComponentMessageWait from "@/frontend/components/layouts/messages/wait";
 import ComponentMessageConfirmation from "@/frontend/components/layouts/messages/confirmation";
 
 import { Props_note } from "@/context/types/note";
-import { Props_response } from "@/context/types/response";
 import { Props_session } from "@/context/types/session";
+import { Props_response } from "@/context/types/response";
 
 type Props = {
     notes: Props_note[],

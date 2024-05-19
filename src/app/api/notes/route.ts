@@ -1,8 +1,9 @@
-import { getAuth } from "@clerk/nextjs/server";
+import jwt from 'jsonwebtoken';
 
-import { NextResponse } from "next/server"
-import { NextApiRequest } from "next";
+import { type NextRequest } from 'next/server';
+import { NextResponse } from "next/server";
 
+import { Props_note } from "@/context/types/note";
 import { Props_category } from "@/context/types/category";
 import { Props_response } from "@/context/types/response";
 
@@ -11,12 +12,30 @@ import { File_transformer, File_edit } from '@/backend/utils/cloudinary';
 
 import Notes from '@/backend/schemas/notes'
 
-export async function POST(req: NextApiRequest): Promise<NextResponse> {
-    const { userId } = getAuth(req);
+export async function GET(req: NextRequest): Promise<NextResponse> {
+    const token = req.cookies.get('__session')?.value as string;
+    const user_id = jwt.decode(token)?.sub;
 
-    if(!userId) return NextResponse.json<Props_response>({ status: 401, info: { message: "Credenciales invalidas" } });
+    if (!token) return NextResponse.json<Props_response>({ status: 401, info: { message: "Credenciales invalidas" } });
 
-    const data = await req.body;
+    const connection: boolean = await Conect_database();
+    if (!connection) return NextResponse.json<Props_response>({ status: 500, info: { message: "Error al conectarse a la base de datos" } });
+
+    try {
+        const search: Props_note[] = await Notes.find({ user_id });
+
+        return NextResponse.json<Props_response>({ status: 200, data: search });
+    } catch (error) {
+        return NextResponse.json<Props_response>({ status: 500, info: { message: "Errores con el servidor" } })
+    }
+}
+export async function POST(req: NextRequest): Promise<NextResponse> {
+    const token = req.cookies.get('__session')?.value as string;
+    const user_id = jwt.decode(token)?.sub;
+
+    if (!token) return NextResponse.json<Props_response>({ status: 401, info: { message: "Credenciales invalidas" } });
+
+    const data = await req.json();
 
     const connection: boolean = await Conect_database();
     if (!connection) return NextResponse.json<Props_response>({ status: 500, info: { message: "Error al conectarse a la base de datos" } });
@@ -36,7 +55,7 @@ export async function POST(req: NextApiRequest): Promise<NextResponse> {
             },
             priority: data.get('priority'),
             featured: (data.get('featured') === 'SI'),
-            user_id: userId
+            user_id
         };
 
         if (file) {
@@ -60,12 +79,13 @@ export async function POST(req: NextApiRequest): Promise<NextResponse> {
     }
 }
 
-export async function PUT(req: NextApiRequest): Promise<NextResponse> {
-    const { userId } = getAuth(req);
+export async function PUT(req: NextRequest): Promise<NextResponse> {
+    const token = req.cookies.get('__session')?.value as string;
+    const user_id = jwt.decode(token)?.sub;
 
-    if(!userId) return NextResponse.json<Props_response>({ status: 401, info: { message: "Credenciales invalidas" } });
-    
-    const data = await req.body;
+    if (!token) return NextResponse.json<Props_response>({ status: 401, info: { message: "Credenciales invalidas" } });
+
+    const data = await req.json();
 
     const connection: boolean = await Conect_database();
     if (!connection) return NextResponse.json<Props_response>({ status: 500, info: { message: "Error al conectarse a la base de datos" } });
@@ -87,7 +107,7 @@ export async function PUT(req: NextApiRequest): Promise<NextResponse> {
         };
         exists_note.priority = data.get('priority');
         exists_note.featured = (data.get('featured') === 'SI');
-        exists_note.user_id = userId;
+        exists_note.user_id = user_id;
 
         const file = data.get('file') as File;
 

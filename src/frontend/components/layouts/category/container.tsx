@@ -23,11 +23,7 @@ export default function ComponentCategory() {
 
     useEffect(() => {
         const load_categorys = async () => {
-            const { data } = await axios.get(`/api/categorys`,{
-                headers:{
-                    Authorization: `Bearer ${session.token}`
-                }
-            });
+            const { data } = await axios.get(`/api/categorys`);
 
             if (data.status === 200) {
                 setList_categorys(data.data);

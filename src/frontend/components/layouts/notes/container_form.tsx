@@ -17,9 +17,9 @@ import ComponentItemFeatured from '@/frontend/components/partials/form/item_feat
 import ComponentMessageConfirmation from '@/frontend/components/layouts/messages/confirmation';
 
 import { Props_note } from '@/context/types/note';
+import { Props_session } from '@/context/types/session';
 import { Props_response } from '@/context/types/response';
 import { Props_category } from '@/context/types/category';
-import { Props_session } from '@/context/types/session';
 
 type Props = {
     setSelected: Dispatch<SetStateAction<Props_note | undefined>>,

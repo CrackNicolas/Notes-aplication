@@ -1,6 +1,6 @@
 'use client'
 
-import { useUser, useAuth } from "@clerk/nextjs";
+import { useUser } from "@clerk/nextjs";
 
 import { usePathname, useRouter } from "next/navigation";
 import { AppProgressBar as ProgressBar } from "next-nprogress-bar";
@@ -9,7 +9,7 @@ import { createContext, useEffect, useState } from "react";
 
 import axios from "axios";
 
-import { Props_session, Props_user } from "@/context/types/session";
+import { Props_session } from "@/context/types/session";
 import { Props_context } from "@/context/types/context";
 import { Props_layouts } from "@/frontend/types/props";
 
@@ -20,17 +20,15 @@ import Template from '@/frontend/template/init'
 export const Context = createContext<Props_context>({
     section_current: '',
     session: {
-        user: { id: '', name: '', email: '' },
-        token: ''
+        user: { id: '', name: '', email: '' }
     },
     button_sesion: <ComponentUserButton />
 });
 
 export default function Provider({ children }: Props_layouts) {
-    const [session, setSession] = useState<Props_session>({ user: { id: '', name: '', email: '' }, token: '' });
+    const [session, setSession] = useState<Props_session>({ user: { id: '', name: '', email: '' } });
 
     const data_user = useUser();
-    const { getToken } = useAuth();
 
     const router = useRouter();
     const path = usePathname();
@@ -43,14 +41,12 @@ export default function Provider({ children }: Props_layouts) {
 
     useEffect(() => {
         const add_user = async () => {
-            const token = await getToken();
             const user_init = {
                 user: {
                     id: (data_user.isSignedIn) ? data_user.user.id : '',
                     name: (data_user.isSignedIn && data_user.user.fullName) ? data_user.user.fullName : '',
                     email: (data_user.isSignedIn) ? data_user.user.emailAddresses.toString() : ''
-                },
-                token
+                }
             }
 
             setSession(user_init);
@@ -63,11 +59,7 @@ export default function Provider({ children }: Props_layouts) {
                 form.set('name', user_init.user.name);
                 form.set('email', user_init.user.email);
 
-                await axios.post("/api/users", form, {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
+                await axios.post("/api/users", form);
             }
         }
 
@@ -79,7 +71,7 @@ export default function Provider({ children }: Props_layouts) {
             setSession(JSON.parse(user));
         }
         if (!data_user.isSignedIn) {
-            setSession({ user: { id: '', name: '', email: '' }, token: '' })
+            setSession({ user: { id: '', name: '', email: '' } })
             localStorage.removeItem('user');
         }
 

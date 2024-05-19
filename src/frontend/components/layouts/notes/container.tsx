@@ -29,7 +29,7 @@ export default function ComponentNotes() {
 
     useEffect(() => {
         const load_notes = async () => {
-            const { data } = await axios.get(`/api/notes/${(search !== "{}") ? `/${search}` : ''}`, {
+            const { data } = await axios.get(`/api/notes${(search !== "{}") ? `/${search}` : ''}`, {
                 headers: {
                     Authorization: `Bearer ${session.token}`
                 }

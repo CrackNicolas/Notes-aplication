@@ -1,6 +1,5 @@
 export type Props_session = {
-    user: Props_user,
-    token: string | null
+    user: Props_user
 }
 export type Props_user = {
     id: string,

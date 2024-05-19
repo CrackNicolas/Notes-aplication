@@ -1,7 +1,5 @@
-import { getAuth } from "@clerk/nextjs/server";
-
-import { NextResponse } from "next/server"
-import { NextApiRequest } from "next";
+import { type NextRequest } from 'next/server';
+import { NextResponse } from "next/server";
 
 import { Props_response } from "@/context/types/response";
 
@@ -9,10 +7,10 @@ import { Conect_database } from "@/backend/utils/db";
 
 import User from '@/backend/schemas/user'
 
-export async function POST(req: Request): Promise<NextResponse> {
-    const { userId } = getAuth(req as any);
+export async function POST(req: NextRequest): Promise<NextResponse> {
+    const token = req.cookies.get('__session')?.value as string;
 
-    if (!userId) return NextResponse.json<Props_response>({ status: 401, info: { message: "Credenciales invalidas" } });
+    if (!token) return NextResponse.json<Props_response>({ status: 401, info: { message: "Credenciales invalidas" } });
 
     const data = await req.formData();
 
