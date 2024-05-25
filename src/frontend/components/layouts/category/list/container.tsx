@@ -7,18 +7,16 @@ import ComponentLoading from "./loading";
 import ComponentMessageWait from '@/frontend/components/layouts/messages/wait';
 import ComponentMessageConfirmation from "@/frontend/components/layouts/messages/confirmation";
 
-import { Props_session } from "@/context/types/session";
 import { Props_category } from "@/context/types/category"
 import { Props_response } from "@/context/types/response";
 
 type Props = {
     categorys: Props_category[],
-    setRestart: Dispatch<SetStateAction<boolean>>,
-    session: Props_session
+    setRestart: Dispatch<SetStateAction<boolean>>
 }
 
 export default function ComponentList(props: Props) {
-    const { categorys, setRestart, session } = props;
+    const { categorys, setRestart } = props;
 
     const [loading, setLoading] = useState<boolean>(false);
     const [open, setOpen] = useState<boolean>(false);
@@ -29,7 +27,7 @@ export default function ComponentList(props: Props) {
 
         const { data } = await axios.put('/api/categorys', {
             title: category.title,
-            use: !category.use?.filter(prev => prev.user_id === session.user.id)[0].value
+            use: !category.use
         });
 
         setLoading(false);
@@ -46,10 +44,10 @@ export default function ComponentList(props: Props) {
             {
                 categorys.map(category => {
                     return (
-                        <div key={category.title} onClick={() => select(category)} className={`group col-span-1 grid place-items-center h-[100px] rounded-md cursor-pointer hover:bg-secondary transition duration-500 ${category.use?.filter(prev => prev.user_id === session.user.id)[0].value ? 'bg-secondary' : 'bg-primary border-secondary  border-[0.1px]'}`}>
+                        <div key={category.title} onClick={() => select(category)} className={`group col-span-1 grid place-items-center h-[100px] rounded-md cursor-pointer hover:bg-secondary transition duration-500 ${category.use ? 'bg-secondary' : 'bg-primary border-secondary  border-[0.1px]'}`}>
                             <div className="flex flex-col items-center gap-y-1">
-                                <ComponentIcon name={category.icon} size={27} view_box="0 0 16 16" description_class={`group-hover:text-primary ${category.use?.filter(prev => prev.user_id === session.user.id)[0].value ? 'text-primary' : 'text-secondary'} duration-500 group-hover:translate-y-[-5px] `} />
-                                <span className={`group-hover:text-primary text-lg group-hover:font-bold font-semibold ${category.use?.filter(prev => prev.user_id === session.user.id)[0].value ? 'text-primary' : 'text-secondary'} tracking-wider duration-500`}>
+                                <ComponentIcon name={category.icon} size={27} view_box="0 0 16 16" description_class={`group-hover:text-primary ${category.use ? 'text-primary' : 'text-secondary'} duration-500 group-hover:translate-y-[-5px] `} />
+                                <span className={`group-hover:text-primary text-lg group-hover:font-bold font-semibold ${category.use ? 'text-primary' : 'text-secondary'} tracking-wider duration-500`}>
                                     {category.title}
                                 </span>
                             </div>

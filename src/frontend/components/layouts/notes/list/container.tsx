@@ -9,7 +9,6 @@ import ComponentMessageWait from "@/frontend/components/layouts/messages/wait";
 import ComponentMessageConfirmation from "@/frontend/components/layouts/messages/confirmation";
 
 import { Props_note } from "@/context/types/note";
-import { Props_session } from "@/context/types/session";
 import { Props_response } from "@/context/types/response";
 
 type Props = {
@@ -17,12 +16,11 @@ type Props = {
     setSelected: Dispatch<SetStateAction<Props_note | undefined>>,
     selected: Props_note | undefined,
     setRefresh: () => void,
-    setSearch: Dispatch<SetStateAction<string>>,
-    session: Props_session
+    setSearch: Dispatch<SetStateAction<string>>
 }
 
 export default function ComponentList(props: Props) {
-    const { notes, setSelected, selected, setRefresh, setSearch, session } = props;
+    const { notes, setSelected, selected, setRefresh, setSearch } = props;
 
     const [open_modal_confirmation, setOpen_modal_confirmation] = useState<boolean>(false);
     const [response, setResponse] = useState<Props_response>();

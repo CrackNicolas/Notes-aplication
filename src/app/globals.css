@@ -18,6 +18,7 @@ body {
 body::-webkit-scrollbar, 
 .scroll::-webkit-scrollbar, 
 .scroll-select::-webkit-scrollbar,
+.scroll-select-error::-webkit-scrollbar,
 .scroll-text::-webkit-scrollbar {
   overflow-y: scroll;
   width: 6px;
@@ -33,6 +34,11 @@ body::-webkit-scrollbar-thumb,
 body::-webkit-scrollbar-thumb:hover, 
 .scroll::-webkit-scrollbar-thumb  {
   border-radius: 10px;
+}
+
+.scroll-select-error::-webkit-scrollbar-thumb{
+  background: theme("colors.error");
+  border-end-end-radius: 10px;
 }
 
 .scroll-select::-webkit-scrollbar-thumb  {

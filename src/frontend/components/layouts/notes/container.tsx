@@ -15,10 +15,10 @@ import { Props_response } from "@/context/types/response";
 export default function ComponentNotes() {
     const { session } = useContext(Context);
 
-    const [list_notes, setList_notes] = useState<Props_note[]>([]);
-    const [selected_note, setSelected_note] = useState<Props_note | undefined>(undefined);
     const [load, setLoad] = useState<boolean>(false);
     const [search, setSearch] = useState<string>("");
+    const [list_notes, setList_notes] = useState<Props_note[]>([]);
+    const [selected_note, setSelected_note] = useState<Props_note | undefined>(undefined);
 
     const [open, setOpen] = useState<boolean>(false);
     const [response, setResponse] = useState<Props_response>();
@@ -49,8 +49,8 @@ export default function ComponentNotes() {
     return (
         <section className="flex flex-col justify-center mt-4 pt-12 pb-5">
             <article className="grid grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-8">
-                <ComponentContainerForm selected={selected_note} setSelected={setSelected_note} setRefresh={refresh} session={session} />
-                <ComponentList notes={list_notes} setSelected={setSelected_note} selected={selected_note} setRefresh={refresh} setSearch={setSearch} session={session} />
+                <ComponentContainerForm selected={selected_note} setSelected={setSelected_note} setRefresh={refresh} />
+                <ComponentList notes={list_notes} setSelected={setSelected_note} selected={selected_note} setRefresh={refresh} setSearch={setSearch} />
             </article>
             {
                 (response) && <ComponentMessageConfirmation open={open} setOpen={setOpen} response={response} />

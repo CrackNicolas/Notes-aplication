@@ -101,18 +101,20 @@ export default function ComponentSearch() {
     const restart = () => {
         reset({ title: '' });
         setParams(undefined);
+        setSelect_category({ title: 'Seleccionar categoria...' });
+        setSelect_date({ startDate: null, endDate: null });
     }
 
     return (
         <section className="flex flex-col gap-5 mt-[30px] pt-7 h-[calc(100vh-50px)]">
             <article className="relative flex flex-col gap-y-1 items-center p-3 bg-primary border-secondary border-opacity-50 border-[0.1px] rounded-md">
                 <div className="relative w-full">
-                    <span onClick={() => restart()} className="absolute bg-error rounded-full cursor-pointer" title="Reiniciar criterios de busqueda">
+                    <span onClick={() => restart()} className="absolute top-[-9px] right-[-9px] bg-error rounded-bl-lg rounded-tr-md  cursor-pointer" title="Reiniciar criterios de busqueda">
                         <ComponentIcon name="close" size={20} description_class="text-tertiary cursor-pointer" />
                     </span>
                 </div>
                 <div className="w-full text-center">
-                    <span className="text-secondary text-[14px] tracking-wider" title="Criterios de busqueda">
+                    <span className="text-secondary text-lg tracking-wider" title="Criterios de busqueda">
                         Criterios de busqueda
                     </span>
                 </div>

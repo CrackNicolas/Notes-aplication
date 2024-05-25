@@ -23,23 +23,27 @@ export default function ComponentView(props: Props) {
                     {Time_elapsed(note.createdAt)}
                 </span>
                 <div className="flex justify-between items-center w-full">
-                    <span className="text-start line-clamp-1 font-normal tracking-wide text-secondary text-lg">
+                    <span className="text-start line-clamp-1 font-normal tracking-wide text-secondary text-lg" title={note.title} >
                         {note.title}
                     </span>
                     <span className="rounded-full" title={`Categoria ${note.category.title.toLowerCase()}`}>
                         <ComponentIcon name={note.category.icon} size={20} description_class="text-secondary cursor-pointer" />
                     </span>
                 </div>
-                <p className="text-start text-sm text-gray-500 w-full mb-4">
+                <p className="text-start text-sm text-gray-500 w-full mb-4" title={note.description}>
                     {note.description}
                 </p>
                 <div className="flex justify-between items-center w-full">
-                    <a href={(note.file) ? note.file.url : ''} target="_blank" title="Ver archivo" rel="noopener noreferrer" className="group relative overflow-hidden flex hover:w-auto w-[20px] rounded-r-full items-start outline-none">
-                        <ComponentIcon name="upload-file-selected" size={20} description_class=" group-hover:py-0.5 min-w-[20px] group-hover:border group-hover:border-secondary group-hover:border-[0.1px] bg-primary text-secondary cursor-pointer group-hover:border-r-0 z-20 bg-primary" />
-                        <span className="group-hover:translate-x-0 group-hover:w-[90px] group-hover:h-[20px] translate-x-[-100px] w-0 h-0 transition duration-600 z-10 text-secondary border-y border-y-[0.1px] border-r border-r-[0.1px] border-secondary rounded-r-full flex items-center px-1">
-                            Ver archivo
-                        </span>
-                    </a>
+                    {
+                        (note.file) && (
+                            <a href={(note.file) ? note.file.url : ''} target="_blank" title="Ver archivo" rel="noopener noreferrer" className="group relative overflow-hidden flex hover:w-auto w-[20px] rounded-r-full items-start outline-none">
+                                <ComponentIcon name="upload-file-selected" size={20} description_class=" group-hover:py-0.5 min-w-[20px] group-hover:border group-hover:border-secondary group-hover:border-[0.1px] bg-primary text-secondary cursor-pointer group-hover:border-r-0 z-20 bg-primary" />
+                                <span className="group-hover:translate-x-0 group-hover:w-[90px] group-hover:h-[20px] translate-x-[-100px] w-0 h-0 transition duration-600 z-10 text-secondary border-y border-y-[0.1px] border-r border-r-[0.1px] border-secondary rounded-r-full flex items-center px-1">
+                                    Ver archivo
+                                </span>
+                            </a>
+                        )
+                    }
                     <div className="flex gap-x-2 items-center">
                         <span className="rounded-full" title={`Prioridad ${note.priority}`}>
                             <ComponentIcon name="arrow" size={21} description_class={`text-${(note.priority === 'Alta') ? 'red' : (note.priority === 'Media') ? 'orange' : 'green'}-500 ${(note.priority !== 'Baja') && 'rotate-[-180deg]'} cursor-pointer`} />

@@ -46,7 +46,6 @@ export default function ComponentSelect(props: Props) {
 
     useEffect(() => {
         setOpen_category(false);
-        console.log("GATOS")
     }, [restart]);
 
     useEffect(() => {
@@ -88,7 +87,7 @@ export default function ComponentSelect(props: Props) {
                             </span>
                             <ComponentIcon name={open_category ? 'caret-up' : 'caret-down'} size={20} description_class={`${!error ? 'text-secondary' : 'text-error'}`} />
                         </div>
-                        <ul ref={list} title="Lista de categorias" className={`${(!open_category) && 'hidden'} absolute z-10 mt-[32px] w-full ${(categorys.length >= 4) && 'overflow-hidden overflow-y-scroll scroll-select h-[130px]'} bg-primary border-[0.1px] ${!error ? 'border-secondary' : 'border-error'} rounded-b-md border-opacity-50`}>
+                        <ul ref={list} title="Lista de categorias" className={`${(!open_category) && 'hidden'} absolute z-10 mt-[32px] w-full ${(categorys.length >= 4) && 'overflow-hidden overflow-y-scroll h-[130px]'} bg-primary border-[0.1px] ${!error ? 'border-secondary scroll-select' : 'border-error scroll-select-error'} rounded-b-md border-opacity-50`}>
                             {
                                 categorys.filter(category => category.title != select_category.title).map(category => {
                                     return (

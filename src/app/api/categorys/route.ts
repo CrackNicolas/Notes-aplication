@@ -47,9 +47,19 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
             );
         }
 
-        const categorys: Props_category[] = await Category.find({ "use.user_id": user_id });
+        const categorys = await Category.find({ "use.user_id": user_id });
 
-        return NextResponse.json<Props_response>({ status: 200, data: categorys });
+        let filter_categorys: Props_category[] = [];
+
+        categorys.map(category => {
+            filter_categorys.push({
+                title: category.title,
+                use: category.use.find((prev: { value: true, user_id: string }) => prev.user_id == user_id).value,
+                icon: category.icon
+            })
+        })
+
+        return NextResponse.json<Props_response>({ status: 200, data: filter_categorys });
     } catch (error) {
         return NextResponse.json<Props_response>({ status: 500, info: { message: "Errores con el servidor" } })
     }

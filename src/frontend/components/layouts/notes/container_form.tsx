@@ -17,19 +17,17 @@ import ComponentItemFeatured from '@/frontend/components/partials/form/item_feat
 import ComponentMessageConfirmation from '@/frontend/components/layouts/messages/confirmation';
 
 import { Props_note } from '@/context/types/note';
-import { Props_session } from '@/context/types/session';
 import { Props_response } from '@/context/types/response';
 import { Props_category } from '@/context/types/category';
 
 type Props = {
     setSelected: Dispatch<SetStateAction<Props_note | undefined>>,
     selected: Props_note | undefined,
-    setRefresh: () => void,
-    session: Props_session
+    setRefresh: () => void
 }
 
 export default function ComponentContainerForm(props: Props) {
-    const { setSelected, selected, setRefresh, session } = props;
+    const { setSelected, selected, setRefresh } = props;
 
     const search_params = useSearchParams()
 

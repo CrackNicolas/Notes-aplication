@@ -6,10 +6,11 @@ import { NextResponse } from 'next/server';
 import Category from '@/backend/schemas/category';
 
 import { Props_response } from '@/context/types/response';
+import { Props_category } from '@/context/types/category';
 
 import { Conect_database } from '@/backend/utils/db';
 
-export async function GET(req: NextRequest, { params: { use } }: { params: { use: boolean } }): Promise<NextResponse> {
+export async function GET(req: NextRequest, { params: { segment } }: { params: { segment: boolean } }): Promise<NextResponse> {
     const token = req.cookies.get('__session')?.value as string;
     const user_id = jwt.decode(token)?.sub;
 
@@ -22,10 +23,20 @@ export async function GET(req: NextRequest, { params: { use } }: { params: { use
         const user_categorys = await Category.find({ "use.user_id": user_id });
 
         const categorys = user_categorys.filter(category =>
-            category.use.some((prev: { user_id: string, value: boolean }) => prev.user_id === user_id && prev.value === true)
+            category.use.some((prev: { user_id: string, value: boolean }) => prev.user_id === user_id && prev.value == (segment ? true : false))
         );
 
-        return NextResponse.json<Props_response>({ status: 200, data: categorys });
+        let filter_categorys: Props_category[] = [];
+
+        categorys.map(category => {
+            filter_categorys.push({
+                title: category.title,
+                use: category.use.find((prev: { value: true, user_id: string }) => prev.user_id == user_id).value,
+                icon: category.icon
+            })
+        })
+
+        return NextResponse.json<Props_response>({ status: 200, data: filter_categorys });
     } catch (error) {
         return NextResponse.json<Props_response>({ status: 500, info: { message: "Errores con el servidor" } });
     }
