@@ -4,5 +4,6 @@ export type Props_session = {
 export type Props_user = {
     id: string,
     name: string,
-    email: string
+    email: string,
+    active: boolean
 }

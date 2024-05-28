@@ -1,5 +1,10 @@
 export const items_main = [
     {
+        url: '/sessions',
+        title: 'Administra sesiones de usuario',
+        description: 'Revisa sesiones activas y cerradas en tu aplicacion de notas de forma facil.'
+    },
+    {
         url: '/notes',
         title: 'Administrador de notas',
         description: 'Realiza la creacion, edicion, eliminacion y visualizacion de notas con facilidad.'

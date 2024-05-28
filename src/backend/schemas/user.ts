@@ -1,6 +1,6 @@
 import { Schema, model, models } from "mongoose";
 
-import { Props_user } from "@/context/types/user";
+import { Props_user } from "@/context/types/session";
 
 const schema_user = new Schema<Props_user>({
     id: {
@@ -20,6 +20,10 @@ const schema_user = new Schema<Props_user>({
         require: [true, 'Required email'],
         unique: true,
         trim: true
+    },
+    active: {
+        type: Boolean,
+        require: [true, 'Required active']
     }
 },
     {

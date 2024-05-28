@@ -10,7 +10,7 @@
 
 ## Requirements
     - Backend
-    1 - Sistema de Autenticación: [ ]
+    1 - Sistema de Autenticación: [ X ]
         - Permite a los usuarios registrarse e iniciar sesión.
         - Protege las rutas y operaciones específicas mediante autenticación.
     2 - Gestión de Notas: [ X ]

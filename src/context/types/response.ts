@@ -10,11 +10,12 @@
 */
 
 import { Props_note } from "@/context/types/note"
+import { Props_user } from "@/context/types/session"
 import { Props_category } from "@/context/types/category"
 
 export type Props_response = {
     status: Props_status
-    data?: Props_note[] | Props_note | Props_category[]
+    data?: Props_note[] | Props_note | Props_category[] | Props_user[]
     info?: { message: string }
 }
 export type Props_status = 200 | 201 | 204 | 400 | 401 | 404 | 500;
