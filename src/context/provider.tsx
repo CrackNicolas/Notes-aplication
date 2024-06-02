@@ -20,13 +20,13 @@ import Template from '@/frontend/template/init'
 export const Context = createContext<Props_context>({
     section_current: '',
     session: {
-        user: { id: '', name: '', email: '', active: false }
+        user: { id: '', name: '', email: '', image: '' }
     },
     button_sesion: <ComponentUserButton />
 });
 
 export default function Provider({ children }: Props_layouts) {
-    const [session, setSession] = useState<Props_session>({ user: { id: '', name: '', email: '', active: false } });
+    const [session, setSession] = useState<Props_session>({ user: { id: '', name: '', email: '', image: '' } });
 
     const data_user = useUser();
 
@@ -39,22 +39,14 @@ export default function Provider({ children }: Props_layouts) {
                 id: data_user.user.id,
                 name: data_user.user.fullName,
                 email: data_user.user.emailAddresses.toString(),
-                active: true
+                image: data_user.user.imageUrl
             }
-
             await axios.get(`/api/categorys`);
             await axios.post("/api/users", instance_user);
 
-            setSession({ user: instance_user });            
+            setSession({ user: instance_user });
         } else {
-            await axios.put("/api/users", {
-                id: session.user.id,
-                name: session.user.name,
-                email: session.user.email,
-                active: !session.user.active
-            })
-            
-            setSession({ user: { ...session.user, active: false } });
+            setSession({ user: { id: '', name: '', email: '', image: '' } });
         }
     }
 

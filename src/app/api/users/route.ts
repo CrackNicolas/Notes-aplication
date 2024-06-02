@@ -9,7 +9,6 @@ import { Conect_database } from "@/backend/utils/db";
 import User from '@/backend/schemas/user'
 
 export async function GET(): Promise<NextResponse> {
-
     const connection: boolean = await Conect_database();
     if (!connection) return NextResponse.json<Props_response>({ status: 500, info: { message: "Error al conectarse a la base de datos" } })
 
@@ -27,7 +26,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
     if (!token) return NextResponse.json<Props_response>({ status: 401, info: { message: "Credenciales invalidas" } });
 
-    const { id, name, email, active } = await req.json();
+    const { id, name, email, image } = await req.json();
 
     const connection: boolean = await Conect_database();
     if (!connection) return NextResponse.json<Props_response>({ status: 500, info: { message: "Error al conectarse a la base de datos" } })
@@ -36,39 +35,14 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         const exists_user = await User.findOne({ email });
 
         if (exists_user) {
-            exists_user.active = true;
-            await exists_user.save();
             return NextResponse.json<Props_response>({ status: 400, info: { message: "El usuario ya está registrado" } });
         }
 
-        const new_user = new User({ id, name, email, active });
+        const new_user = new User({ id, name, email, image });
 
         await new_user.save();
 
         return NextResponse.json<Props_response>({ status: 201, info: { message: 'Usuario registrado' } });
-    } catch (error) {
-        return NextResponse.json<Props_response>({ status: 500, info: { message: "Errores con el servidor" } });
-    }
-}
-
-export async function PUT(req: NextRequest): Promise<NextResponse> {
-    const { email, active } = await req.json();
-
-    const connection: boolean = await Conect_database();
-    if (!connection) return NextResponse.json<Props_response>({ status: 500, info: { message: "Error al conectarse a la base de datos" } })
-
-    try {
-        const exists_user = await User.findOne({ email });
-
-        if (!exists_user) {
-            return NextResponse.json<Props_response>({ status: 400, info: { message: "El usuario no existe" } });
-        }
-
-        exists_user.active = active;
-
-        await exists_user.save();
-
-        return NextResponse.json<Props_response>({ status: 201, info: { message: 'Usuario desconectado' } });
     } catch (error) {
         return NextResponse.json<Props_response>({ status: 500, info: { message: "Errores con el servidor" } });
     }

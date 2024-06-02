@@ -21,9 +21,9 @@ const schema_user = new Schema<Props_user>({
         unique: true,
         trim: true
     },
-    active: {
-        type: Boolean,
-        require: [true, 'Required active']
+    image: {
+        type: String,
+        require: [true, 'Required image'],
     }
 },
     {

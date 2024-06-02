@@ -5,6 +5,7 @@ import { useEffect, useState } from "react"
 import axios from "axios";
 
 import { Props_user } from "@/context/types/session";
+import Image from "next/image";
 
 export default function ComponentSessions() {
     const [list_users, setList_users] = useState<Props_user[] | []>([]);
@@ -34,14 +35,10 @@ export default function ComponentSessions() {
                 {
                     list_users.map(list => {
                         return (
-                            <div key={list.id} className="flex justify-between w-full bg-sixth rounded-md border-[0.1px] border-secondary p-2.5 ">
+                            <div key={list.id} className="flex justify-between items-center w-full bg-sixth rounded-md border-[0.1px] border-secondary p-2.5 ">
+                                <Image src={list.image} alt="Imagen de usuario" width={30} height={20} className="rounded-full" />
                                 <span className="text-secondary">
                                     {list.name}
-                                </span>
-                                <span className={`text-${list.active ? 'secondary' : 'error'} `}>
-                                    {
-                                        list.active ? 'activo' : 'desconectado'
-                                    }
                                 </span>
                             </div>
                         )
