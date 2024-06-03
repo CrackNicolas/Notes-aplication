@@ -26,7 +26,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
     if (!token) return NextResponse.json<Props_response>({ status: 401, info: { message: "Credenciales invalidas" } });
 
-    const { id, name, email, image } = await req.json();
+    const { id, name, email, image, sessions } = await req.json();
 
     const connection: boolean = await Conect_database();
     if (!connection) return NextResponse.json<Props_response>({ status: 500, info: { message: "Error al conectarse a la base de datos" } })
@@ -35,10 +35,12 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         const exists_user = await User.findOne({ email });
 
         if (exists_user) {
+            exists_user.sessions = sessions;
+            await exists_user.save();
             return NextResponse.json<Props_response>({ status: 400, info: { message: "El usuario ya está registrado" } });
         }
 
-        const new_user = new User({ id, name, email, image });
+        const new_user = new User({ id, name, email, image, sessions });
 
         await new_user.save();
 

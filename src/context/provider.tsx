@@ -20,13 +20,13 @@ import Template from '@/frontend/template/init'
 export const Context = createContext<Props_context>({
     section_current: '',
     session: {
-        user: { id: '', name: '', email: '', image: '' }
+        user: { id: '', name: '', email: '', image: '', sessions: 0 }
     },
     button_sesion: <ComponentUserButton />
 });
 
 export default function Provider({ children }: Props_layouts) {
-    const [session, setSession] = useState<Props_session>({ user: { id: '', name: '', email: '', image: '' } });
+    const [session, setSession] = useState<Props_session>({ user: { id: '', name: '', email: '', image: '', sessions: 0 } });
 
     const data_user = useUser();
 
@@ -35,18 +35,21 @@ export default function Provider({ children }: Props_layouts) {
 
     const load_user = async () => {
         if (data_user.isSignedIn && data_user.user.fullName) {
+            const recover_sessions_user = await data_user.user.getSessions();
+            console.log(recover_sessions_user);
             const instance_user = {
                 id: data_user.user.id,
                 name: data_user.user.fullName,
                 email: data_user.user.emailAddresses.toString(),
-                image: data_user.user.imageUrl
+                image: data_user.user.imageUrl,
+                sessions: recover_sessions_user.length
             }
             await axios.get(`/api/categorys`);
             await axios.post("/api/users", instance_user);
 
             setSession({ user: instance_user });
         } else {
-            setSession({ user: { id: '', name: '', email: '', image: '' } });
+            setSession({ user: { id: '', name: '', email: '', image: '', sessions: 0 } });
         }
     }
 

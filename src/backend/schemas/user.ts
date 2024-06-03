@@ -24,6 +24,10 @@ const schema_user = new Schema<Props_user>({
     image: {
         type: String,
         require: [true, 'Required image'],
+    },
+    sessions:{
+        type: Number,
+        require: [true, 'Required sessions'],
     }
 },
     {

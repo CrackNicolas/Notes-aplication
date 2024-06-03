@@ -38,7 +38,7 @@ export default function ComponentItem(props: Props) {
         <ComponentIcon name={`${focus ? 'logo-fill' : 'logo'}`} size={20} description_class="text-secondary cursor-pointer" />
       </div>
       <div className="group relative">
-        <span className="text-lg font-normal hover:font-semibold tracking-wide text-secondary">
+        <span className="line-clamp-1 text-lg font-normal hover:font-semibold tracking-wide text-secondary">
           {title}
         </span>
         <p className="mt-2 line-clamp-2 text-sm leading-6 text-tertiary opacity-50 hover:opacity-100 transition duration-700">
