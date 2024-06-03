@@ -9,11 +9,10 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 
 import ComponentIcon from "@/frontend/components/partials/icon";
-import ComponentNote from "@/frontend/components/layouts/notes/note";
+import ComponentList from "./list";
 import ComponentLabel from "../../partials/form/label";
 import ComponentInput from "../../partials/form/input";
 import ComponentSelect from '@/frontend/components/partials/form/select';
-import ComponentLoading from "@/frontend/components/layouts/notes/list/loading";
 import ComponentMessageWait from "@/frontend/components/layouts/messages/wait";
 import ComponentMessageConfirmation from "@/frontend/components/layouts/messages/confirmation";
 
@@ -188,20 +187,10 @@ export default function ComponentSearch() {
                             toggleClassName={"absolute bg-primary rounded-r-md border border-secondary border-opacity-70 text-secondary right-0 h-full px-3 hover:bg-secondary hover:text-primary focus:outline-none disabled:opacity-40 disabled:cursor-not-allowed"}
                             inputClassName={"w-full placeholder:text-secondary placeholder:opacity-70 bg-primary text-secondary border border-secondary border-opacity-50 border-[0.1px] rounded-md py-1 px-2 outline-none "}
                         />
-
                     </div>
                 </div>
             </article>
-            <article className="grid grid-cols-1 xl:grid-cols-2 place-items-center gap-4">
-                {
-                    (list_notes.length === 0) ?
-                        <ComponentLoading count={12} />
-                        :
-                        list_notes.map(note => {
-                            return <ComponentNote key={note._id} note={note} action_note={action_note} />
-                        })
-                }
-            </article>
+            <ComponentList notes={list_notes} action_note={action_note} />
             {
                 (loading) && <ComponentMessageWait open={loading} setOpen={setLoading} />
             }

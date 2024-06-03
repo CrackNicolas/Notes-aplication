@@ -39,21 +39,21 @@ export default function ComponentList(props: Props) {
     return (
         <article className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-3 w-full">
             {
-                categorys.length === 0 && <ComponentLoading count={10} />
-            }
-            {
-                categorys.map(category => {
-                    return (
-                        <div key={category.title} onClick={() => select(category)} className={`group col-span-1 grid place-items-center h-[100px] rounded-md cursor-pointer hover:bg-secondary transition duration-500 ${category.use ? 'bg-secondary' : 'bg-primary border-secondary  border-[0.1px]'}`}>
-                            <div className="flex flex-col items-center gap-y-1">
-                                <ComponentIcon name={category.icon} size={27} view_box="0 0 16 16" description_class={`group-hover:text-primary ${category.use ? 'text-primary' : 'text-secondary'} duration-500 group-hover:translate-y-[-5px] `} />
-                                <span className={`group-hover:text-primary text-lg group-hover:font-bold font-semibold ${category.use ? 'text-primary' : 'text-secondary'} tracking-wider duration-500`}>
-                                    {category.title}
-                                </span>
+                (categorys.length === 0) ?
+                    <ComponentLoading count={10} />
+                    :
+                    categorys.map(category => {
+                        return (
+                            <div key={category.title} onClick={() => select(category)} className={`group col-span-1 grid place-items-center h-[100px] rounded-md cursor-pointer hover:bg-secondary transition duration-500 ${category.use ? 'bg-secondary' : 'bg-primary border-secondary  border-[0.1px]'}`}>
+                                <div className="flex flex-col items-center gap-y-1">
+                                    <ComponentIcon name={category.icon} size={27} view_box="0 0 16 16" description_class={`group-hover:text-primary ${category.use ? 'text-primary' : 'text-secondary'} duration-500 group-hover:translate-y-[-5px] `} />
+                                    <span className={`group-hover:text-primary text-lg group-hover:font-bold font-semibold ${category.use ? 'text-primary' : 'text-secondary'} tracking-wider duration-500`}>
+                                        {category.title}
+                                    </span>
+                                </div>
                             </div>
-                        </div>
-                    )
-                })
+                        )
+                    })
             }
             {
                 (response) && <ComponentMessageConfirmation open={open} setOpen={setOpen} response={response} />
