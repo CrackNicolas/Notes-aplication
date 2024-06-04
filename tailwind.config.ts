@@ -9,6 +9,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      boxShadow: {
+        'sm': '0 0 7px 0px'
+      },
       colors: {
         "primary": "#000000",
         "secondary": "#00ffff",

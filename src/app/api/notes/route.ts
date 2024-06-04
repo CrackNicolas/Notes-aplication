@@ -10,7 +10,7 @@ import { Props_response } from "@/context/types/response";
 import { Conect_database } from "@/backend/utils/db";
 import { File_transformer, File_edit } from '@/backend/utils/cloudinary';
 
-import Notes from '@/backend/schemas/notes'
+import Notes from '@/backend/schemas/note'
 
 export async function GET(req: NextRequest): Promise<NextResponse> {
     const token = req.cookies.get('__session')?.value as string;

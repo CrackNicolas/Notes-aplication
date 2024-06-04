@@ -57,7 +57,7 @@ export default function ComponentSelect(props: Props) {
             }
         }
 
-        if (session.user.id !== '') {
+        if (session.id) {
             load_categorys();
         }
 

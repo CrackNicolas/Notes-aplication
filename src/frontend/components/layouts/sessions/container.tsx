@@ -6,16 +6,16 @@ import axios from "axios";
 
 import ComponentList from "./list/container";
 
-import { Props_user } from "@/context/types/session";
+import { Props_session } from "@/context/types/session";
 
 export default function ComponentSessions() {
-    const [list_users, setList_users] = useState<Props_user[] | []>([]);
+    const [list_sessions, setList_sessions] = useState<Props_session[] | []>([]);
 
     useEffect(() => {
         const load_users = async () => {
-            const { data } = await axios.get('/api/users');
+            const { data } = await axios.get('/api/sessions');
             if (data.status === 200) {
-                setList_users(data.data);
+                setList_sessions(data.data);
             }
         }
 
@@ -29,10 +29,10 @@ export default function ComponentSessions() {
                     Lista de usuarios
                 </span>
                 <span className="text-secondary text-xl">
-                    {list_users.length}
+                    {list_sessions.length}
                 </span>
             </article>
-            <ComponentList users={list_users} />
+            <ComponentList sessions={list_sessions} />
         </section>
     )
 }

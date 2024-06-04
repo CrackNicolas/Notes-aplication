@@ -40,7 +40,7 @@ export default function ComponentNotes() {
             }
         }
 
-        if (session.user.id !== '') {
+        if (session.id) {
             load_notes();
         }
 

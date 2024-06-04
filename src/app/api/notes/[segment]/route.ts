@@ -10,7 +10,7 @@ import { Query } from '@/backend/api/query';
 import { File_delete } from '@/backend/utils/cloudinary';
 import { Conect_database } from "@/backend/utils/db";
 
-import Notes from '@/backend/schemas/notes'
+import Notes from '@/backend/schemas/note'
 
 export async function GET(req: NextRequest, { params: { segment } }: { params: { segment: string } }): Promise<NextResponse> {
     const token = req.cookies.get('__session')?.value as string;

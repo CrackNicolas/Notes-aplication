@@ -9,24 +9,23 @@ import { createContext, useEffect, useState } from "react";
 
 import axios from "axios";
 
-import { Props_session } from "@/context/types/session";
+import { Props_session, Props_user } from "@/context/types/session";
 import { Props_context } from "@/context/types/context";
 import { Props_layouts } from "@/frontend/types/props";
 
 import { ComponentUserButton } from "@/frontend/components/services/clerk";
 
 import Template from '@/frontend/template/init'
+import { Time_elapsed } from "@/frontend/logic/format_time";
 
 export const Context = createContext<Props_context>({
     section_current: '',
-    session: {
-        user: { id: '', name: '', email: '', image: '', sessions: 0 }
-    },
+    session: {},
     button_sesion: <ComponentUserButton />
 });
 
 export default function Provider({ children }: Props_layouts) {
-    const [session, setSession] = useState<Props_session>({ user: { id: '', name: '', email: '', image: '', sessions: 0 } });
+    const [session, setSession] = useState<Props_session>({});
 
     const data_user = useUser();
 
@@ -35,21 +34,33 @@ export default function Provider({ children }: Props_layouts) {
 
     const load_user = async () => {
         if (data_user.isSignedIn && data_user.user.fullName) {
-            const recover_sessions_user = await data_user.user.getSessions();
-            console.log(recover_sessions_user);
-            const instance_user = {
-                id: data_user.user.id,
+            const data_session = (await data_user.user.getSessions())[0];
+
+            const instance_user: Props_user = {
                 name: data_user.user.fullName,
                 email: data_user.user.emailAddresses.toString(),
                 image: data_user.user.imageUrl,
-                sessions: recover_sessions_user.length
+                rol: ''
             }
-            await axios.get(`/api/categorys`);
-            await axios.post("/api/users", instance_user);
 
-            setSession({ user: instance_user });
+            const instance_session: Props_session = {
+                id: data_user.user.id,
+                status: (data_session.status === 'active'),
+                last_time: Time_elapsed(data_session.lastActiveAt) + ' '+ data_session.lastActiveAt.toString().split(' ')[4] + 'hs',
+                origin: {
+                    IP_adress: (data_session.latestActivity.ipAddress) ? data_session.latestActivity.ipAddress : '',
+                    city: (data_session.latestActivity.city) ? data_session.latestActivity.city : ''
+                },
+                user: instance_user
+            }
+
+            await axios.get(`/api/categorys`);
+            await axios.post("/api/sessions", instance_session);
+
+            setSession(instance_session);
         } else {
-            setSession({ user: { id: '', name: '', email: '', image: '', sessions: 0 } });
+            await axios.put("/api/sessions", { id: session.id, status: false });
+            setSession({});
         }
     }
 

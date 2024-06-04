@@ -1,6 +1,6 @@
 import { Schema, model, models } from "mongoose";
 
-import { Props_category } from "@/context/types/category";
+import { Props_category } from "@/backend/types/category";
 
 const schema_category = new Schema<Props_category>({
     title: {
