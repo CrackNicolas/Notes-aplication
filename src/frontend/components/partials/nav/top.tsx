@@ -58,15 +58,9 @@ export default function ComponentNavTop(props: Props_context) {
             </div>
             <div title="toggle" className={`mx-4 transform transition-all duration-500 ease-in-out sm:hidden ${view_toggle ? 'max-h-screen opacity-100 scale-100' : 'max-h-0 opacity-0 scale-95'} overflow-hidden`}>
                 <div className="space-y-2 px-0.5 py-2">
-                    <Link href="/dashboard/main" onClick={() => setView_toggle(false)} className="group flex justify-between items-center border hover:border-secondary rounded-md border-1 px-3 py-2">
+                    <Link href="/" onClick={() => setView_toggle(false)} className="group flex justify-between items-center border hover:border-secondary rounded-md border-1 px-3 py-2">
                         <span className="tracking-wider text-fifth text-md font-normal group-hover:text-secondary transition duration-500">
-                            Panel
-                        </span>
-                        <ComponentIcon testid="icon-home" name={`${focus ? 'logo-fill' : 'logo'}`} size={23} description_class="icon-home group-hover:text-secondary text-fifth cursor-pointer transition duration-500" />
-                    </Link>
-                    <Link href="/dashboard/main" onClick={() => setView_toggle(false)} className="group flex justify-between items-center border hover:border-secondary rounded-md border-1 px-3 py-2">
-                        <span className="tracking-wider text-fifth text-md font-normal group-hover:text-secondary transition duration-500">
-                            Panel
+                            Inicio
                         </span>
                         <ComponentIcon testid="icon-home" name={`${focus ? 'logo-fill' : 'logo'}`} size={23} description_class="icon-home group-hover:text-secondary text-fifth cursor-pointer transition duration-500" />
                     </Link>

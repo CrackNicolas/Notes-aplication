@@ -36,8 +36,18 @@ export default function ComponentList(props: Props) {
         setRestart(true);
     }
 
+    const restart = async () => {
+        await axios.patch('/api/categorys');
+        setRestart(true);
+    }
+
     return (
-        <article className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-3 w-full">
+        <article className="relative grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-3 w-full">
+            <div className="absolute top-[-30px] left-0">
+                <span onClick={() => restart()} title="Reiniciar" className="cursor-pointer group">
+                    <ComponentIcon name="load" size={25} description_class={`cursor-pointer group-hover:rotate-[360deg] text-secondary`} />
+                </span>
+            </div>
             {
                 (categorys.length === 0) ?
                     <ComponentLoading count={10} />

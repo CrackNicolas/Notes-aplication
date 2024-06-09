@@ -6,3 +6,8 @@ export type Props_layouts = {
 export type Props_params_search = {
     [key: string]: any
 }
+export type Props_items_dashboard = {
+    url: string,
+    title: string,
+    description: string
+}

@@ -3,7 +3,13 @@ export function Query(user_id: string, segment: string) {
 
     const criteria = JSON.parse(segment);
 
-    //TENER EN CUENTA QUE LA FECHA NO FUNCIONA BIEN PROBAR LA BUSQUEDA DE HOY
+    const date: { $gte: string, $lte?: string } = {
+        $gte: criteria?.dates?.startDate
+    };
+
+    if (criteria?.dates?.endDate !== criteria?.dates?.startDate) {
+        date['$lte'] = criteria?.dates?.endDate
+    }
 
     return {
         user_id: user_id,
@@ -11,7 +17,7 @@ export function Query(user_id: string, segment: string) {
             { title: { $regex: `(?i)^${criteria?.title}` } },
             { 'category.title': criteria?.category?.title },
             { priority: criteria?.priority },
-            { createdAt: { $gte: criteria?.dates?.startDate, $lte: criteria?.dates?.endDate } },
+            { createdAt: date },
             { featured: criteria?.featured }
         ]
     }

@@ -15,7 +15,7 @@ export default function ComponentList(props: Props) {
         <article className="grid grid-cols-1 xl:grid-cols-2 place-items-center gap-4">
             {
                 (notes.length === 0) ?
-                    <ComponentLoading count={10} />
+                    <ComponentLoading count={13} />
                     :
                     notes.map(note => {
                         return <ComponentNote key={note._id} note={note} action_note={action_note} />

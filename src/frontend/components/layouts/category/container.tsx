@@ -37,7 +37,7 @@ export default function ComponentCategory() {
     }, [restart])
 
     return (
-        <section className="flex flex-col gap-10 mt-[65px] py-7">
+        <section className="flex flex-col gap-12 mt-[65px] py-7">
             <ComponentHeader title="Categorias de notas" subtitle="Selecciona las categorias que deseas agregar o quitar de tus notas" />
             <ComponentList categorys={list_categorys} setRestart={setRestart} />
             {

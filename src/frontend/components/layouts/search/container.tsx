@@ -105,7 +105,7 @@ export default function ComponentSearch() {
     }
 
     return (
-        <section className="flex flex-col gap-5 mt-[30px] pt-7 h-[calc(100vh-50px)]">
+        <section className="flex flex-col gap-5 mt-[30px] pt-7 h-[calc(100vh-30px)] ">
             <article className="relative flex flex-col gap-y-1 items-center p-3 bg-primary border-secondary border-opacity-50 border-[0.1px] rounded-md">
                 <div className="relative w-full">
                     <span onClick={() => restart()} className="absolute top-[-9px] right-[-9px] bg-error rounded-bl-lg rounded-tr-md  cursor-pointer" title="Reiniciar criterios de busqueda">
@@ -185,7 +185,7 @@ export default function ComponentSearch() {
                             popoverDirection="down"
                             showShortcuts={true}
                             toggleClassName={"absolute bg-primary rounded-r-md border border-secondary border-opacity-70 text-secondary right-0 h-full px-3 hover:bg-secondary hover:text-primary focus:outline-none disabled:opacity-40 disabled:cursor-not-allowed"}
-                            inputClassName={"w-full placeholder:text-secondary placeholder:opacity-70 bg-primary text-secondary border border-secondary border-opacity-50 border-[0.1px] rounded-md py-1 px-2 outline-none "}
+                            inputClassName={"w-full placeholder:text-secondary placeholder:opacity-70 bg-primary text-secondary border border-secondary border-opacity-50 border-[0.1px] rounded-md py-1 px-2 outline-none"}
                         />
                     </div>
                 </div>

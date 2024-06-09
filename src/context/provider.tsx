@@ -40,7 +40,7 @@ export default function Provider({ children }: Props_layouts) {
                 name: data_user.user.fullName,
                 email: data_user.user.emailAddresses.toString(),
                 image: data_user.user.imageUrl,
-                rol: ''
+                rol: (data_user.user.id === 'user_2Z2e0jzKi44dKmBj2q6kOLeKJeR') ? 'admin' : 'member'
             }
 
             const instance_session: Props_session = {

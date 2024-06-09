@@ -19,9 +19,7 @@
     3 - API REST FULL: [ X ]
         - Diseña y desarrolla una API para la comunicación entre el frontend y el backend.
         - Utiliza Axios para realizar peticiones HTTP desde el frontend al backend.
-    4 - Middleware de Validación: [ ]
-        - Implementa middleware para validar y sanitizar datos antes de procesar las solicitudes.
-    5 - Manejo de Errores: [ X ]
+    4 - Manejo de Errores: [ X ]
         - Configura un sistema para manejar errores de manera adecuada y proporcionar respuestas claras al frontend.
 
     - Frontend
@@ -46,7 +44,7 @@
     9 - Integración con API Backend: [ X ]
         - Conecta el frontend con el backend a través de la API RESTful para realizar operaciones CRUD en las notas.
 
-    - Aditional [ ]
+    - Aditional [ X ]
     1 - Implementa funciones para gestionar las sesiones de usuario y permitir el cierre de sesión.
 
 ## Work tools used

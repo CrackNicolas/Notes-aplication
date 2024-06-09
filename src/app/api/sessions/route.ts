@@ -48,7 +48,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
                 name: user.name,
                 email: user.email,
                 image: user.image,
-                rol: (id === 'user_2Z2e0jzKi44dKmBj2q6kOLeKJeR') ? 'admin' : 'member'
+                rol: user.rol
             }
         });
 

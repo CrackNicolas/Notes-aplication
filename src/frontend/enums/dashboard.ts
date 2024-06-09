@@ -1,4 +1,6 @@
-export const items_main = [
+import { Props_items_dashboard } from "@/frontend/types/props"
+
+export const items_main: Props_items_dashboard[] = [
     {
         url: '/sessions',
         title: 'Administra sesiones de usuario',

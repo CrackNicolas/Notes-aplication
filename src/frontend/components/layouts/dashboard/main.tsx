@@ -1,6 +1,6 @@
 'use client'
 
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { Context } from "@/context/provider";
 
@@ -8,14 +8,26 @@ import ComponentTemplateDashboard from "@/frontend/components/partials/template/
 
 import { items_main } from "@/frontend/enums/dashboard"
 
+import { Props_items_dashboard } from "@/frontend/types/props"
+
 export default function ComponentDashboardMain() {
     const { session: { user } } = useContext(Context);
 
-    useEffect(() => {
-        if(user?.rol !== 'admin'){
-            items_main.shift();
-        }
-    },[user])
+    const [items, setItems] = useState<Props_items_dashboard[]>([]);
 
-    return <ComponentTemplateDashboard items={items_main} />
+    useEffect(() => {
+        switch (user?.rol) {
+            case 'admin':
+                setItems(items_main);
+                break;
+            case 'member':
+                if (items_main[0].url === '/sessions') {
+                    items_main.shift();
+                }
+                setItems(items_main);
+                break;
+        }
+    }, [user])
+
+    return <ComponentTemplateDashboard items={items} />
 }
