@@ -48,6 +48,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
             exists_session.status = status;
             exists_session.last_time = last_time;
             exists_session.origin = origin;
+            exists_session.expiret = expiret;
             await exists_session.save();
             return NextResponse.json<Props_response>({ status: 400, info: { message: "La session ya está registrada" } });
         }
