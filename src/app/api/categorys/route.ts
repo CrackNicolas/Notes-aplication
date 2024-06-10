@@ -105,25 +105,3 @@ export async function PUT(req: NextRequest): Promise<NextResponse> {
         return NextResponse.json<Props_response>({ status: 500, info: { message: "Errores con el servidor" } })
     }
 }
-export async function PATCH(req: NextRequest): Promise<NextResponse> {
-    const token = req.cookies.get('__session')?.value as string;
-    const user_id = jwt.decode(token)?.sub;
-
-    if (!token) return NextResponse.json<Props_response>({ status: 401, info: { message: "Credenciales invalidas" } });
-
-    const connection: boolean = await Conect_database();
-    if (!connection) return NextResponse.json<Props_response>({ status: 500, info: { message: "Error al conectarse a la base de datos" } });
-
-    try {
-        await Category.updateMany({}, { $set: { use: { value: false, user_id } } });
-        await Category.updateMany(
-            { title: { $in: ["Proyecto", "Trabajo"] } },
-            { $set: { "use.$[elem].value": true } },
-            { arrayFilters: [{ "elem.user_id": user_id }] }
-        );
-        
-        return NextResponse.json<Props_response>({ status: 200, info: { message: "Categorias reiniciadas" } });
-    } catch (error) {
-        return NextResponse.json<Props_response>({ status: 500, info: { message: "Errores con el servidor" } })
-    }
-}

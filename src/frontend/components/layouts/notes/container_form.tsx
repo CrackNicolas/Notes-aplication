@@ -195,7 +195,7 @@ export default function ComponentContainerForm(props: Props) {
                             />
                         </div>
                     </div>
-                    <label htmlFor="file-upload" className="grid gap-y-0.5 place-items-center mt-0.5 p-1.5 cursor-pointer border-secondary border-opacity-50 bg-primary w-full rounded-md border-[0.1px]">
+                    <label htmlFor="file-upload" title="Seleccionar para subir un archivo" className="grid gap-y-0.5 place-items-center mt-0.5 p-1.5 cursor-pointer border-secondary border-opacity-50 bg-primary w-full rounded-md border-[0.1px]">
                         <ComponentIcon name={`upload-file${(selected?.file?.id) ? '-selected' : (file === undefined) ? '' : '-selected'}`} size={27} description_class="icon-home text-secondary cursor-pointer" />
                         <span className='line-clamp-1 text-secondary text-md font-normal tracking-wide'>
                             {
