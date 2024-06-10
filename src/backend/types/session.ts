@@ -2,6 +2,7 @@ export type Props_session = {
     id: string,
     status: boolean,
     last_time: string,
+    expiret: string,
     origin: Props_origin,
     user: Props_user
 }

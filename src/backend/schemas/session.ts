@@ -18,6 +18,10 @@ const schema_session = new Schema<Props_session>({
         require: [true, 'Required last_time'],
         trim: true
     },
+    expiret: {
+        type: String,
+        require: [true, 'Required expiret']
+    },
     origin: {
         IP_adress: {
             type: String,

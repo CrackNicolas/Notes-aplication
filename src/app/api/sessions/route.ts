@@ -13,6 +13,16 @@ export async function GET(): Promise<NextResponse> {
     if (!connection) return NextResponse.json<Props_response>({ status: 500, info: { message: "Error al conectarse a la base de datos" } })
 
     try {
+        const sessions_expiret: Props_session[] = await Session.find({ expiret: { $lt: new Date() }, status: true });
+
+        const sessions_ids = sessions_expiret.map(session => session.id);
+        if (sessions_ids.length > 0) {
+            await Session.updateMany(
+                { _id: { $in: sessions_ids } },
+                { $set: { status: false } }
+            );
+        }
+
         const sessions: Props_session[] = await Session.find();
 
         return NextResponse.json<Props_response>({ status: 200, data: sessions });
@@ -26,7 +36,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
     if (!token) return NextResponse.json<Props_response>({ status: 401, info: { message: "Credenciales invalidas" } });
 
-    const { id, status, last_time, origin, user } = await req.json();
+    const { id, status, last_time, expiret, origin, user } = await req.json();
 
     const connection: boolean = await Conect_database();
     if (!connection) return NextResponse.json<Props_response>({ status: 500, info: { message: "Error al conectarse a la base de datos" } })
@@ -43,7 +53,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         }
 
         const new_session = new Session({
-            id, status, last_time, origin,
+            id, status, last_time, expiret, origin,
             user: {
                 name: user.name,
                 email: user.email,

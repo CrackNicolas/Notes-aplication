@@ -47,6 +47,7 @@ export default function Provider({ children }: Props_layouts) {
                 id: data_user.user.id,
                 status: (data_session.status === 'active'),
                 last_time: Time_elapsed(data_session.lastActiveAt) + ' '+ data_session.lastActiveAt.toString().split(' ')[4] + 'hs',
+                expiret: data_session.expireAt.toString(),
                 origin: {
                     IP_adress: (data_session.latestActivity.ipAddress) ? data_session.latestActivity.ipAddress : '',
                     city: (data_session.latestActivity.city) ? data_session.latestActivity.city : ''
