@@ -8,7 +8,7 @@ type Props = {
 }
 
 export default function ComponentTemplateLoading(props: Props) {
-    const { children, count, description_class, title = '' } = props;
+    const { children, count, description_class, title = 'Cargando...' } = props;
 
     return (
         <Fragment>

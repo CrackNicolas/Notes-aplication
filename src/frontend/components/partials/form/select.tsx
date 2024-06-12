@@ -22,8 +22,6 @@ type Props = {
 }
 
 export default function ComponentSelect(props: Props) {
-    const { session } = useContext(Context);
-
     const list = useRef<HTMLUListElement>(null);
 
     const { error, select_category, setSelect_category, register, required, setValue = () => { }, clearErrors = () => { }, restart = () => { } } = props;
@@ -36,7 +34,7 @@ export default function ComponentSelect(props: Props) {
     }
 
     const selected = (category: Props_category) => {
-        list.current?.scrollTo(0, 0);
+        //list.current?.scrollTo(0, 0);
         setValue('category', category);
         setSelect_category(category);
         setOpen_category(false);
@@ -56,12 +54,8 @@ export default function ComponentSelect(props: Props) {
                 setCategorys(data.data);
             }
         }
-
-        if (session.id) {
-            load_categorys();
-        }
-
-    }, [session.user]);
+        load_categorys();
+    }, []);
 
     useEffect(() => {
         if (select_category.title === 'Seleccionar categoria...') {

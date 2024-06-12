@@ -122,10 +122,14 @@ describe('Componente <List/> de crud', () => {
                     _id: "id_" + i,
                     title: `Titulo de prueba ${i}`,
                     description: `Descripcion de prueba ${i}`,
-                    category: 'Viajes',
+                    category: {
+                        title: 'Viajes',
+                        icon: 'plane'
+                    },
                     priority: 'Alta',
                     featured: true,
                     createdAt: new Date(),
+                    user_id: 'user_d2e0jzKi44asdasd2eKJeR'
                 });
             }
             const component = render(<ComponentList notes={list_notes} setSelected={() => { }} selected={undefined} setRefresh={() => { }} setSearch={() => { }} />);
@@ -189,7 +193,7 @@ describe('Componente <List/> de crud', () => {
                     const text_modal = component.getByTitle('¿Seguro que desea eliminar?');
 
                     fireEvent.click(button_no);
-                    
+
                     expect(text_modal).not.toBeInTheDocument();
                 })
             })

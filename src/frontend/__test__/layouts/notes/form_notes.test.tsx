@@ -18,7 +18,6 @@ import ComponentItemFeatured from '@/frontend/components/partials/form/item_feat
 
 import { labels, note } from '@/frontend/__test__/mocks/notes'
 import { categorys } from '@/frontend/__test__/mocks/categorys';
-import { validation } from '@/frontend/validations/form';
 
 const mock = new MockAdapter(axios);
 
@@ -148,7 +147,7 @@ describe('Componente <Form/> principal', () => {
 
         await waitFor(() => {
             const title = getByTitle('Seleccionar categoria');
-            expect(title.textContent).toBe(note.category);
+            expect(title.textContent).toBe(note.category.title);
 
             fireEvent.submit(button_submit);
         })
@@ -275,7 +274,7 @@ describe('Componente <Form/> principal', () => {
 
         describe('Categorias', () => {
             test('Error required', async () => {
-                const { getByTitle } = render(<ComponentSelect clearErrors={() => { }} setValue={() => { }} select_category="" register={register} error="required" setSelect_category={setSelected} />)
+                const { getByTitle } = render(<ComponentSelect clearErrors={() => { }} setValue={() => { }} select_category={{ title: 'Seleccionar categoria...' }} register={register} error="required" setSelect_category={setSelected} />)
 
                 await waitFor(() => {
                     const container = getByTitle('Categoria');

@@ -105,7 +105,7 @@ export default function ComponentContainerForm(props: Props) {
             setSelect_category(selected.category);
         }
 
-        window.scrollTo(0, 0);
+        //window.scrollTo(0, 0);
 
     }, [selected])
 

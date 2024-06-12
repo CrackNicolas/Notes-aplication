@@ -35,7 +35,7 @@ export default function ComponentItem(props: Props) {
         <span className="text-tertiary opacity-50 hover:opacity-100 transition duration-700">
           {last_time.replace('Creada', 'Ultima vez')}
         </span>
-        <ComponentIcon name={`${focus ? 'logo-fill' : 'logo'}`} size={20} description_class="text-secondary cursor-pointer" />
+        <ComponentIcon name={`${focus ? 'logo-fill' : 'logo'}`} testid="icon-item" size={20} description_class="text-secondary cursor-pointer" />
       </div>
       <div className="group relative">
         <span className="line-clamp-1 text-lg font-normal hover:font-semibold tracking-wide text-secondary">

@@ -4,7 +4,10 @@ export const note: Props_note = {
     _id: '1234',
     title: 'Titulo de prueba',
     description: 'Descripcion de prueba',
-    category: 'Viajes',
+    category: {
+        title: 'Viajes',
+        icon: 'plane'
+    },
     priority: 'Alta',
     featured: true,
     createdAt: new Date(),
@@ -12,7 +15,8 @@ export const note: Props_note = {
         id:'1234',
         name:'Archivo',
         url:'url'
-    }
+    },
+    user_id: 'user_d2e0jzKi44asdasd2eKJeR'
 }
 
 export const notes: Props_note[] = [
@@ -20,7 +24,10 @@ export const notes: Props_note[] = [
         _id: '1234',
         title: 'Titulo de prueba',
         description: 'Descripcion de prueba',
-        category: 'Viajes',
+        category: {
+            title: 'Viajes',
+            icon: 'plane'
+        },
         priority: 'Alta',
         featured: true,
         createdAt: new Date(),
@@ -28,7 +35,8 @@ export const notes: Props_note[] = [
             id:'1234',
             name:'Archivo',
             url:'url'
-        }
+        },
+        user_id: 'user_d2e0jzKi44asdasd2eKJeR'
     }
 ]
 

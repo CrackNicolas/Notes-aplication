@@ -1,19 +1,21 @@
-'use client'
-
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import axios from 'axios';
 
-import ComponentContainerForm from "./container_form";
 import ComponentList from "@/frontend/components/layouts/notes/list/container";
+import ComponentContainerForm from "./container_form";
 import ComponentMessageConfirmation from "@/frontend/components/layouts/messages/confirmation";
 
-import { Context } from "@/context/provider";
 import { Props_note } from "@/context/types/note";
+import { Props_session } from "@/context/types/session";
 import { Props_response } from "@/context/types/response";
 
-export default function ComponentNotes() {
-    const { session } = useContext(Context);
+type Props = {
+    session: Props_session
+}
+
+export default function ComponentNotes(props: Props) {
+    const { session } = props;
 
     const [load, setLoad] = useState<boolean>(false);
     const [search, setSearch] = useState<string>("");

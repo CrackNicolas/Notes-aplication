@@ -1,16 +1,8 @@
-'use client'
-
 import Link from "next/link";
-
-import { useContext } from "react";
 
 import ComponentIcon from "@/frontend/components/partials/icon";
 
-import { Context } from "@/context/provider";
-
-export default function ComponentHome() {
-    const { session } = useContext(Context);
-
+export default function ComponentHome({ id }: { id?: string }) {
     return (
         <div className="relative px-6 lg:px-8">
             <div className="mt-[150px] flex flex-col items-center gap-y-9">
@@ -24,7 +16,7 @@ export default function ComponentHome() {
                     </span>
                 </div>
                 <div className="mt-3 flex items-center justify-center gap-x-6">
-                    <Link href={`${(session.id) ? '/dashboard/main' : '/sign-in'}`} title="Empezar" className="rounded-md border-[1px] border-secondary text-secondary hover:bg-gradient-to-r from-secondary vie-secondary px-3.5 py-2.5 text-sm font-normal hover:font-semibold hover:text-primary tracking-wider transition duration-500 cursor-pointer">
+                    <Link href={`${(id) ? '/dashboard/main' : '/sign-in'}`} title="Empezar" className="rounded-md border-[1px] border-secondary text-secondary hover:bg-gradient-to-r from-secondary vie-secondary px-3.5 py-2.5 text-sm font-normal hover:font-semibold hover:text-primary tracking-wider transition duration-500 cursor-pointer">
                         Empezar
                     </Link>
                 </div>
