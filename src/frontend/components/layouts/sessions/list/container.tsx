@@ -13,9 +13,9 @@ export default function ComponentList({ sessions }: { sessions: Props_session[] 
                     :
                     sessions.map(session => {
                         return (
-                            <div key={session.id} className="relative flex items-start gap-3 w-full overflow-hidden bg-sixth rounded-md border-[0.1px] border-opacity-30 border-secondary p-2.5 group hover:border-opacity-100 cursor-pointer">
+                            <div key={session.id} title={`Sesion ${session.user?.name}`} className="relative flex items-start gap-3 w-full overflow-hidden bg-sixth rounded-md border-[0.1px] border-opacity-30 border-secondary p-2.5 group hover:border-opacity-100 cursor-pointer">
                                 <span className={`absolute shadow-sm ${(session.status) ? 'bg-secondary shadow-secondary' : 'bg-error shadow-error'} w-2 h-2 rounded-full top-2 right-2`} title={`Usuario ${session.status ? 'activo' : 'desconectado'}`} />
-                                <Image src={(session.user) ? session.user?.image : ''} alt="Imagen de usuario" width={34} height={24} className="rounded-full mt-1" />
+                                <Image src={(session.user) ? session.user?.image : 'https://cdn.icon-icons.com/icons2/1381/PNG/512/systemusers_94754.png'} alt="Imagen de usuario" width={34} height={24} className="rounded-full mt-1" />
                                 <div className="flex flex-col">
                                     <span className="line-clamp-1 text-secondary font-bold text-lg tracking-wider">
                                         {session.user?.name}

@@ -2,7 +2,7 @@ import ComponentTemplateLoading from "@/frontend/components/partials/template/li
 
 export default function ComponentLoading({ count }: { count: number }) {
     return (
-        <ComponentTemplateLoading count={count} description_class="group grid grid-cols-9 pl-2.5 py-2" title="Loading de nota">
+        <ComponentTemplateLoading count={count} description_class="group grid grid-cols-9 pl-2.5 py-2" title="Cargando nota">
             <div className="col-span-7 md:col-span-8 flex flex-col gap-y-1 justify-between">
                 <span className="bg-tertiary opacity-20 w-[50%] h-[13px] rounded-full"/>
                 <span className="bg-tertiary opacity-20 w-[calc(100%-60px)] h-[12px] rounded-full"/>

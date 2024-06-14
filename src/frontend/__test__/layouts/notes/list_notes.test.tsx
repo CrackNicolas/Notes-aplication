@@ -122,7 +122,7 @@ describe('Componente <List/> de crud', () => {
     describe('Renderizacion correcta de lista de notas', () => {
         test('Renderizacion correcta de Loading con 0 notas', () => {
             const component = render(<ComponentList notes={[]} setSelected={() => { }} selected={undefined} setRefresh={() => { }} setSearch={() => { }} />);
-            const loading_notes = component.getAllByTitle('Loading de nota')[0];
+            const loading_notes = component.getAllByTitle('Cargando nota')[0];
             expect(loading_notes).toBeInTheDocument();
         })
 
