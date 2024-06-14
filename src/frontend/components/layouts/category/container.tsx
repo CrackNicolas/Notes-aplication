@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 
 import axios from "axios";
 
-import ComponentList from "./list/container"
+import ComponentList from "@/frontend/components/layouts/category/list/container"
 import ComponentHeader from "@/frontend/components/partials/template/dashboard/header"
 import ComponentMessageConfirmation from "@/frontend/components/layouts/messages/confirmation";
 

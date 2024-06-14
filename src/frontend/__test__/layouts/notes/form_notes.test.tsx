@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom';
-import { fireEvent, getByText, render, waitFor } from '@testing-library/react';
+import { fireEvent, render, waitFor } from '@testing-library/react';
 
 import ResizeObserver from 'resize-observer-polyfill';
 global.ResizeObserver = ResizeObserver;

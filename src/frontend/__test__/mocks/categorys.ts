@@ -8,7 +8,7 @@ export const categorys: Props_category[] = [
     },
     {
         title: 'Estudios',
-        use: true,
+        use: false,
         icon: 'studies'
     },
     {
@@ -18,7 +18,7 @@ export const categorys: Props_category[] = [
     },
     {
         title: 'Musica',
-        use: true,
+        use: false,
         icon: 'music'
     },
     {
