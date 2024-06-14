@@ -10,7 +10,7 @@ import MockAdapter from 'axios-mock-adapter'
 import ComponentList from "@/frontend/components/layouts/category/list/container"
 import ComponentHeader from "@/frontend/components/partials/template/dashboard/header"
 
-import { categorys } from '../../mocks/categorys'
+import { categorys } from '@/frontend/__test__/mocks/categorys'
 
 const mock = new MockAdapter(axios);
 
