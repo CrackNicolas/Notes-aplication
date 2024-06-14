@@ -77,6 +77,18 @@ describe('Componente <List/> de crud', () => {
             expect(note_element).toHaveClass('border-opacity-100');
         })
 
+        describe('Renderizacion correcta de cada tipo de nota', () => {
+            notes.map(note => {
+                test(`Con prioridad ${note.priority}`, () => {
+                    component.rerender(<ComponentNote note={note} paint={true} action_note={() => { }} />);
+
+                    const button_view = component.getByRole('button', { name: 'Ver' });
+                    
+                    fireEvent.click(button_view);
+                })
+            })
+        })
+
         describe('Time elapsed al renderizar la nota', () => {
             const times = [
                 {
@@ -106,7 +118,6 @@ describe('Componente <List/> de crud', () => {
             })
         })
     })
-
 
     describe('Renderizacion correcta de lista de notas', () => {
         test('Renderizacion correcta de Loading con 0 notas', () => {
@@ -139,7 +150,7 @@ describe('Componente <List/> de crud', () => {
 
         test('Funcionamiento correcto del boton view', () => {
             setSelected(undefined);
-            const { getByRole, getByTitle } = render(<ComponentList notes={notes} setSelected={setSelected} selected={undefined} setRefresh={() => { }} setSearch={() => { }} />);
+            const { getByRole, getByTitle } = render(<ComponentList notes={[note]} setSelected={setSelected} selected={undefined} setRefresh={() => { }} setSearch={() => { }} />);
 
             const button_view = getByRole('button', { name: 'Ver' });
             fireEvent.click(button_view);
@@ -154,7 +165,7 @@ describe('Componente <List/> de crud', () => {
         })
 
         test('Funcionamiento correcto del boton update', () => {
-            const { getByRole } = render(<ComponentList notes={notes} setSelected={setSelected} selected={undefined} setRefresh={() => { }} setSearch={() => { }} />);
+            const { getByRole } = render(<ComponentList notes={[note]} setSelected={setSelected} selected={undefined} setRefresh={() => { }} setSearch={() => { }} />);
             const button_update = getByRole('button', { name: 'Editar' });
             fireEvent.click(button_update);
             expect(setSelected).not.toBe(undefined);
@@ -165,7 +176,7 @@ describe('Componente <List/> de crud', () => {
             let button_delete: HTMLElement;
 
             beforeEach(() => {
-                component = render(<ComponentList notes={notes} setSelected={setSelected} selected={note} setRefresh={() => { }} setSearch={() => { }} />);
+                component = render(<ComponentList notes={[note]} setSelected={setSelected} selected={note} setRefresh={() => { }} setSearch={() => { }} />);
                 button_delete = component.getByRole('button', { name: 'Eliminar' });
             })
 

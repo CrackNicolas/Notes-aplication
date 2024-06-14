@@ -36,7 +36,7 @@ export default function ComponentView(props: Props) {
                 <div className="flex justify-between items-center w-full">
                     {
                         (note.file) && (
-                            <a href={(note.file) ? note.file.url : ''} target="_blank" title="Ver archivo" rel="noopener noreferrer" className="group relative overflow-hidden flex hover:w-auto w-[20px] rounded-r-full items-start outline-none">
+                            <a href={note.file.url} target="_blank" title="Ver archivo" rel="noopener noreferrer" className="group relative overflow-hidden flex hover:w-auto w-[20px] rounded-r-full items-start outline-none">
                                 <ComponentIcon name="upload-file-selected" size={20} description_class=" group-hover:py-0.5 min-w-[20px] group-hover:border group-hover:border-secondary group-hover:border-[0.1px] bg-primary text-secondary cursor-pointer group-hover:border-r-0 z-20 bg-primary" />
                                 <span className="group-hover:translate-x-0 group-hover:w-[90px] group-hover:h-[20px] translate-x-[-100px] w-0 h-0 transition duration-600 z-10 text-secondary border-y border-y-[0.1px] border-r border-r-[0.1px] border-secondary rounded-r-full flex items-center px-1">
                                     Ver archivo

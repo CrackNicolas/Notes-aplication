@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom';
-import { fireEvent, render, waitFor } from '@testing-library/react';
+import { fireEvent, getByText, render, waitFor } from '@testing-library/react';
 
 import ResizeObserver from 'resize-observer-polyfill';
 global.ResizeObserver = ResizeObserver;
@@ -131,6 +131,16 @@ describe('Componente <Form/> principal', () => {
             fireEvent.click(category);
 
             fireEvent.submit(button_submit);
+
+            const modal_confirmation = getByTitle('modal');
+            const button_confirmation = getByRole('button', { name: 'Aceptar' });
+
+            expect(modal_confirmation).toBeInTheDocument();
+            expect(button_confirmation).toBeInTheDocument();
+
+            fireEvent.click(button_confirmation);
+
+            expect(modal_confirmation).not.toBeInTheDocument();
         })
     })
 
@@ -150,6 +160,18 @@ describe('Componente <Form/> principal', () => {
             expect(title.textContent).toBe(note.category.title);
 
             fireEvent.submit(button_submit);
+        })
+
+        await waitFor(() => {
+            const modal_confirmation = getByTitle('modal');
+            const button_close = getByTitle('Boton cerrar');
+
+            expect(modal_confirmation).toBeInTheDocument();
+            expect(button_close).toBeInTheDocument();
+
+            fireEvent.click(button_close);
+
+            expect(modal_confirmation).not.toBeInTheDocument();
         })
     })
 
