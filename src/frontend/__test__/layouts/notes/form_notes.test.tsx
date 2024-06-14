@@ -296,7 +296,7 @@ describe('Componente <Form/> principal', () => {
 
         describe('Categorias', () => {
             test('Error required', async () => {
-                const { getByTitle } = render(<ComponentSelect clearErrors={() => { }} setValue={() => { }} select_category={{ title: 'Seleccionar categoria...' }} register={register} error="required" setSelect_category={setSelected} />)
+                const { getByTitle } = render(<ComponentSelect select_category={{ title: 'Seleccionar categoria...' }} register={register} error="required" setSelect_category={setSelected} />)
 
                 await waitFor(() => {
                     const container = getByTitle('Categoria');
