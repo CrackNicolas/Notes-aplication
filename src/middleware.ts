@@ -1,7 +1,7 @@
 import { authMiddleware } from '@clerk/nextjs';
 
 export default authMiddleware({
-    publicRoutes: ['/', '/favicon.ico']
+    publicRoutes: ['/', '/favicon.ico', '/without_internet']
 });
 
 export const config = {
