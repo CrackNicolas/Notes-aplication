@@ -26,7 +26,7 @@ describe('Componente <Messages/>', () => {
             fireEvent.click(button);
             expect(setOpen).toHaveBeenCalledWith(false);
         })
-        
+
         list_messages.map(message => {
             test(`Con status ${message.status}`, () => {
                 const component = render(

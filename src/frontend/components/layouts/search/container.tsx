@@ -9,9 +9,9 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 
 import ComponentIcon from "@/frontend/components/partials/icon";
-import ComponentList from "./list";
-import ComponentLabel from "../../partials/form/label";
-import ComponentInput from "../../partials/form/input";
+import ComponentList from "@/frontend/components/layouts/search/list";
+import ComponentLabel from "@/frontend/components/partials/form/label";
+import ComponentInput from "@/frontend/components/partials/form/input";
 import ComponentSelect from '@/frontend/components/partials/form/select';
 import ComponentMessageWait from "@/frontend/components/layouts/messages/wait";
 import ComponentMessageConfirmation from "@/frontend/components/layouts/messages/confirmation";

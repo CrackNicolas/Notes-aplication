@@ -3,7 +3,7 @@ import { Dispatch, SetStateAction, useState } from "react";
 import axios from "axios";
 
 import ComponentIcon from "@/frontend/components/partials/icon";
-import ComponentLoading from "./loading";
+import ComponentLoading from "@/frontend/components/layouts/category/list/loading";
 import ComponentMessageWait from '@/frontend/components/layouts/messages/wait';
 import ComponentMessageConfirmation from "@/frontend/components/layouts/messages/confirmation";
 

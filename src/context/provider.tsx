@@ -9,13 +9,13 @@ import { createContext, useEffect, useState } from "react";
 
 import axios from "axios";
 
-import { Props_session, Props_user } from "@/context/types/session";
 import { Props_context } from "@/context/types/context";
-import { Props_layouts } from "@/frontend/types/props";
+import { Props_session, Props_user } from "@/context/types/session";
 
 import { ComponentUserButton } from "@/frontend/components/services/clerk";
 
 import Template from '@/frontend/template/init'
+import { Props_layouts } from "@/frontend/types/props";
 import { Time_elapsed } from "@/frontend/logic/format_time";
 
 export const Context = createContext<Props_context>({
@@ -46,7 +46,7 @@ export default function Provider({ children }: Props_layouts) {
             const instance_session: Props_session = {
                 id: data_user.user.id,
                 status: (data_session.status === 'active'),
-                last_time: Time_elapsed(data_session.lastActiveAt) + ' '+ data_session.lastActiveAt.toString().split(' ')[4] + 'hs',
+                last_time: Time_elapsed(data_session.lastActiveAt) + ' ' + data_session.lastActiveAt.toString().split(' ')[4] + 'hs',
                 expiret: data_session.expireAt.toString(),
                 origin: {
                     IP_adress: (data_session.latestActivity.ipAddress) ? data_session.latestActivity.ipAddress : '',

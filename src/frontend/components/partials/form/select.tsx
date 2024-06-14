@@ -5,8 +5,9 @@ import axios from "axios";
 
 import ComponentIcon from '@/frontend/components/partials/icon';
 
-import { validation } from "@/frontend/validations/form";
 import { Props_category } from "@/context/types/category";
+
+import { validation } from "@/frontend/validations/form";
 
 type Props = {
     error?: FieldError | Merge<FieldError, FieldErrorsImpl<any>> | LiteralUnion<"required", string> | undefined,

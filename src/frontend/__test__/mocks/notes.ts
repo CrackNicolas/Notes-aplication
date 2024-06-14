@@ -13,10 +13,10 @@ export const note: Props_note = {
     priority: 'Alta',
     featured: true,
     createdAt: current_date,
-    file:{
-        id:'1234',
-        name:'Archivo',
-        url:'url'
+    file: {
+        id: '1234',
+        name: 'Archivo',
+        url: 'url'
     },
     user_id: 'user_d2e0jzKi44asdasd2eKJeR'
 }
@@ -33,10 +33,10 @@ export const notes: Props_note[] = [
         priority: 'Baja',
         featured: true,
         createdAt: current_date,
-        file:{
-            id:'1234',
-            name:'Archivo',
-            url:'url'
+        file: {
+            id: '1234',
+            name: 'Archivo',
+            url: 'url'
         },
         user_id: 'user_d1e0jzKi44asdasd2eKJeR'
     },
@@ -50,7 +50,7 @@ export const notes: Props_note[] = [
         },
         priority: 'Media',
         featured: false,
-        createdAt: new Date(current_date.getFullYear(), current_date.getMonth()-3, current_date.getDay()-3),
+        createdAt: new Date(current_date.getFullYear(), current_date.getMonth() - 3, current_date.getDay() - 3),
         user_id: 'user_d2e0jzKi44asdasd2eKJeR'
     },
     {
@@ -64,10 +64,10 @@ export const notes: Props_note[] = [
         priority: 'Alta',
         featured: true,
         createdAt: current_date,
-        file:{
-            id:'1234',
-            name:'Archivo',
-            url:'url'
+        file: {
+            id: '1234',
+            name: 'Archivo',
+            url: 'url'
         },
         user_id: 'user_d3e0jzKi44asdasd2eKJeR'
     }

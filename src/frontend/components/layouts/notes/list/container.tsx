@@ -4,7 +4,7 @@ import { Dispatch, SetStateAction, useState } from "react";
 
 import ComponentNote from "@/frontend/components/layouts/notes/note";
 import ComponentHeader from "@/frontend/components/layouts/notes/header";
-import ComponentLoading from "./loading";
+import ComponentLoading from "@/frontend/components/layouts/notes/list/loading";
 import ComponentMessageWait from "@/frontend/components/layouts/messages/wait";
 import ComponentMessageConfirmation from "@/frontend/components/layouts/messages/confirmation";
 
@@ -22,9 +22,9 @@ type Props = {
 export default function ComponentList(props: Props) {
     const { notes, setSelected, selected, setRefresh, setSearch } = props;
 
-    const [open_modal_confirmation, setOpen_modal_confirmation] = useState<boolean>(false);
-    const [response, setResponse] = useState<Props_response>();
     const [loading, setLoading] = useState<boolean>(false);
+    const [response, setResponse] = useState<Props_response>();
+    const [open_modal_confirmation, setOpen_modal_confirmation] = useState<boolean>(false);
 
     const action_note = async (action: string, note: Props_note) => {
         switch (action) {

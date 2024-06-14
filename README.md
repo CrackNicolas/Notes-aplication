@@ -29,7 +29,7 @@
         - Crea páginas para que los usuarios inicien sesión y se registren.
     3 - Lista de Notas: [ X ]
         - Muestra una lista de notas del usuario en el panel principal.
-        - Proporciona opciones para crear nuevas notas y ver detalles de cada nota.
+        - Proporciona opciones para crear nuevas notas.
     4 - Búsqueda y Filtros: [ X ]
         - Implementa un sistema de búsqueda para que los usuarios puedan encontrar notas fácilmente.
         - Añade filtros por categoría, fecha, etc.

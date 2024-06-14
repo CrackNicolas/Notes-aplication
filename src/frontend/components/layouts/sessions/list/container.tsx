@@ -2,7 +2,7 @@ import Image from "next/image";
 
 import { Props_session } from "@/context/types/session"
 
-import ComponentLoading from "./loading";
+import ComponentLoading from "@/frontend/components/layouts/sessions/list/loading";
 
 export default function ComponentList({ sessions }: { sessions: Props_session[] }) {
     return (
@@ -25,7 +25,7 @@ export default function ComponentList({ sessions }: { sessions: Props_session[] 
                                     </span>
                                     <span className="line-clamp-1 text-fifth opacity-80 tracking-wide font-normal text-[12px] mt-1">
                                         {
-                                            session.last_time?.replace('Creada','Ultima vez')
+                                            session.last_time?.replace('Creada', 'Ultima vez')
                                         }
                                     </span>
                                     <span className="line-clamp-1 text-fifth opacity-80 tracking-wide font-normal text-[12px] ">

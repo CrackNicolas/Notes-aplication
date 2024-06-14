@@ -57,7 +57,7 @@ describe('Componente <Nav/>', () => {
 
         test('No iniciada', () => {
             component.rerender(<ComponentNavTop section_current="/" session={{}} button_sesion={<></>} />)
-            
+
             const link_login = component.getByTitle('Iniciar sesion');
 
             expect(link_login).toBeInTheDocument();

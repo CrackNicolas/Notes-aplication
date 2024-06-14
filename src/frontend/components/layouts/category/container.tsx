@@ -32,7 +32,7 @@ export default function ComponentCategory() {
             }
             setRestart(false);
         }
-        
+
         load_categorys();
     }, [restart])
 

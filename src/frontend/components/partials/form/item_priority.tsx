@@ -2,13 +2,13 @@ import { Fragment } from "react";
 import { FieldError, FieldErrorsImpl, FieldValues, LiteralUnion, Merge, UseFormRegister } from "react-hook-form";
 
 import ComponentIcon from "@/frontend/components/partials/icon";
-import ComponentInput from "./input";
+import ComponentInput from "@/frontend/components/partials/form/input";
 
 type Props = {
     id?: string,
     class_icon: string,
     value?: string,
-    paint?:boolean
+    paint?: boolean
     error?: FieldError | Merge<FieldError, FieldErrorsImpl<any>> | LiteralUnion<"required", string> | undefined
     register: UseFormRegister<FieldValues>
 }

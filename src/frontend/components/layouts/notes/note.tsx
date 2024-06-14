@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import ComponentIcon from "@/frontend/components/partials/icon";
 import ComponentView from "@/frontend/components/layouts/notes/view";
-import ComponentMessageConfirmationDelete from "../messages/confirmation_delete";
+import ComponentMessageConfirmationDelete from "@/frontend/components/layouts/messages/confirmation_delete";
 
 import { Props_note } from "@/context/types/note";
 import { Time_elapsed } from "@/frontend/logic/time";
@@ -29,11 +29,11 @@ export default function ComponentNote(props: Props) {
     }
 
     useEffect(() => {
-        if(confirmation){
+        if (confirmation) {
             action_note('delete', note);
             setOpen_confirmation(false);
         }
-    },[confirmation])
+    }, [confirmation])
 
     return (
         <div title="Nota" className={`relative group grid grid-cols-9 w-full bg-sixth sm:px-2.5 px-2 sm:py-2 py-1.5 cursor-pointer rounded-md border-[0.1px] border-secondary ${paint ? 'border-opacity-100' : 'border-opacity-20 hover:border-opacity-100'}`}>

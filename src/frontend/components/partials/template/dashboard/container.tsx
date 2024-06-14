@@ -1,6 +1,6 @@
-import ComponentItem from "./item"
-import ComponentHeader from "./header"
-import ComponentLoading from "./loading"
+import ComponentItem from "@/frontend/components/partials/template/dashboard/item"
+import ComponentHeader from "@/frontend/components/partials/template/dashboard/header"
+import ComponentLoading from "@/frontend/components/partials/template/dashboard/loading"
 
 import { Props_items_dashboard } from "@/frontend/types/props"
 
@@ -24,8 +24,8 @@ export default function ComponentTemplateDashboard(props: Props) {
             <div className="mx-auto place-items-center mt-1 sm:mt-7 grid max-w-2xl grid-cols-1 lg:gap-8 gap-3 pt-10 sm:mt-10 sm:pt-10 lg:mx-0 lg:max-w-none lg:grid-cols-3">
                 {
                     (items.length === 0) ?
-                        <ComponentLoading count={6}/>
-                    :
+                        <ComponentLoading count={6} />
+                        :
                         items.map((item, index) => {
                             return <ComponentItem key={index} url={item.url} title={item.title} description={item.description} />
                         })

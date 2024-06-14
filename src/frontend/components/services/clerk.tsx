@@ -23,7 +23,7 @@ export function ComponentSignIn() {
             footerActionLink: "hidden",
             formButtonPrimary: "bg-primary hover:text-secondary hover:bg-primary hover:opacity-60",
             formHeaderTitle: "text-transparent before:text-tertiary before:content-['Código_de_verificación']",
-            formResendCodeLink:"before:content-['Reenviar_código'] before:text-blue-700 before:w-full before:text-start invisible before:visible",
+            formResendCodeLink: "before:content-['Reenviar_código'] before:text-blue-700 before:w-full before:text-start invisible before:visible",
             formHeaderSubtitle: "text-transparent before:text-tertiary before:content-['Ingrese_el_código_de_verificación_enviado_a_su_dirección_de_correo_electrónico']",
             formFieldErrorText: "before:content-['Cuenta_no_encontrada'] before:text-red-500 before:absolute before:ml-6 w-full text-transparent",
             otpCodeFieldErrorText: "before:content-['Código_incorrecto'] before:text-red-500 before:absolute before:ml-6 w-full text-transparent"

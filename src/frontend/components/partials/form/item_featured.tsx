@@ -1,7 +1,7 @@
 import { Fragment } from "react";
 import { FieldError, FieldErrorsImpl, FieldValues, LiteralUnion, Merge, UseFormRegister } from "react-hook-form";
 
-import ComponentInput from "./input";
+import ComponentInput from "@/frontend/components/partials/form/input";
 
 type Props = {
     value?: string,

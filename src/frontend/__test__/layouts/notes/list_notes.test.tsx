@@ -2,8 +2,8 @@ import '@testing-library/jest-dom';
 
 import { RenderResult, fireEvent, render, waitFor } from '@testing-library/react';
 
-import ComponentList from '@/frontend/components/layouts/notes/list/container';
 import ComponentNote from '@/frontend/components/layouts/notes/note';
+import ComponentList from '@/frontend/components/layouts/notes/list/container';
 import ComponentHeader from '@/frontend/components/layouts/notes/header';
 
 import { Props_note } from '@/context/types/note';
@@ -83,7 +83,7 @@ describe('Componente <List/> de crud', () => {
                     component.rerender(<ComponentNote note={note} paint={true} action_note={() => { }} />);
 
                     const button_view = component.getByRole('button', { name: 'Ver' });
-                    
+
                     fireEvent.click(button_view);
                 })
             })

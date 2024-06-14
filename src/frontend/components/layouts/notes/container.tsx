@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import axios from 'axios';
 
 import ComponentList from "@/frontend/components/layouts/notes/list/container";
-import ComponentContainerForm from "./container_form";
+import ComponentContainerForm from "@/frontend/components/layouts/notes/container_form";
 import ComponentMessageConfirmation from "@/frontend/components/layouts/messages/confirmation";
 
 import { Props_note } from "@/context/types/note";

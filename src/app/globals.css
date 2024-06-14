@@ -15,8 +15,8 @@ body {
   background: theme("colors.primary");
 }
 
-body::-webkit-scrollbar, 
-.scroll::-webkit-scrollbar, 
+body::-webkit-scrollbar,
+.scroll::-webkit-scrollbar,
 .scroll-select::-webkit-scrollbar,
 .scroll-select-error::-webkit-scrollbar,
 .scroll-text::-webkit-scrollbar {
@@ -24,42 +24,42 @@ body::-webkit-scrollbar,
   width: 6px;
 }
 
-body::-webkit-scrollbar-thumb, 
-.scroll::-webkit-scrollbar-thumb, 
+body::-webkit-scrollbar-thumb,
+.scroll::-webkit-scrollbar-thumb,
 .scroll-select::-webkit-scrollbar-thumb,
-.scroll-text::-webkit-scrollbar-thumb  {
+.scroll-text::-webkit-scrollbar-thumb {
   background: theme("colors.secondary");
 }
 
-body::-webkit-scrollbar-thumb:hover, 
-.scroll::-webkit-scrollbar-thumb  {
+body::-webkit-scrollbar-thumb:hover,
+.scroll::-webkit-scrollbar-thumb {
   border-radius: 10px;
 }
 
-.scroll-select-error::-webkit-scrollbar-thumb{
+.scroll-select-error::-webkit-scrollbar-thumb {
   background: theme("colors.error");
   border-end-end-radius: 10px;
 }
 
-.scroll-select::-webkit-scrollbar-thumb  {
+.scroll-select::-webkit-scrollbar-thumb {
   border-end-end-radius: 10px;
 }
 
-.scroll-text::-webkit-scrollbar-thumb  {
+.scroll-text::-webkit-scrollbar-thumb {
   border-top-right-radius: 10px;
 }
 
-.spinner-load{
+.spinner-load {
   border: 2.3px solid theme("colors.primary");
   border-left-color: theme("colors.secondary");
   box-shadow: 0 0 10px 2px theme("colors.secondary");
   animation: animation_spinner 1s linear infinite;
 }
-@keyframes animation_spinner{
-  0%{
-      transform: rotate(0deg);
+@keyframes animation_spinner {
+  0% {
+    transform: rotate(0deg);
   }
-  100%{
-      transform: rotate(360deg);
+  100% {
+    transform: rotate(360deg);
   }
 }

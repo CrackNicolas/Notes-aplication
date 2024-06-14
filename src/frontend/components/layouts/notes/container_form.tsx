@@ -32,9 +32,9 @@ export default function ComponentContainerForm(props: Props) {
     const search_params = useSearchParams()
 
     const [open, setOpen] = useState<boolean>(false);
+    const [file, setFile] = useState<File | undefined>(undefined);
     const [loading, setLoading] = useState<boolean>(false);
     const [response, setResponse] = useState<Props_response>();
-    const [file, setFile] = useState<File | undefined>(undefined);
     const [select_category, setSelect_category] = useState<Props_category>({ title: 'Seleccionar categoria...' });
 
     const { register, handleSubmit, formState: { errors }, setValue, reset, watch, clearErrors } = useForm();

@@ -4,10 +4,10 @@ import { useEffect, useState } from "react"
 
 import axios from "axios";
 
-import ComponentList from "./list/container";
+import ComponentList from "@/frontend/components/layouts/sessions/list/container";
+import ComponentHeader from "@/frontend/components/layouts/sessions/header";
 
 import { Props_session } from "@/context/types/session";
-import ComponentHeader from "@/frontend/components/layouts/sessions/header";
 
 export default function ComponentSessions() {
     const [list_sessions, setList_sessions] = useState<Props_session[] | []>([]);
