@@ -157,7 +157,6 @@ export default function ComponentSearch() {
                             select_category={select_category}
                             setSelect_category={setSelect_category}
                             register={register}
-                            restart={restart}
                         />
                     </div>
                     <div className="hidden col-span-1 lg:flex flex-col gap-y-0.5">
