@@ -126,6 +126,12 @@ describe('Componente <Form/> principal', () => {
         await waitFor(() => {
             const container = getByTitle('Categoria');
             fireEvent.click(container);
+            fireEvent.mouseDown(input_file);
+        });
+
+        await waitFor(() => {
+            const container = getByTitle('Categoria');
+            fireEvent.click(container);
 
             const category = getByTitle('Viajes');
             fireEvent.click(category);

@@ -16,6 +16,7 @@ describe('Componente <Nav/>', () => {
         component.rerender(<ComponentNavTop section_current="/dashboard/main" session={session} button_sesion={<></>} />)
 
         const element = component.getAllByTitle('Panel')[0];
+
         expect(element).toHaveClass('text-secondary');
         expect(element).toBeInTheDocument();
     });
@@ -30,6 +31,11 @@ describe('Componente <Nav/>', () => {
 
         fireEvent.click(buttton_toggle);
 
+        const nav_toggle = component.getByTitle('Menu toggle');
+        expect(nav_toggle).toBeInTheDocument();
+        
+        fireEvent.mouseDown(buttton_toggle);
+        
         const item_inicio = component.getByTitle('Inicio');
         const item_panel = component.getAllByTitle('Panel')[1];
 
@@ -37,7 +43,6 @@ describe('Componente <Nav/>', () => {
         expect(item_panel).toBeInTheDocument();
 
         fireEvent.click(item_inicio);
-        fireEvent.click(buttton_toggle);
         fireEvent.click(item_panel);
 
         icon_home.map(icon => {
