@@ -56,10 +56,7 @@ export default function ComponentNavTop(props: Props_context) {
                     <div className="absolute inset-y-0 right-0 flex items-center pr-1 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                         {
                             (session.id) ?
-                                <div className="flex gap-x-4">
-                                    <button type="button" title="Notificaciones" className="relative rounded-full p-1 outline-none">
-                                        <ComponentIcon name="notification" size={20} description_class="hover:text-secondary text-fifth" />
-                                    </button>
+                                <div className="flex gap-x-4" title="Usuario" >
                                     {button_sesion}
                                 </div>
                                 :

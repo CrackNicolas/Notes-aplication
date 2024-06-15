@@ -1,4 +1,4 @@
-import { Props_session } from "./session"
+import { Props_session } from "@/context/types/session"
 
 export type Props_context = {
     section_current: string,

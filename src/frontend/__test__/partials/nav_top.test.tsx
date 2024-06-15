@@ -56,7 +56,7 @@ describe('Componente <Nav/>', () => {
 
     describe('Renderizacion de sesion de usuario', () => {
         test('Iniciada', () => {
-            const button = component.getByTitle('Notificaciones');
+            const button = component.getByTitle('Usuario');
             expect(button).toBeInTheDocument();
         });
 
