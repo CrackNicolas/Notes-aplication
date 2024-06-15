@@ -24,6 +24,16 @@ body::-webkit-scrollbar,
   width: 6px;
 }
 
+@media (max-width: 400px) {
+  body::-webkit-scrollbar,
+  .scroll::-webkit-scrollbar,
+  .scroll-select::-webkit-scrollbar,
+  .scroll-select-error::-webkit-scrollbar,
+  .scroll-text::-webkit-scrollbar {
+    width: 0px;
+  }
+}
+
 body::-webkit-scrollbar-thumb,
 .scroll::-webkit-scrollbar-thumb,
 .scroll-select::-webkit-scrollbar-thumb,
