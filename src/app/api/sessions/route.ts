@@ -13,7 +13,7 @@ export async function GET(): Promise<NextResponse> {
     if (!connection) return NextResponse.json<Props_response>({ status: 500, info: { message: "Error al conectarse a la base de datos" } })
 
     try {
-        const sessions_expiret: Props_session[] = await Session.find({ expiret: { $lt: new Date() }, status: true });
+        const sessions_expiret: Props_session[] = await Session.find({ expiret: { $lt: new Date().toISOString() }, status: true });
 
         const sessions_ids = sessions_expiret.map(session => session.id);
         if (sessions_ids.length > 0) {

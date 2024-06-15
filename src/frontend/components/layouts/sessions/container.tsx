@@ -13,14 +13,15 @@ export default function ComponentSessions() {
     const [list_sessions, setList_sessions] = useState<Props_session[] | []>([]);
 
     useEffect(() => {
-        const load_users = async () => {
+        const load_sessions = async () => {
             const { data } = await axios.get('/api/sessions');
+            
             if (data.status === 200) {
                 setList_sessions(data.data);
             }
         }
 
-        load_users();
+        load_sessions();
     }, []);
 
     return (

@@ -42,12 +42,12 @@ export default function Provider({ children }: Props_layouts) {
                 image: data_user.user.imageUrl,
                 rol: (data_user.user.id === 'user_2Z2e0jzKi44dKmBj2q6kOLeKJeR') ? 'admin' : 'member'
             }
-
+            
             const instance_session: Props_session = {
                 id: data_user.user.id,
                 status: (data_session.status === 'active'),
                 last_time: Time_elapsed(data_session.lastActiveAt) + ' ' + data_session.lastActiveAt.toString().split(' ')[4] + 'hs',
-                expiret: data_session.expireAt.toString(),
+                expiret: data_session.expireAt.toISOString(),
                 origin: {
                     IP_adress: (data_session.latestActivity.ipAddress) ? data_session.latestActivity.ipAddress : '',
                     city: (data_session.latestActivity.city) ? data_session.latestActivity.city : ''
