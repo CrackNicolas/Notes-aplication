@@ -16,14 +16,14 @@ type Props = {
     register: UseFormRegister<FieldValues>,
     setValue?: UseFormSetValue<FieldValues>,
     clearErrors?: UseFormClearErrors<FieldValues>,
-    required?: boolean,
-    restart?: () => void
+    required?: boolean
 }
 
 export default function ComponentSelect(props: Props) {
     const list = useRef<HTMLUListElement>(null);
+    const ref_select = useRef<HTMLDivElement>(null);
 
-    const { error, select_category, setSelect_category, register, required, setValue = () => { }, clearErrors = () => { }, restart = () => { } } = props;
+    const { error, select_category, setSelect_category, register, required, setValue = () => { }, clearErrors = () => { } } = props;
 
     const [open_category, setOpen_category] = useState<boolean>(false);
     const [categorys, setCategorys] = useState<Props_category[]>([]);
@@ -32,18 +32,24 @@ export default function ComponentSelect(props: Props) {
         title: 'Seleccionar categoria...'
     }
 
+    const handle_click_outside = (event: MouseEvent) => {
+        if (ref_select.current && !ref_select.current.contains(event.target as Node)) {
+            setOpen_category(false);
+        }
+    };
+
+    useEffect(() => {
+        document.addEventListener('mousedown', handle_click_outside);
+        return () => document.removeEventListener('mousedown', handle_click_outside);
+    }, []);
+
     const selected = (category: Props_category) => {
-        //list.current?.scrollTo(0, 0);
         setValue('category', category);
         setSelect_category(category);
         setOpen_category(false);
         clearErrors('category');
         setCategorys(prev => prev.some(item => item.title === item_default.title) ? prev : [item_default, ...prev]);
     }
-
-    useEffect(() => {
-        setOpen_category(false);
-    }, [restart]);
 
     useEffect(() => {
         const load_categorys = async () => {
@@ -63,7 +69,7 @@ export default function ComponentSelect(props: Props) {
     }, [select_category]);
 
     return (
-        <div className='relative flex w-full'>
+        <div ref={ref_select} className='relative flex w-full'>
             {
                 (categorys.length === 0) ?
                     <div title="Cargando categorias" className="flex justify-between items-center w-full py-1 px-2 border-secondary border-[0.1px] border-opacity-50 rounded-md">
