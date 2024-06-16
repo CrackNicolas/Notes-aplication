@@ -67,8 +67,8 @@ export default function ComponentNavTop(props: Props_context) {
                                     {button_sesion}
                                 </div>
                                 :
-                                <Link href="/sign-in" title="Iniciar sesion" className="group border border-tertiary hover:border-secondary border-[0.1px] px-3 rounded-md flex py-[2.5px] outline-none transition duration-500">
-                                    <span className="group-hover:text-secondary text-md tracking-wider text-tertiary">
+                                <Link href="/sign-in" title="Iniciar sesion" className="group border border-tertiary hover:border-secondary border-[0.1px] px-3 rounded-md flex py-[3px] outline-none transition duration-500">
+                                    <span className="group-hover:text-secondary text-sm tracking-wider text-tertiary">
                                         Iniciar sesion
                                     </span>
                                 </Link>

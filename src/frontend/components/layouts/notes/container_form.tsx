@@ -104,9 +104,6 @@ export default function ComponentContainerForm(props: Props) {
         if (selected?.category) {
             setSelect_category(selected.category);
         }
-
-        //window.scrollTo(0, 0);
-
     }, [selected])
 
     return (
@@ -194,7 +191,7 @@ export default function ComponentContainerForm(props: Props) {
                             />
                         </div>
                     </div>
-                    <label htmlFor="file-upload" title="Seleccionar para subir un archivo" className="grid gap-y-0.5 place-items-center mt-0.5 p-1.5 cursor-pointer border-secondary border-opacity-50 bg-primary w-full rounded-md border-[0.1px]">
+                    <label htmlFor="file-upload" title="Seleccionar para subir un archivo" className="grid gap-y-0.5 place-items-center mt-0.5 p-1.5 cursor-pointer border-secondary border-opacity-20 bg-primary w-full rounded-md border-[0.1px] cursor-pointer hover:border-opacity-60 transition duration-500">
                         <ComponentIcon name={`upload-file${(selected?.file?.id) ? '-selected' : (file === undefined) ? '' : '-selected'}`} size={27} description_class="icon-home text-secondary cursor-pointer" />
                         <span className='line-clamp-1 text-secondary text-md font-normal tracking-wide'>
                             {
@@ -206,10 +203,12 @@ export default function ComponentContainerForm(props: Props) {
                     </label>
                 </div>
                 <div className="flex gap-x-10">
-                    <button type="submit" title={(!selected) ? 'Crear' : 'Actualizar'} name={(!selected) ? 'Crear' : 'Actualizar'} className="flex w-full justify-center rounded-md text-secondary border-[0.1px] border-secondary border-opacity-80 px-3 py-1 text-md font-normal hover:font-semibold bg-primary tracking-wider hover:bg-sixth outline-none">
+                    <button type="submit" title={(!selected) ? 'Crear' : 'Actualizar'} name={(!selected) ? 'Crear' : 'Actualizar'} className="relative flex w-full justify-center rounded-md text-secondary border-[0.1px] border-secondary border-opacity-80 px-3 py-1 text-md font-normal hover:font-semibold bg-primary tracking-wider hover:bg-sixth outline-none">
+                        <ComponentIcon name={!selected ? 'add':'load'} size={20} description_class="absolute left-1 top-[6px] text-secondary" />
                         {(!selected) ? 'Crear' : 'Actualizar'}
                     </button>
-                    <button onClick={() => restart()} type="button" name="Deshacer" title="Reiniciar" className="flex w-full justify-center rounded-md text-error border-[0.1px] border-error border-opacity-80 px-3 py-1 text-md font-normal hover:font-semibold bg-primary tracking-wider hover:bg-sixth outline-none">
+                    <button onClick={() => restart()} type="button" name="Deshacer" title="Reiniciar" className="relative flex w-full justify-center rounded-md text-error border-[0.1px] border-error border-opacity-80 px-3 py-1 text-md font-normal hover:font-semibold bg-primary tracking-wider hover:bg-sixth outline-none">
+                        <ComponentIcon name="close" size={26} description_class="absolute right-1 top-[3px] text-error" />
                         Deshacer
                     </button>
                 </div>
