@@ -21,7 +21,9 @@ import { Time_elapsed } from "@/frontend/logic/format_time";
 export const Context = createContext<Props_context>({
     section_current: '',
     session: {},
-    button_sesion: <ComponentUserButton />
+    button_sesion: <ComponentUserButton />,
+    opacity: false,
+    setOpacity: () => {}
 });
 
 export default function Provider({ children }: Props_layouts) {
@@ -76,7 +78,7 @@ export default function Provider({ children }: Props_layouts) {
     }, [path])
 
     return (
-        <Context.Provider value={{ section_current: path.substring(1), session, button_sesion: <ComponentUserButton /> }}>
+        <Context.Provider value={{ section_current: path.substring(1), session, button_sesion: <ComponentUserButton />, opacity:false, setOpacity:() => {} }}>
             <ProgressBar color="#00ffff" options={{ showSpinner: false }} />
             <Template>
                 {children}

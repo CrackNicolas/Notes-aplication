@@ -6,14 +6,14 @@ import ComponentNavTop from "@/frontend/components/partials/nav/top"
 import { session } from '@/frontend/__test__/mocks/session';
 
 describe('Componente <Nav/>', () => {
-    let component: RenderResult;
+    let component: RenderResult, setOpacity = jest.fn();
 
     beforeEach(() => {
-        component = render(<ComponentNavTop section_current="/" session={session} button_sesion={<></>} />)
+        component = render(<ComponentNavTop section_current="/" session={session} button_sesion={<></>} opacity={false} setOpacity={setOpacity} />)
     })
 
     test(`Renderizacion correcta de item panel`, () => {
-        component.rerender(<ComponentNavTop section_current="/dashboard/main" session={session} button_sesion={<></>} />)
+        component.rerender(<ComponentNavTop section_current="/dashboard/main" session={session} button_sesion={<></>} opacity={false} setOpacity={setOpacity} />)
 
         const element = component.getAllByTitle('Panel')[0];
 
@@ -33,9 +33,9 @@ describe('Componente <Nav/>', () => {
 
         const nav_toggle = component.getByTitle('Menu toggle');
         expect(nav_toggle).toBeInTheDocument();
-        
+
         fireEvent.mouseDown(buttton_toggle);
-        
+
         const item_inicio = component.getByTitle('Inicio');
         const item_panel = component.getAllByTitle('Panel')[1];
 
@@ -57,11 +57,15 @@ describe('Componente <Nav/>', () => {
     describe('Renderizacion de sesion de usuario', () => {
         test('Iniciada', () => {
             const button = component.getByTitle('Usuario');
+
+            fireEvent.click(button);
+            fireEvent.mouseDown(button);
+
             expect(button).toBeInTheDocument();
         });
 
         test('No iniciada', () => {
-            component.rerender(<ComponentNavTop section_current="/" session={{}} button_sesion={<></>} />)
+            component.rerender(<ComponentNavTop section_current="/" session={{}} button_sesion={<></>} opacity={false} setOpacity={setOpacity} />)
 
             const link_login = component.getByTitle('Iniciar sesion');
 
