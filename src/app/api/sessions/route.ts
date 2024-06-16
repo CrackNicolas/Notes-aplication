@@ -13,24 +13,17 @@ export async function GET(): Promise<NextResponse> {
     if (!connection) return NextResponse.json<Props_response>({ status: 500, info: { message: "Error al conectarse a la base de datos" } })
 
     try {
-        const sessions_expiret: Props_session[] = await Session.find({ expiret: { $lt: new Date().toISOString() }, status: true });
+        const sessions_expiret = await Session.find({ expiret: { $lt: new Date().toISOString() }, status: true });
 
-        const sessions_ids = sessions_expiret.map(session => session.id);
-
-        console.log(sessions_ids);
-
-        if (sessions_ids.length > 0) {
-            await Session.updateMany(
-                { _id: { $in: sessions_ids } },
-                { $set: { status: false } }
-            );
+        for(let session of sessions_expiret){
+            session.status = false;
+            await session.save();
         }
 
         const sessions: Props_session[] = await Session.find();
 
         return NextResponse.json<Props_response>({ status: 200, data: sessions });
     } catch (error) {
-        console.log(error);
         return NextResponse.json<Props_response>({ status: 500, info: { message: "Errores con el servidor" } });
     }
 }
