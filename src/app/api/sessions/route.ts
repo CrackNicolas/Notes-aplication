@@ -16,6 +16,9 @@ export async function GET(): Promise<NextResponse> {
         const sessions_expiret: Props_session[] = await Session.find({ expiret: { $lt: new Date().toISOString() }, status: true });
 
         const sessions_ids = sessions_expiret.map(session => session.id);
+
+        console.log(sessions_ids);
+
         if (sessions_ids.length > 0) {
             await Session.updateMany(
                 { _id: { $in: sessions_ids } },
@@ -27,6 +30,7 @@ export async function GET(): Promise<NextResponse> {
 
         return NextResponse.json<Props_response>({ status: 200, data: sessions });
     } catch (error) {
+        console.log(error);
         return NextResponse.json<Props_response>({ status: 500, info: { message: "Errores con el servidor" } });
     }
 }
