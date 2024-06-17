@@ -24,8 +24,7 @@ export async function GET(): Promise<NextResponse> {
 
         return NextResponse.json<Props_response>({ status: 200, data: sessions });
     } catch (error) {
-        return NextResponse.json<Props_response>({ status: 500, data: error });
-        //return NextResponse.json<Props_response>({ status: 500, info: { message: "Errores con el servidor" } });
+        return NextResponse.json<Props_response>({ status: 500, info: { message: "Errores con el servidor" } });
     }
 }
 

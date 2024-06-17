@@ -16,8 +16,6 @@ export default function ComponentSessions() {
         const load_sessions = async () => {
             const { data } = await axios.get('/api/sessions');
             
-            console.log(data);
-
             if (data.status === 200) {
                 setList_sessions(data.data);
             }
