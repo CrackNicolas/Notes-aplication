@@ -14,6 +14,7 @@ export function ComponentUserButton() {
 export function ComponentSignIn() {
     return <SignIn appearance={{
         elements: {
+            logoBox: 'hidden',
             alert: "hidden",
             card: "w-[326px] px-7 sm:px-10 sm:w-[400px] pt-7 sm:pt-10 pb-0 sm:pb-2",
             dividerText: "hidden",
