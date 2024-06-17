@@ -14,7 +14,7 @@ export function ComponentUserButton() {
 export function ComponentSignIn() {
     return <SignIn appearance={{
         elements: {
-            alertText: "text-transparent before:text-tertiary before:content-['No concediste acceso a tu cuenta de Google']",
+            alert: "hidden",
             card: "w-[326px] px-7 sm:px-10 sm:w-[400px] pt-7 sm:pt-10 pb-0 sm:pb-2",
             dividerText: "hidden",
             headerTitle: "text-transparent before:text-tertiary before:content-['Iniciar_sesión']",
