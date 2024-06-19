@@ -1,5 +1,6 @@
 import { ClerkProvider } from '@clerk/nextjs'
 import { dark } from '@clerk/themes'
+import { esES } from '@clerk/localizations'
 
 import { Metadata } from 'next/types'
 import { Roboto } from 'next/font/google'
@@ -18,6 +19,7 @@ const roboto = Roboto({
 export const metadata: Metadata = {
   title: 'Aplicacion de notas',
   description: 'Creado por Beltran Ricardo Nicolas Alejo',
+  keywords: ['Next.js', 'React', 'JavaScript', 'TypeScript', 'Tailwind', 'CSS', 'HTML'],
   icons: {
     icon: '/favicon.ico'
   }
@@ -25,14 +27,17 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Props_layouts) {
   return (
-    <ClerkProvider appearance={{ baseTheme: dark }} >
-      <html lang="en">
-        <body className={roboto.className}>
+    <html lang="en">
+      <head>
+        <meta name="theme-color" content="#00ffff" />
+      </head>
+      <body className={roboto.className}>
+        <ClerkProvider appearance={{ baseTheme: dark }} localization={esES} >
           <Provider>
             {children}
           </Provider>
-        </body>
-      </html>
-    </ClerkProvider>
+        </ClerkProvider>
+      </body>
+    </html>
   )
 }

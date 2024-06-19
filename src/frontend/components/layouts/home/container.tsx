@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import ComponentIcon from "@/frontend/components/partials/icon";
 
-export default function ComponentHome({ id }: { id?: string }) {
+export default function ComponentHome() {
     return (
         <div className="relative px-6 lg:px-8">
             <div className="mt-[150px] flex flex-col items-center gap-y-9">
@@ -16,8 +16,8 @@ export default function ComponentHome({ id }: { id?: string }) {
                     </span>
                 </div>
                 <div className="mt-3 flex items-center justify-center gap-x-6">
-                    <Link href={`${(id) ? '/dashboard/main' : '/sign-in'}`} title="Empezar" className="rounded-md border-[1px] border-secondary text-secondary hover:bg-gradient-to-r from-secondary vie-secondary px-3.5 py-2.5 text-sm font-normal hover:font-semibold hover:text-primary tracking-wider transition duration-500 cursor-pointer">
-                        Empezar
+                    <Link href="/dashboard/main" title="Empezar" rel="noopener noreferrer" className="rounded-md border-[1px] border-secondary text-secondary hover:bg-gradient-to-r from-secondary vie-secondary px-3.5 py-2.5 text-sm font-normal hover:font-semibold hover:text-primary tracking-wider transition duration-500 cursor-pointer">
+                        Click para iniciar
                     </Link>
                 </div>
             </div>

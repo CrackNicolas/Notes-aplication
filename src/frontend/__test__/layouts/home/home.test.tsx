@@ -5,13 +5,8 @@ import { RenderResult, render } from '@testing-library/react'
 import ComponentHome from '@/frontend/components/layouts/home/container'
 
 describe('Componente <Home/>', () => {
-    test('Renderizacion correcta sin inicio de sesion', () => {
-        const component = render(<ComponentHome id={undefined} />);
-        Analyze(component, '/sign-in');
-    })
-
-    test('Renderizacion correcta con inicio de sesion', () => {
-        const component = render(<ComponentHome id={'id_de_prueba'} />);
+    test('Renderizacion correcta', () => {
+        const component = render(<ComponentHome />);
         Analyze(component, '/dashboard/main');
     })
 })

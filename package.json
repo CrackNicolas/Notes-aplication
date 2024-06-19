@@ -11,6 +11,7 @@
     "test:watch": "jest --watchAll"
   },
   "dependencies": {
+    "@clerk/localizations": "^2.4.4",
     "@clerk/nextjs": "^4.27.2",
     "@clerk/themes": "^1.7.9",
     "@headlessui/react": "^1.7.18",
