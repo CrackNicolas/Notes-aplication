@@ -58,7 +58,7 @@
     - React
     - TypeScript
     - JavaScript
-    - Tailwind - Access the urls ["https://tailwindcss.com","https://react-tailwindcss-datepicker.vercel.app"]
+    - Tailwind - Access the urls ["https://tailwindcss.com"]
 
 ## Testing
   * Testing Library - Access the url ["https://testing-library.com"]

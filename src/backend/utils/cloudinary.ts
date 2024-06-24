@@ -46,7 +46,12 @@ export async function File_edit(id: string, file: File): Promise<Props_file> {
         url: response?.secure_url
     }
 }
-export async function File_delete(id: string): Promise<boolean> {
-    const result: UploadApiResponse = await cloudinary.uploader.destroy(id);
-    return (result.deleted?.image?.[id]) ? false : true;
+export async function File_delete(files_id: string[]) {
+    if (files_id.length === 0) return;
+
+    const promises: Promise<UploadApiResponse>[] = files_id.map(id => {
+        return cloudinary.uploader.destroy(id);
+    })
+
+    return await Promise.all(promises);
 }

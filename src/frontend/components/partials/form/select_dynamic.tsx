@@ -29,7 +29,7 @@ export default function ComponentSelect(props: Props) {
     const [categorys, setCategorys] = useState<Props_category[]>([]);
 
     const item_default: Props_category = {
-        title: 'Seleccionar categoria...'
+        title: 'Categoria...'
     }
 
     const handle_click_outside = (event: MouseEvent) => {
@@ -63,7 +63,7 @@ export default function ComponentSelect(props: Props) {
     }, []);
 
     useEffect(() => {
-        if (select_category.title === 'Seleccionar categoria...') {
+        if (select_category.title === 'Categoria...') {
             setValue('category', undefined);
         }
     }, [select_category]);
@@ -74,7 +74,7 @@ export default function ComponentSelect(props: Props) {
                 (categorys.length === 0) ?
                     <div title="Cargando categorias" className="flex justify-between items-center w-full py-1 px-2 border-secondary border-[0.1px] border-opacity-50 rounded-md">
                         <span className="text-secondary opacity-70">
-                            Cargando categorias...
+                            Cargando...
                         </span>
                         <div className='spinner-load w-[15px] h-[15px] rounded-full'></div>
                     </div>

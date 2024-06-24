@@ -1,6 +1,6 @@
 'use client'
 
-import { useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { ChangeEvent, Dispatch, SetStateAction, useEffect, useState } from 'react';
@@ -10,7 +10,6 @@ import axios from 'axios';
 import ComponentIcon from '@/frontend/components/partials/icon';
 import ComponentInput from '@/frontend/components/partials/form/input';
 import ComponentLabel from '@/frontend/components/partials/form/label';
-import ComponentSelect from '@/frontend/components/partials/form/select';
 import ComponentMessageWait from '@/frontend/components/layouts/messages/wait';
 import ComponentItemPriority from '@/frontend/components/partials/form/item_priority';
 import ComponentItemFeatured from '@/frontend/components/partials/form/item_featured';
@@ -21,34 +20,33 @@ import { Props_response } from '@/context/types/response';
 import { Props_category } from '@/context/types/category';
 
 type Props = {
-    setSelected: Dispatch<SetStateAction<Props_note | undefined>>,
-    selected: Props_note | undefined,
-    setRefresh: () => void
+    category_selected: Props_category | undefined,
+    setCategory_selected: Dispatch<SetStateAction<Props_category | undefined>>,
+    note_selected: Props_note | undefined
 }
 
 export default function ComponentContainerForm(props: Props) {
-    const { setSelected, selected, setRefresh } = props;
+    const { category_selected, setCategory_selected, note_selected } = props;
 
-    const search_params = useSearchParams()
+    const router = useRouter();
 
     const [open, setOpen] = useState<boolean>(false);
     const [file, setFile] = useState<File | undefined>(undefined);
     const [loading, setLoading] = useState<boolean>(false);
     const [response, setResponse] = useState<Props_response>();
-    const [select_category, setSelect_category] = useState<Props_category>({ title: 'Seleccionar categoria...' });
 
-    const { register, handleSubmit, formState: { errors }, setValue, reset, watch, clearErrors } = useForm();
+    const { register, handleSubmit, formState: { errors }, setValue, reset, watch } = useForm();
 
-    const restart = (): void => {
-        setRefresh();
+    const restart = (use_redirect: boolean): void => {
         reset();
-        setSelected(undefined);
         setFile(undefined);
-        setSelect_category({ title: 'Seleccionar categoria...' });
+        if (use_redirect) {
+            router.push('/dashboard/main');
+        }
     }
 
     const open_modal = (data: Props_response): void => {
-        restart();
+        restart(false);
         setOpen(true);
         setResponse(data);
     }
@@ -69,48 +67,49 @@ export default function ComponentContainerForm(props: Props) {
         form.set('description', data.description);
         form.set('priority', data.priority);
         form.set('featured', data.featured);
-        form.set('category', JSON.stringify(data.category));
+        form.set('category', JSON.stringify(category_selected));
 
         if (file !== undefined) {
             form.set('file', file as File);
         }
 
         setLoading(true);
-        if (!selected) {
+        if (!note_selected) {
             response = await axios.post("/api/notes", form);
         } else {
-            form.set('_id', selected._id as string);
+            form.set('_id', note_selected._id as string);
             response = await axios.put("/api/notes", form);
         }
         setLoading(false);
         open_modal(response.data);
     }
 
-    useEffect(() => {
-        if (search_params.get('data') !== null) {
-            const { note } = JSON.parse(search_params.get('data') as string);
-            setSelected(note);
-        }
-    }, []);
+    const redirect = () => {
+        setOpen(false);
+        router.push('/notes/search');
+    }
 
     useEffect(() => {
         reset();
-        setValue('title', selected?.title);
-        setValue('description', selected?.description);
-        setValue('priority', selected?.priority);
-        setValue('featured', selected?.featured ? 'SI' : 'NO');
-        setValue('category', selected?.category);
+        setValue('title', note_selected?.title);
+        setValue('description', note_selected?.description);
+        setValue('priority', note_selected?.priority);
+        setValue('featured', note_selected?.featured ? 'SI' : 'NO');
+        setValue('category', note_selected?.category);
 
-        if (selected?.category) {
-            setSelect_category(selected.category);
+        if (note_selected?.category) {
+            setCategory_selected(note_selected.category);
         }
-    }, [selected])
+    }, [note_selected])
 
     return (
-        <div className="col-span-full lg:col-span-1 flex flex-col gap-y-1">
-            <div className="flex justify-center">
+        <div className={`flex flex-col gap-y-1 w-full sm:w-[450px] mx-auto`}>
+            <div className="relative flex justify-center items-center">
                 <span title="Titulo formulario" className="text-2xl text-secondary font-semibold text-center">
-                    {(!selected) ? 'Crear nota' : 'Actualizar nota'}
+                    {(!note_selected) ? 'Crear nota' : 'Actualizar nota'}
+                </span>
+                <span className="absolute right-0" title={`Categoria ${note_selected?.category.title}`}>
+                    <ComponentIcon name={note_selected?.category.icon} size={24} description_class="text-secondary cursor-pointer" />
                 </span>
             </div>
             <form method="POST" onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-y-6">
@@ -137,14 +136,6 @@ export default function ComponentContainerForm(props: Props) {
                             description_class="border-opacity-50 bg-primary w-full rounded-md border-[0.1px] min-h-[65px] scroll-text py-1 px-2 outline-none tracking-wide placeholder:opacity-70 sm:text-md"
                         />
                     </div>
-                    <ComponentSelect
-                        error={errors.category?.type}
-                        select_category={select_category}
-                        setSelect_category={setSelect_category}
-                        register={register}
-                        setValue={setValue}
-                        clearErrors={clearErrors}
-                    />
                     <div className="flex flex-col gap-y-0.5">
                         <ComponentLabel title="Prioridad" html_for="priority" errors={errors} />
                         <div className="grid grid-cols-3 gap-x-1">
@@ -192,29 +183,29 @@ export default function ComponentContainerForm(props: Props) {
                         </div>
                     </div>
                     <label htmlFor="file-upload" title="Seleccionar para subir un archivo" className="grid gap-y-0.5 place-items-center mt-0.5 p-1.5 cursor-pointer border-secondary border-opacity-20 bg-primary w-full rounded-md border-[0.1px] cursor-pointer hover:border-opacity-60 transition duration-500">
-                        <ComponentIcon name={`upload-file${(selected?.file?.id) ? '-selected' : (file === undefined) ? '' : '-selected'}`} size={27} description_class="icon-home text-secondary cursor-pointer" />
+                        <ComponentIcon name={`upload-file${(note_selected?.file?.id) ? '-selected' : (file === undefined) ? '' : '-selected'}`} size={27} description_class="icon-home text-secondary cursor-pointer" />
                         <span className='line-clamp-1 text-secondary text-md font-normal tracking-wide'>
                             {
                                 (file) ? `${file.name} seleccionado` :
-                                    (selected?.file?.id) ? `${selected.file.name} cargado` : "Subir archivo..."
+                                    (note_selected?.file?.id) ? `${note_selected.file.name} cargado` : "Subir imagen..."
                             }
                         </span>
                         <input id="file-upload" accept="image/*" name="file-upload" type="file" onChange={(e) => capture_file(e)} className="sr-only" />
                     </label>
                 </div>
                 <div className="flex gap-x-10">
-                    <button type="submit" title={(!selected) ? 'Crear' : 'Actualizar'} name={(!selected) ? 'Crear' : 'Actualizar'} className="relative flex w-full justify-center rounded-md text-secondary border-[0.1px] border-secondary border-opacity-80 px-3 py-1 text-md font-normal hover:font-semibold bg-primary tracking-wider hover:bg-sixth outline-none">
-                        <ComponentIcon name={!selected ? 'add':'load'} size={20} description_class="absolute left-1 top-[6px] text-secondary" />
-                        {(!selected) ? 'Crear' : 'Actualizar'}
+                    <button type="submit" title="Guardar" name="Guardar" className="relative flex w-full justify-center rounded-md text-secondary border-[0.1px] border-secondary border-opacity-80 px-3 py-1 text-md font-normal hover:font-semibold bg-primary tracking-wider hover:bg-sixth outline-none">
+                        <ComponentIcon name={!note_selected ? 'add' : 'load'} size={20} description_class="absolute left-1 top-[6px] text-secondary" />
+                        Guardar
                     </button>
-                    <button onClick={() => restart()} type="button" name="Deshacer" title="Reiniciar" className="relative flex w-full justify-center rounded-md text-error border-[0.1px] border-error border-opacity-80 px-3 py-1 text-md font-normal hover:font-semibold bg-primary tracking-wider hover:bg-sixth outline-none">
+                    <button onClick={() => restart(true)} type="button" name="Deshacer" title="Reiniciar" className="relative flex w-full justify-center rounded-md text-error border-[0.1px] border-error border-opacity-80 px-3 py-1 text-md font-normal hover:font-semibold bg-primary tracking-wider hover:bg-sixth outline-none">
                         <ComponentIcon name="close" size={26} description_class="absolute right-1 top-[3px] text-error" />
                         Deshacer
                     </button>
                 </div>
             </form>
             {
-                (response) && <ComponentMessageConfirmation open={open} setOpen={setOpen} response={response} />
+                (response) && <ComponentMessageConfirmation open={open} setOpen={setOpen} response={response} reply={redirect} button_close={false} />
             }
             {
                 (loading) && <ComponentMessageWait open={loading} setOpen={setLoading} />

@@ -3,8 +3,8 @@ import jwt from 'jsonwebtoken';
 import { type NextRequest } from 'next/server';
 import { NextResponse } from "next/server";
 
-import { Props_note } from '@/context/types/note';
 import { Props_response } from '@/context/types/response';
+import { Props_delete_note, Props_note } from '@/context/types/note';
 
 import { Query } from '@/backend/api/query';
 import { File_delete } from '@/backend/utils/cloudinary';
@@ -34,16 +34,21 @@ export async function DELETE(req: NextRequest, { params: { segment } }: { params
 
     if (!token) return NextResponse.json<Props_response>({ status: 401, info: { message: "Credenciales invalidas" } });
 
-    const _id = segment;
+    const notes = JSON.parse(segment);
 
     const connection: boolean = await Conect_database();
     if (!connection) return NextResponse.json<Props_response>({ status: 500, info: { message: "Error al conectarse a la base de datos" } });
 
     try {
-        const note: any = await Notes.findByIdAndDelete(_id);
-        const response = (!note.file.id) ? true : await File_delete(note?.file.id);
+        const result_mongodb = await Notes.deleteMany(
+            { _id: { $in: notes.map((n: Props_delete_note) => n._id) } }
+        );
 
-        return NextResponse.json<Props_response>({ status: (response) ? 204 : 500, info: { message: (response) ? 'Nota eliminada' : 'La nota no se elimino definitivamente' } })
+        await File_delete(
+            notes.filter((n: Props_delete_note) => n.file !== undefined).map((n: Props_delete_note) => n.file)
+        );
+
+        return NextResponse.json<Props_response>({ status: 200, info: { message: `${(notes.length === 1) ? '1 nota eliminada' : `${result_mongodb.deletedCount} de ${notes.length} notas eliminadas`}` } })
     } catch (error) {
         return NextResponse.json<Props_response>({ status: 500, info: { message: "Errores con el servidor" } })
     }

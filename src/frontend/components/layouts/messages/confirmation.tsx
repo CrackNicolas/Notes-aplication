@@ -9,10 +9,12 @@ type Props = {
     open: boolean,
     setOpen: Dispatch<SetStateAction<boolean>>,
     response: Props_response,
+    reply?: () => void,
+    button_close?: boolean
 }
 
 export default function ComponentMessageConfirmation(props: Props) {
-    const { open, setOpen, response: { status, info } } = props;
+    const { open, setOpen, response: { status, info }, reply = () => { setOpen(false) }, button_close = true } = props;
 
     const icon = (status: Props_status) => {
         switch (status) {
@@ -33,9 +35,9 @@ export default function ComponentMessageConfirmation(props: Props) {
     }
 
     return (
-        <ComponentModal open={open} setOpen={setOpen} color={color(status)}>
+        <ComponentModal open={open} setOpen={setOpen} color={color(status)} button_close={button_close} >
             <div className="flex flex-col w-full items-center text-center sm:mt-0 sm:text-left">
-                <span className="flex place-items-center p-2.5 rounded-full bg-gray-900">
+                <span className={`flex place-items-center p-2.5 rounded-full bg-gray-900 ${!button_close && 'mt-4'}`}>
                     {
                         icon(status)
                     }
@@ -44,7 +46,7 @@ export default function ComponentMessageConfirmation(props: Props) {
                     {info?.message}
                 </p>
             </div>
-            <button type="button" name="Aceptar" onClick={() => setOpen(false)} className={`outline-none rounded-full w-[200px] bg-primary hover:opacity-100 opacity-70 cursor-pointer text-${color(status)} border-[0.1px] border-${color(status)} `}>
+            <button type="button" name="Aceptar" onClick={() => reply()} className={`outline-none rounded-full w-[200px] bg-primary hover:opacity-100 opacity-70 cursor-pointer text-${color(status)} border-[0.1px] border-${color(status)} `}>
                 Aceptar
             </button>
         </ComponentModal>

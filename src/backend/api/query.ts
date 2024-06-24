@@ -3,12 +3,43 @@ export function Query(user_id: string, segment: string) {
 
     const criteria = JSON.parse(segment);
 
-    const date: { $gte: string, $lte?: string } = {
-        $gte: criteria?.dates?.startDate
+    let date: { $gte?: string, $lt?: string } | undefined = {};
+
+    const start_day = (date: Date) => {
+        date.setHours(0, 0, 0, 0);
+        return date.toISOString();
     };
 
-    if (criteria?.dates?.endDate !== criteria?.dates?.startDate) {
-        date['$lte'] = criteria?.dates?.endDate
+    const end_day = (date: Date) => {
+        date.setHours(23, 59, 59, 999);
+        return date.toISOString();
+    };
+
+    let current_date = new Date();
+
+    switch (criteria.dates) {
+        case 'Hoy':
+            date['$gte'] = start_day(new Date());
+            date['$lt'] = end_day(new Date());
+            break;
+        case 'Ayer':
+            current_date.setDate(current_date.getDate() - 1);
+            date['$gte'] = start_day(new Date(current_date));
+            date['$lt'] = end_day(new Date(current_date));
+            break;
+        case 'Hace 7 dias':
+            current_date.setDate(current_date.getDate() - 7);
+            date['$gte'] = start_day(new Date(current_date));
+            date['$lt'] = end_day(new Date());
+            break;
+        case 'Hace 1 mes':
+            current_date.setMonth(current_date.getMonth() - 1);
+            date['$gte'] = start_day(new Date(current_date));
+            date['$lt'] = end_day(new Date());
+            break;
+        default:
+            date = undefined;
+            break;
     }
 
     return {

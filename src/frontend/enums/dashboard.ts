@@ -8,8 +8,8 @@ export const items_main: Props_items_dashboard[] = [
     },
     {
         url: '/notes',
-        title: 'Administrador de notas',
-        description: 'Realiza la creacion, edicion, eliminacion y visualizacion de notas con facilidad.'
+        title: 'Crear nota',
+        description: 'Escribe y guarda tus ideas o recordatorios importantes. Mantén tus notas organizadas.'
     },
     {
         url: '/dashboard/config',
@@ -18,7 +18,7 @@ export const items_main: Props_items_dashboard[] = [
     },
     {
         url: '/notes/search',
-        title: 'Filtros y categorias',
+        title: 'Lista de notas',
         description: 'Encuentra rápidamente tus notas con esta funcion y mejora tu productividad en un instante.'
     }
 ]

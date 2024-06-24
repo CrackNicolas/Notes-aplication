@@ -76,7 +76,7 @@ export default function ComponentNavTop(props: Props_context) {
                     </div>
                 </div>
             </div>
-            <div ref={ref_nav_toggle} title="Menu toggle" className={`mx-4 transform transition-all duration-500 ease-in-out sm:hidden ${view_toggle ? 'max-h-screen opacity-100 scale-100' : 'max-h-0 opacity-0 scale-95'} overflow-hidden`}>
+            <div ref={ref_nav_toggle} title="Menu toggle" className={`mx-4 sm:hidden transition-all duration-500 ease-in-out ${view_toggle ? 'max-h-screen opacity-100 scale-100' : 'max-h-0 opacity-0 scale-75'} overflow-hidden`}>
                 <div className="space-y-2 px-0.5 py-2">
                     <Link href="/" title="Inicio" onClick={() => handle_click_nav()} className="group flex justify-between items-center border hover:border-secondary rounded-md border-1 px-3 py-2">
                         <span className="tracking-wider text-fifth text-md font-normal group-hover:text-secondary transition duration-500">

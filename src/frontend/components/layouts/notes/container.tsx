@@ -1,61 +1,62 @@
-import { useEffect, useState } from "react";
+'use client'
 
-import axios from 'axios';
+import { useSearchParams } from "next/navigation";
 
-import ComponentList from "@/frontend/components/layouts/notes/list/container";
+import { Fragment, useEffect, useState } from "react";
+
+import axios from "axios";
+
+import ComponentItems from "@/frontend/components/layouts/category/list/items";
+import ComponentHeader from "@/frontend/components/partials/template/dashboard/header";
 import ComponentContainerForm from "@/frontend/components/layouts/notes/container_form";
-import ComponentMessageConfirmation from "@/frontend/components/layouts/messages/confirmation";
 
 import { Props_note } from "@/context/types/note";
-import { Props_session } from "@/context/types/session";
-import { Props_response } from "@/context/types/response";
+import { Props_category } from "@/context/types/category";
 
-type Props = {
-    session: Props_session
-}
-
-export default function ComponentNotes(props: Props) {
-    const { session } = props;
-
-    const [load, setLoad] = useState<boolean>(false);
-    const [search, setSearch] = useState<string>("");
-    const [list_notes, setList_notes] = useState<Props_note[]>([]);
+export default function ComponentNotes() {
+    const [list_categorys, setList_categorys] = useState<Props_category[]>([]);
+    const [category_selected, setCategory_selected] = useState<Props_category | undefined>(undefined);
     const [selected_note, setSelected_note] = useState<Props_note | undefined>(undefined);
 
-    const [open, setOpen] = useState<boolean>(false);
-    const [response, setResponse] = useState<Props_response>();
+    const search_params = useSearchParams();
 
-    const refresh = (): void => {
-        setLoad(!load);
+    const select = (category: Props_category): void => {
+        setCategory_selected(category);
     }
 
     useEffect(() => {
-        const load_notes = async () => {
-            const { data } = await axios.get(`/api/notes${(search !== "{}") ? `/${search}` : ''}`);
+        if (search_params.get('data') !== null) {
+            const { note } = JSON.parse(search_params.get('data') as string);
+            setSelected_note(note);
+            setCategory_selected(note.category);
+        }
+    }, []);
+
+    useEffect(() => {
+        const load_categorys = async () => {
+            const { data } = await axios.get(`/api/categorys/true`);
+
             if (data.status === 200) {
-                setList_notes(data.data);
+                setList_categorys(data.data);
             }
             if (data.status === 500) {
-                setOpen(true);
-                setResponse(data);
-                setList_notes([]);
+                setList_categorys([]);
             }
         }
-
-        if (session.id) {
-            load_notes();
-        }
-
-    }, [load, search, session.user])
+        load_categorys();
+    }, [])
 
     return (
-        <section className="flex flex-col justify-center mt-4 pt-12 pb-5">
-            <article className="grid grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-8">
-                <ComponentContainerForm selected={selected_note} setSelected={setSelected_note} setRefresh={refresh} />
-                <ComponentList notes={list_notes} setSelected={setSelected_note} selected={selected_note} setRefresh={refresh} setSearch={setSearch} />
-            </article>
+        <section className="flex flex-col gap-y-6 justify-center mt-4 pt-12 pb-5">
             {
-                (response) && <ComponentMessageConfirmation open={open} setOpen={setOpen} response={response} />
+                !category_selected ?
+                    <Fragment>
+                        <ComponentHeader title="Seleccionar categoria" subtitle="Marque la categoria para crear su nota" />
+                        <ComponentItems categorys={list_categorys} select={select} use_paint={true} />
+                    </Fragment>
+
+                    :
+                    <ComponentContainerForm category_selected={category_selected} setCategory_selected={setCategory_selected} note_selected={selected_note} />
             }
         </section>
     )

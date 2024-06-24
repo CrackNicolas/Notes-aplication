@@ -15,7 +15,7 @@ export const validation = (name: string, required: boolean = true): any => {
                     message: 'El titulo deber ser menor a 45 caracteres'
                 },
                 pattern: {
-                    value: /^[A-Z a-z._áéíóú]+$/i,
+                    value: /^[A-Z a-z._áéíóúñ]+$/i,
                     message: 'Se detectaron caracteres no permitidos'
                 }
             }
@@ -34,7 +34,7 @@ export const validation = (name: string, required: boolean = true): any => {
                     message: 'La descripcion deber ser menor a 500 caracteres'
                 },
                 pattern: {
-                    value: /^[A-Z a-z,._áéíóú]+$/i,
+                    value: /^[A-Z a-z,._áéíóúñ0-9]+$/i,
                     message: 'Se detectaron caracteres no permitidos'
                 }
             }

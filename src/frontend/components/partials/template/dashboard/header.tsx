@@ -1,10 +1,10 @@
 type Props = {
-    title: string,
-    subtitle: string
+    title?: string,
+    subtitle?: string
 }
 
 export default function ComponentHeader(props: Props) {
-    const { title, subtitle } = props;
+    const { title = '', subtitle = '' } = props;
 
     return (
         <div className="px-5 mx-auto max-w-2xl">

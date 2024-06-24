@@ -59,12 +59,39 @@ body::-webkit-scrollbar-thumb:hover,
   border-top-right-radius: 10px;
 }
 
+.icon-transition {
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.icon-visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.icon-hidden {
+  opacity: 0;
+  transform: scale(0.5);
+}
+
+.toggle-search {
+  transition: transform 0.5s ease-in-out;
+}
+
+.transition-padding {
+  transition: padding 0.5s ease-in-out;
+}
+
+.transition-width {
+  transition: width 0.5s ease-in-out;
+}
+
 .spinner-load {
   border: 2.3px solid theme("colors.primary");
   border-left-color: theme("colors.secondary");
   box-shadow: 0 0 10px 2px theme("colors.secondary");
   animation: animation_spinner 1s linear infinite;
 }
+
 @keyframes animation_spinner {
   0% {
     transform: rotate(0deg);

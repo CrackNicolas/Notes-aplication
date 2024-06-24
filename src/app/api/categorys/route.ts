@@ -25,26 +25,21 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
             await Category.create([
                 { title: 'Proyecto', use: [{ value: true, user_id }], icon: 'proyects' },
                 { title: 'Trabajo', use: [{ value: true, user_id }], icon: 'briefcase' },
-                { title: 'Inversion', use: [{ value: false, user_id }], icon: 'investment' },
-                { title: 'Estudios', use: [{ value: false, user_id }], icon: 'studies' },
-                { title: 'Personal', use: [{ value: false, user_id }], icon: 'person' },
-                { title: 'Viajes', use: [{ value: false, user_id }], icon: 'plane' },
-                { title: 'Historias', use: [{ value: false, user_id }], icon: 'stories' },
-                { title: 'Peliculas', use: [{ value: false, user_id }], icon: 'film' },
-                { title: 'Musicas', use: [{ value: false, user_id }], icon: 'music' },
-                { title: 'Otros', use: [{ value: false, user_id }], icon: 'others' }
+                { title: 'Inversion', use: [{ value: true, user_id }], icon: 'investment' },
+                { title: 'Estudios', use: [{ value: true, user_id }], icon: 'studies' },
+                { title: 'Personal', use: [{ value: true, user_id }], icon: 'person' },
+                { title: 'Viajes', use: [{ value: true, user_id }], icon: 'plane' },
+                { title: 'Historias', use: [{ value: true, user_id }], icon: 'stories' },
+                { title: 'Peliculas', use: [{ value: true, user_id }], icon: 'film' },
+                { title: 'Musicas', use: [{ value: true, user_id }], icon: 'music' },
+                { title: 'Otros', use: [{ value: true, user_id }], icon: 'others' }
             ])
         }
 
         const user_category = await Category.findOne({ "use.user_id": user_id });
 
         if (!user_category) {
-            await Category.updateMany({}, { $push: { use: { value: false, user_id } } });
-            await Category.updateMany(
-                { title: { $in: ["Proyecto", "Trabajo"] } },
-                { $set: { "use.$[elem].value": true } },
-                { arrayFilters: [{ "elem.user_id": user_id }] }
-            );
+            await Category.updateMany({}, { $push: { use: { value: true, user_id } } });
         }
 
         const categorys = await Category.find({ "use.user_id": user_id });

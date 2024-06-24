@@ -2,199 +2,239 @@
 
 import { useRouter } from "next/navigation";
 
-import Datepicker, { DateValueType } from "react-tailwindcss-datepicker";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import axios from "axios";
 
 import ComponentIcon from "@/frontend/components/partials/icon";
 import ComponentList from "@/frontend/components/layouts/search/list";
-import ComponentLabel from "@/frontend/components/partials/form/label";
-import ComponentInput from "@/frontend/components/partials/form/input";
-import ComponentSelect from '@/frontend/components/partials/form/select';
 import ComponentMessageWait from "@/frontend/components/layouts/messages/wait";
+import ComponentSelectStatic from "@/frontend/components/partials/form/select_static";
+import ComponentButtonCreate from "@/frontend/components/layouts/search/button_create";
+import ComponentSelectDynamic from "@/frontend/components/partials/form/select_dynamic";
 import ComponentMessageConfirmation from "@/frontend/components/layouts/messages/confirmation";
+import ComponentMessageConfirmationDelete from "@/frontend/components/layouts/messages/confirmation_delete";
 
-import { Props_note } from "@/context/types/note";
 import { Props_response } from "@/context/types/response";
 import { Props_category } from "@/context/types/category";
-
-import { Props_params_search } from "@/frontend/types/props";
+import { Props_delete_note, Props_note } from "@/context/types/note";
+import { Props_loading_notes, Props_params_search } from "@/frontend/types/props";
 
 export default function ComponentSearch() {
     const router = useRouter();
 
-    const { register, formState: { errors }, watch, trigger, reset } = useForm();
+    const { register, formState: { errors }, watch, trigger, setValue } = useForm();
 
     const title = watch('title');
 
+    const ref_nav_toggle = useRef<HTMLDivElement>(null);
+    const ref_button_close_toggle = useRef<HTMLButtonElement>(null);
+    const ref_button_view_toggle = useRef<HTMLButtonElement>(null);
+
     const [open, setOpen] = useState<boolean>(false);
     const [search, setSearch] = useState<string>('');
-    const [loading, setLoading] = useState<boolean>(false);
     const [response, setResponse] = useState<Props_response>();
-    const [params, setParams] = useState<Props_params_search>();
     const [list_notes, setList_notes] = useState<Props_note[]>([]);
-    const [select_category, setSelect_category] = useState<Props_category>({ title: 'Seleccionar categoria...' });
-    const [select_date, setSelect_date] = useState<DateValueType>({ startDate: null, endDate: null });
+    const [select_date, setSelect_date] = useState<string | undefined>('Fecha...');
+    const [view_filter, setView_filter] = useState<boolean>(false);
+    const [state_select, setState_select] = useState<boolean>(false);
+    const [loading_notes, setLoading_notes] = useState<Props_loading_notes>();
+    const [notes_selected, setNotes_selected] = useState<Props_delete_note[]>([]);
+    const [loading_message, setLoading_message] = useState<boolean>(false);
+    const [select_category, setSelect_category] = useState<Props_category>({ title: 'Categoria...' });
+    const [select_priority, setSelect_priority] = useState<string | undefined>('Prioridad...');
+    const [select_featured, setSelect_featured] = useState<string | undefined>('Nota destacada...');
+    const [open_confirmation_delete, setOpen_confirmation_delete] = useState<boolean>(false);
+    const [confirmation_delete, setConfirmation_delete] = useState<boolean>(false);
 
-    const action_note = async (action: string, note: Props_note) => {
-        switch (action) {
-            case 'delete':
-                setLoading(true);
-                const { data } = await axios.delete(`/api/notes/${note._id}`);
-                setOpen(true);
-                setResponse(data);
-                setLoading(false);
-                break;
-            case 'update':
-                const json = JSON.stringify({ note });
-                router.push(`/notes?data=${encodeURIComponent(json)}`);
-                break;
+    const update_note = (note: Props_note): void => {
+        const json = JSON.stringify({ note });
+        router.push(`/notes?data=${encodeURIComponent(json)}`);
+    }
+
+    const handle_click_outside = (event: MouseEvent) => {
+        if (ref_nav_toggle.current &&
+            !ref_nav_toggle.current.contains(event.target as Node) &&
+            !ref_button_close_toggle.current?.contains(event.target as Node) &&
+            !ref_button_view_toggle.current?.contains(event.target as Node)
+        ) {
+            setView_filter(false);
+        }
+    };
+
+    const onchange_search = (value: string) => {
+        register('title');
+        setValue('title', value);
+    }
+
+    const select_note = (value: boolean) => {
+        setState_select(value);
+        setNotes_selected([]);
+    }
+
+    const load_notes = async () => {
+        setLoading_notes({ value: true, button: true });
+        const { data } = await axios.get(`/api/notes${(search !== '{}') ? `/${search}` : ''}`);
+        if (data.status === 200) {
+            setLoading_notes({
+                value: false,
+                icon: `emoji-${search === '{}' ? 'without' : 'search'}-notes`,
+                description: (search === '{}') ? '¡Ups! aun no tienes tu primer nota' : 'No se encontraron resultados',
+                button: (search === '{}')
+            });
+            setList_notes(data.data);
+        }
+        if (data.status === 500) {
+            setOpen(true);
+            setResponse(data);
+            setList_notes([]);
+            setLoading_notes({ value: false });
+        }
+    }
+
+    const listen_to_changes = async () => {
+        await trigger('title');
+
+        const criteria: Props_params_search = {
+            title: (!errors.title?.type && title !== '') ? title : undefined,
+            category: (select_category.title !== 'Categoria...') ? select_category : undefined,
+            priority: (select_priority !== 'Prioridad...') ? select_priority : undefined,
+            dates: (select_date !== 'Fecha...') ? select_date : undefined,
+            featured: (select_featured !== 'Nota destacada...') ? (select_featured === 'SI') : undefined,
+        }
+
+        setSearch(JSON.stringify(criteria));
+    }
+
+    const delete_notes = async () => {
+        setLoading_message(true);
+        const { data } = await axios.delete(`/api/notes/${JSON.stringify(notes_selected)}`);
+        if (data.status === 200) {
+            setOpen(true);
+            setResponse(data);
+            load_notes();
+            setState_select(false);
+            setLoading_message(false);
+            setNotes_selected([]);
         }
     }
 
     useEffect(() => {
-        const load_notes = async () => {
-            const { data } = await axios.get(`/api/notes${(search !== '{}') ? `/${search}` : ''}`);
-            if (data.status === 200) {
-                setList_notes(data.data);
-            }
-            if (data.status === 500) {
-                setOpen(true);
-                setResponse(data);
-                setList_notes([]);
-            }
+        document.addEventListener('mousedown', handle_click_outside);
+        return () => document.removeEventListener('mousedown', handle_click_outside);
+    }, []);
+
+    useEffect(() => {
+        if (confirmation_delete) {
+            delete_notes();
         }
+    }, [confirmation_delete]);
+
+    useEffect(() => {
         load_notes();
     }, [response, search]);
 
     useEffect(() => {
-        const listen_to_changes = async () => {
-            await trigger('title');
-
-            const criteria: Props_params_search = {
-                title: (!errors.title?.type && title !== '') ? title : undefined,
-                category: (select_category.title !== 'Seleccionar categoria...') ? select_category : undefined,
-                priority: params?.priority,
-                dates: (select_date?.startDate) ? select_date : undefined,
-                featured: params?.featured
-            }
-
-            setSearch(JSON.stringify(criteria));
-        }
         listen_to_changes();
-    }, [title, select_category, params, select_date]);
-
-    const listen_params = (type: string, value: string | boolean) => {
-        const updated_params = { ...params };
-
-        if (updated_params[type] === value) {
-            delete updated_params[type];
-        } else {
-            updated_params[type] = value;
-        }
-        setParams(updated_params);
-    }
-
-    const restart = () => {
-        reset({ title: '' });
-        setParams(undefined);
-        setSelect_category({ title: 'Seleccionar categoria...' });
-        setSelect_date({ startDate: null, endDate: null });
-    }
+    }, [title, select_category, select_priority, select_featured, select_date]);
 
     return (
-        <section className="flex flex-col gap-5 mt-[30px] pt-7 h-[calc(100vh-30px)] ">
-            <article className="relative flex flex-col gap-y-1 items-center p-3 bg-primary border-secondary border-opacity-50 border-[0.1px] rounded-md">
-                <div className="relative w-full">
-                    <span onClick={() => restart()} className="absolute top-[-9px] right-[-9px] bg-error rounded-bl-lg rounded-tr-md  cursor-pointer" title="Reiniciar criterios de busqueda">
-                        <ComponentIcon name="close" size={20} description_class="text-tertiary cursor-pointer" />
-                    </span>
-                </div>
-                <div className="w-full text-center">
-                    <span className="text-secondary text-lg tracking-wider" title="Criterios de busqueda">
-                        Criterios de busqueda
-                    </span>
-                </div>
-                <div className="flex justify-between items-center w-full">
-                    <div className="flex gap-x-3 py-1">
-                        <span title="Prioridad Alta" onClick={() => listen_params('priority', 'Alta')} className={`${(params?.priority === 'Alta') && 'shadow-md shadow-secondary'} grid place-items-center rounded-full p-1 bg-sixth hover:shadow-md hover:shadow-secondary cursor-pointer`}>
-                            <ComponentIcon name="arrow" size={16} description_class="text-red-500 rotate-[-180deg] cursor-pointer" />
-                        </span>
-                        <span title="Prioridad Media" onClick={() => listen_params('priority', 'Media')} className={`${(params?.priority === 'Media') && 'shadow-md shadow-secondary'} grid place-items-center rounded-full p-1 bg-sixth hover:shadow-md hover:shadow-secondary cursor-pointer`}>
-                            <ComponentIcon name="arrow" size={16} description_class="text-orange-500 rotate-[-180deg] cursor-pointer" />
-                        </span>
-                        <span title="Prioridad Baja" onClick={() => listen_params('priority', 'Baja')} className={`${(params?.priority === 'Baja') && 'shadow-md shadow-secondary'} grid place-items-center rounded-full p-1 bg-sixth hover:shadow-md hover:shadow-secondary cursor-pointer`}>
-                            <ComponentIcon name="arrow" size={16} description_class="text-green-500 cursor-pointer" />
-                        </span>
+        <section className={`flex flex-col gap-5 mt-[30px] pt-7 h-[calc(100vh-30px)]`}>
+            <article className={`flex gap-y-6 gap-x-3 justify-between items-center bg-primary transition-width ${view_filter ? 'sz:w-full md:w-[calc(100%-200px)]' : 'w-full'}`}>
+                <div className="flex items-center sm:w-auto w-full">
+                    <div className="bg-sixth border-[0.1px] border-secondary border-opacity-40 py-[4.2px] px-2 sm:rounded-l-xl rounded-l-md">
+                        <ComponentIcon name="search" description_class="text-fifth mt-[3px]" size={20} view_box="0 0 24 24" />
                     </div>
-                    <div className="flex gap-x-3">
-                        <span title="Notas no destacadas" onClick={() => listen_params('featured', false)} className={`hover:opacity-100 ${(params?.['featured'] === false) ? '' : 'opacity-30'}`}>
-                            <ComponentIcon name="star-half" size={22} description_class="text-secondary cursor-pointer" />
-                        </span>
-                        <span title="Notas destacadas" onClick={() => listen_params('featured', true)} className={`hover:opacity-100 ${(params?.['featured'] === true) ? '' : 'opacity-30'}`}>
-                            <ComponentIcon name="star-fill" size={22} description_class="text-secondary cursor-pointer" />
-                        </span>
-                    </div>
+                    <input
+                        type="text"
+                        id="search"
+                        placeholder="Buscar..."
+                        onChange={(e) => onchange_search(e.target.value)}
+                        className="sm:w-auto w-full bg-sixth border-y-[0.1px] border-r-[0.1px] border-l-none border-secondary border-opacity-40 rounded-r-md outline-none px-2 py-1 text-fifth placeholder:opacity-60 placeholdel:text-sm"
+                    />
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 w-full">
-                    <div className="col-span-1 flex flex-col gap-y-0.5">
-                        <ComponentLabel title="Titulo" html_for="title" errors={errors} />
-                        <ComponentInput
-                            type="text"
-                            name="title"
-                            placeholder="Escriba el titulo..."
-                            register={register}
-                            error={errors.title?.type}
-                            required={false}
-                            description_class="border-opacity-50 bg-primary w-full rounded-md border-[0.1px] py-1 px-2 outline-none tracking-wide placeholder:opacity-70 sm:text-md"
-                        />
-                    </div>
-                    <div className="col-span-1 flex flex-col gap-y-0.5">
-                        <ComponentLabel title="Categoria" html_for="category" />
-                        <ComponentSelect
+                <div className="flex items-center gap-2 h-full">
+                    <ComponentButtonCreate />
+                    <button type="button" title="Eliminar todo" onClick={() => setOpen_confirmation_delete(true)} className={`${(notes_selected.length === 0) && 'hidden'} border-[0.1px] border-error rounded-md px-2`} >
+                        <span className="text-error text-sm">
+                            {
+                                (list_notes.length === notes_selected.length) ? 'Eliminar todo' : 'Eliminar'
+                            }
+                        </span>
+                    </button>
+                    <button type="button" title={`${state_select ? 'Cancelar eliminacion' : 'Eliminar notas'}`} onClick={() => select_note(!state_select)} className={`${list_notes.length === 0 && 'hidden'}`} >
+                        <ComponentIcon name={state_select ? 'close' : 'delete'} description_class={`transition-width cursor-pointer ${state_select ? 'text-error' : 'hover:text-error text-fifth'}`} size={state_select ? 32 : 20} view_box="0 0 16 16" />
+                    </button>
+                    <button ref={ref_button_view_toggle} onClick={() => setView_filter(!view_filter)} type="button" title="Filtros">
+                        <ComponentIcon name="list" description_class="cursor-pointer hover:text-secondary text-fifth" size={24} view_box="0 0 16 16" />
+                    </button>
+                </div>
+            </article>
+            <article className="flex w-full pb-10">
+                <ComponentList
+                    loading={loading_notes}
+                    notes={list_notes}
+                    update_note={update_note}
+                    notes_selected={notes_selected}
+                    setNotes_selected={setNotes_selected}
+                    state={state_select}
+                    description_class={`transition-width ${view_filter ? 'w-full sz:w-full md:w-[calc(100%-200px)]' : 'w-full'}`}
+                />
+                <div ref={ref_nav_toggle} className={`absolute toggle-search ${view_filter ? 'translate-x-0' : 'translate-x-[120%]'} right-0 bg-primary z-50 top-[-30px] w-[200px] border-secondary border-l-[0.1px] p-2 h-[100vh]`}>
+                    <p className="flex justify-between text-secondary py-1 border-b-[1px] border-opacity-50 border-secondary w-full">
+                        Filtrar notas
+                        <button ref={ref_button_close_toggle} type="button" title="Cerrar menu" onClick={() => setView_filter(!view_filter)}>
+                            <ComponentIcon name="close" description_class="cursor-pointer hover:text-secondary text-fifth" size={24} view_box="0 0 16 16" />
+                        </button>
+                    </p>
+                    <div className="flex flex-col gap-y-3 py-3 w-full">
+                        <ComponentSelectDynamic
                             select_category={select_category}
                             setSelect_category={setSelect_category}
                             register={register}
                         />
-                    </div>
-                    <div className="hidden col-span-1 lg:flex flex-col gap-y-0.5">
-                        <ComponentLabel title="Fecha" html_for="date" />
-                        <Datepicker
-                            value={select_date}
-                            onChange={(event) => setSelect_date(event)}
-                            i18n={"es"}
-                            primaryColor={'cyan'}
-                            separator=" hasta "
-                            placeholder="Selecciona fecha"
-                            readOnly={true}
-                            minDate={new Date("2024-01-01")}
-                            maxDate={new Date()}
-                            startFrom={new Date()}
-                            configs={{
-                                shortcuts: {
-                                    today: "Hoy",
-                                    yesterday: "Ayer",
-                                    past: period => `Últimos ${period} dias`,
-                                    currentMonth: "Mes actual",
-                                    pastMonth: "Mes pasado"
-                                }
-                            }}
-                            popoverDirection="down"
-                            showShortcuts={true}
-                            toggleClassName={"absolute bg-primary rounded-r-md border border-secondary border-opacity-70 text-secondary right-0 h-full px-3 hover:bg-secondary hover:text-primary focus:outline-none disabled:opacity-40 disabled:cursor-not-allowed"}
-                            inputClassName={"w-full placeholder:text-secondary placeholder:opacity-70 bg-primary text-secondary border border-secondary border-opacity-50 border-[0.1px] rounded-md py-1 px-2 outline-none"}
+                        <ComponentSelectStatic
+                            title="Prioridad"
+                            select={select_priority}
+                            setSelect={setSelect_priority}
+                            items={[
+                                { value: 'Alta', icon: { name: 'arrow', class: 'text-red-500 rotate-[-180deg]' } },
+                                { value: 'Media', icon: { name: 'arrow', class: 'text-orange-500 rotate-[-180deg]' } },
+                                { value: 'Baja', icon: { name: 'arrow', class: 'text-green-500' } }
+                            ]}
+                        />
+                        <ComponentSelectStatic
+                            title="Nota destacada"
+                            select={select_featured}
+                            setSelect={setSelect_featured}
+                            items={[
+                                { value: 'SI', icon: { name: 'star-fill', class: 'text-secondary' } },
+                                { value: 'NO', icon: { name: 'star-half', class: 'text-secondary' } }
+                            ]}
+                        />
+                        <ComponentSelectStatic
+                            title="Fecha"
+                            select={select_date}
+                            setSelect={setSelect_date}
+                            items={[
+                                { value: "Hoy", icon: { name: 'date', class: 'text-secondary' } },
+                                { value: "Ayer", icon: { name: 'date', class: 'text-secondary' } },
+                                { value: "Hace 7 dias", icon: { name: 'date', class: 'text-secondary' } },
+                                { value: "Hace 1 mes", icon: { name: 'date', class: 'text-secondary' } }
+                            ]}
                         />
                     </div>
                 </div>
             </article>
-            <ComponentList notes={list_notes} action_note={action_note} />
             {
-                (loading) && <ComponentMessageWait open={loading} setOpen={setLoading} />
+                (loading_message) && <ComponentMessageWait open={loading_message} setOpen={setLoading_message} />
             }
             {
                 (response) && <ComponentMessageConfirmation open={open} setOpen={setOpen} response={response} />
+            }
+            {
+                <ComponentMessageConfirmationDelete open={open_confirmation_delete} setOpen={setOpen_confirmation_delete} setConfirmation={setConfirmation_delete} />
             }
         </section>
     )

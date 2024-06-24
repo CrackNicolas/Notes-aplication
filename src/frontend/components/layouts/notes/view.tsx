@@ -30,16 +30,16 @@ export default function ComponentView(props: Props) {
                         <ComponentIcon name={note.category.icon} size={20} description_class="text-secondary cursor-pointer" />
                     </span>
                 </div>
-                <p className="text-start text-sm text-gray-500 w-full mb-4" title={note.description}>
+                <p className="text-start text-sm text-gray-500 w-full mb-7" title={note.description}>
                     {note.description}
                 </p>
                 <div className="flex justify-between items-center w-full">
                     {
                         (note.file) && (
-                            <a href={note.file.url} target="_blank" title="Ver archivo" rel="noopener noreferrer" className="group relative overflow-hidden flex hover:w-auto w-[20px] rounded-r-full items-start outline-none">
-                                <ComponentIcon name="upload-file-selected" size={20} description_class=" group-hover:py-0.5 min-w-[20px] group-hover:border group-hover:border-secondary group-hover:border-[0.1px] bg-primary text-secondary cursor-pointer group-hover:border-r-0 z-20 bg-primary" />
-                                <span className="group-hover:translate-x-0 group-hover:w-[90px] group-hover:h-[20px] translate-x-[-100px] w-0 h-0 transition duration-600 z-10 text-secondary border-y border-y-[0.1px] border-r border-r-[0.1px] border-secondary rounded-r-full flex items-center px-1">
-                                    Ver archivo
+                            <a href={note.file.url} target="_blank" title="Ver archivo" rel="noopener noreferrer" className="group cursor-pointer hover:bg-secondary flex items-center outline-none gap-x-1.5 border-[0.1px] border-secondary rounded-md px-1.5">
+                                <ComponentIcon name="upload-file-selected" size={13} description_class="text-secondary group-hover:text-primary" />
+                                <span className="text-secondary group-hover:text-primary">
+                                    Ver imagen
                                 </span>
                             </a>
                         )
