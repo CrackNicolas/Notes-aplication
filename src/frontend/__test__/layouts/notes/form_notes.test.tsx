@@ -12,12 +12,11 @@ import { Props_response } from '@/context/types/response';
 import ComponentForm from '@/frontend/components/layouts/notes/container_form';
 import ComponentLabel from '@/frontend/components/partials/form/label';
 import ComponentInput from '@/frontend/components/partials/form/input';
-import ComponentSelect from '@/frontend/components/partials/form/select';
 import ComponentItemPriority from '@/frontend/components/partials/form/item_priority';
 import ComponentItemFeatured from '@/frontend/components/partials/form/item_featured';
 
 import { labels, note } from '@/frontend/__test__/mocks/notes'
-import { categorys } from '@/frontend/__test__/mocks/categorys';
+import { categorys, category } from '@/frontend/__test__/mocks/categorys';
 
 const mock = new MockAdapter(axios);
 
@@ -49,23 +48,23 @@ jest.mock("next/navigation", () => ({
 }))
 
 describe('Componente <Form/> principal', () => {
-    const register = jest.fn(), setSelected = jest.fn();
+    const register = jest.fn(), setSelected = jest.fn(), redirect = jest.fn();
 
-    test('Renderizacion correcta de elementos', async () => {
-        const component = render(<ComponentForm selected={undefined} setRefresh={() => { }} setSelected={() => { }} />);
+    test('Renderizacion correcta de elementos', () => {
+        const component = render(
+            <ComponentForm category_selected={category} setCategory_selected={setSelected} note_selected={undefined} redirect={redirect} />
+        );
 
         const input_title = component.getByPlaceholderText('Escriba el titulo...');
         const input_description = component.getByPlaceholderText('Escriba la descripcion...');
         const inputs_priority = component.getAllByRole('radio');
-        const input_file = component.getByLabelText('Subir archivo...');
+        const input_file = component.getByLabelText('Subir imagen...');
         const label_title = component.getByTitle('Titulo');
         const label_description = component.getByTitle('Descripcion');
-        const load_categorys = component.getByTitle('Cargando categorias');
         const button_deshacer = component.getByRole('button', { name: 'Deshacer' });
 
         expect(input_title).toBeInTheDocument();
         expect(input_description).toBeInTheDocument();
-        expect(load_categorys).toBeInTheDocument();
         expect(label_title).toBeInTheDocument();
         expect(label_description).toBeInTheDocument();
         expect(input_file).toBeInTheDocument();
@@ -74,36 +73,19 @@ describe('Componente <Form/> principal', () => {
         inputs_priority.map(input => {
             expect(input).toBeInTheDocument();
         })
-
-        await waitFor(() => {
-            const container = component.getByTitle('Categoria');
-
-            fireEvent.click(container);
-
-            const list_categorys = component.getByTitle('Lista de categorias');
-
-            expect(list_categorys).toBeInTheDocument();
-            expect(list_categorys).toHaveClass('overflow-hidden overflow-y-scroll scroll-select h-[130px]');
-            expect(container).toBeInTheDocument();
-            expect(container).toHaveClass('rounded-b-none');
-
-            const category = component.getByTitle('Viajes');
-            fireEvent.click(category);
-        })
-
     })
 
     test('Renderizacion correcta al crear una nota', async () => {
         setSelected(undefined);
         const { getByTitle, getByRole, getByPlaceholderText, getByLabelText } = render(
-            <ComponentForm selected={undefined} setRefresh={() => { }} setSelected={setSelected} />
+            <ComponentForm category_selected={category} setCategory_selected={setSelected} note_selected={undefined} redirect={redirect} />
         );
 
         const title = getByTitle('Titulo formulario');
-        const button_submit = getByTitle('Crear');
+        const button_submit = getByTitle('Guardar');
 
         expect(title.textContent).toBe('Crear nota');
-        expect(button_submit.textContent).toBe('Crear');
+        expect(button_submit.textContent).toBe('Guardar');
 
         const input_title = getByPlaceholderText('Escriba el titulo...');
         const input_description = getByPlaceholderText('Escriba la descripcion...');
@@ -117,25 +99,13 @@ describe('Componente <Form/> principal', () => {
         expect(input_description).toHaveValue(note.description);
         expect(input_priority).toBeChecked();
 
-        const input_file = getByLabelText('Subir archivo...');
+        const input_file = getByLabelText('Subir imagen...');
 
         fireEvent.change(input_file, {
             target: { files: [new File(['archivo de prueba'], 'test-file.png', { type: 'image/png' })] },
         });
 
         await waitFor(() => {
-            const container = getByTitle('Categoria');
-            fireEvent.click(container);
-            fireEvent.mouseDown(input_file);
-        });
-
-        await waitFor(() => {
-            const container = getByTitle('Categoria');
-            fireEvent.click(container);
-
-            const category = getByTitle('Viajes');
-            fireEvent.click(category);
-
             fireEvent.submit(button_submit);
 
             const modal_confirmation = getByTitle('modal');
@@ -151,39 +121,31 @@ describe('Componente <Form/> principal', () => {
     })
 
     test('Renderizacion correcta al editar una nota', async () => {
-        const { getByTitle, getByText } = render(<ComponentForm selected={note} setRefresh={() => { }} setSelected={() => { }} />);
+        const { getByTitle, getByText } = render(
+            <ComponentForm category_selected={category} setCategory_selected={setSelected} note_selected={note} redirect={redirect} />
+        );
 
         const title = getByTitle('Titulo formulario');
         const select_file = getByText(`${note.file?.name} cargado`);
-        const button_submit = getByTitle('Actualizar');
+        const button_submit = getByTitle('Guardar');
 
         expect(title.textContent).toBe('Actualizar nota');
-        expect(button_submit.textContent).toBe('Actualizar');
+        expect(button_submit.textContent).toBe('Guardar');
         expect(select_file).toBeInTheDocument();
 
         await waitFor(() => {
-            const title = getByTitle('Seleccionar categoria');
-            expect(title.textContent).toBe(note.category.title);
-
             fireEvent.submit(button_submit);
-        })
 
-        await waitFor(() => {
             const modal_confirmation = getByTitle('modal');
-            const button_close = getByTitle('Boton cerrar');
 
             expect(modal_confirmation).toBeInTheDocument();
-            expect(button_close).toBeInTheDocument();
-
-            fireEvent.click(button_close);
-
-            expect(modal_confirmation).not.toBeInTheDocument();
         })
     })
 
-    test('Renderizacion correcta al deshacer la operacion', async () => {
-        setSelected(note);
-        const component = render(<ComponentForm selected={note} setRefresh={() => { }} setSelected={setSelected} />);
+    test('Renderizacion correcta al deshacer la operacion', () => {
+        const component = render(
+            <ComponentForm category_selected={category} setCategory_selected={setSelected} note_selected={note} redirect={redirect} />
+        );
 
         const input_title = component.getByPlaceholderText('Escriba el titulo...');
         const input_description = component.getByPlaceholderText('Escriba la descripcion...');
@@ -196,16 +158,9 @@ describe('Componente <Form/> principal', () => {
         const button_deshacer = component.getByRole('button', { name: 'Deshacer' });
         fireEvent.click(button_deshacer);
 
-        expect(setSelected).toHaveBeenCalledWith(undefined);
         expect(input_title).toHaveValue('');
         expect(input_description).toHaveValue('');
         expect(input_priority).toHaveClass('text-secondary group-hover:bg-secondary group-hover:text-primary');
-
-        await waitFor(() => {
-            const title = component.getByTitle('Seleccionar categoria');
-            expect(title.textContent).toBe('Seleccionar categoria...');
-        })
-
     })
 
     describe('Renderizacion correcta de mensajes de error', () => {
@@ -296,17 +251,6 @@ describe('Componente <Form/> principal', () => {
                     />)
                     const input_description = getByPlaceholderText('Escriba la descripcion...');
                     expect(input_description).toHaveClass('border-error text-error placeholder:text-error');
-                })
-            })
-        })
-
-        describe('Categorias', () => {
-            test('Error required', async () => {
-                const { getByTitle } = render(<ComponentSelect select_category={{ title: 'Seleccionar categoria...' }} register={register} error="required" setSelect_category={setSelected} />)
-
-                await waitFor(() => {
-                    const container = getByTitle('Categoria');
-                    expect(container).toHaveClass('border-error')
                 })
             })
         })

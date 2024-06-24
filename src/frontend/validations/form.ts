@@ -52,9 +52,5 @@ export const validation = (name: string, required: boolean = true): any => {
                     message: 'Selecciona una opcion'
                 }
             }
-        case 'category':
-            return {
-                required: required
-            }
     }
 }

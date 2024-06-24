@@ -1,7 +1,5 @@
 'use client'
 
-import { useRouter } from 'next/navigation';
-
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { ChangeEvent, Dispatch, SetStateAction, useEffect, useState } from 'react';
 
@@ -22,13 +20,12 @@ import { Props_category } from '@/context/types/category';
 type Props = {
     category_selected: Props_category | undefined,
     setCategory_selected: Dispatch<SetStateAction<Props_category | undefined>>,
-    note_selected: Props_note | undefined
+    note_selected: Props_note | undefined,
+    redirect: (path: string) => void
 }
 
 export default function ComponentContainerForm(props: Props) {
-    const { category_selected, setCategory_selected, note_selected } = props;
-
-    const router = useRouter();
+    const { category_selected, setCategory_selected, note_selected, redirect } = props;
 
     const [open, setOpen] = useState<boolean>(false);
     const [file, setFile] = useState<File | undefined>(undefined);
@@ -41,7 +38,7 @@ export default function ComponentContainerForm(props: Props) {
         reset();
         setFile(undefined);
         if (use_redirect) {
-            router.push('/dashboard/main');
+            redirect('/dashboard/main');
         }
     }
 
@@ -54,7 +51,6 @@ export default function ComponentContainerForm(props: Props) {
     const capture_file = (event: ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (file) {
-            if (!file.type.startsWith('image/')) return;
             setFile(file);
         }
     }
@@ -84,9 +80,9 @@ export default function ComponentContainerForm(props: Props) {
         open_modal(response.data);
     }
 
-    const redirect = () => {
+    const reply = () => {
         setOpen(false);
-        router.push('/notes/search');
+        redirect('/notes/search');
     }
 
     useEffect(() => {
@@ -205,7 +201,7 @@ export default function ComponentContainerForm(props: Props) {
                 </div>
             </form>
             {
-                (response) && <ComponentMessageConfirmation open={open} setOpen={setOpen} response={response} reply={redirect} button_close={false} />
+                (response) && <ComponentMessageConfirmation open={open} setOpen={setOpen} response={response} reply={reply} button_close={false} />
             }
             {
                 (loading) && <ComponentMessageWait open={loading} setOpen={setLoading} />

@@ -1,5 +1,6 @@
 'use client'
 
+import { useRouter } from 'next/navigation';
 import { useSearchParams } from "next/navigation";
 
 import { Fragment, useEffect, useState } from "react";
@@ -19,9 +20,14 @@ export default function ComponentNotes() {
     const [selected_note, setSelected_note] = useState<Props_note | undefined>(undefined);
 
     const search_params = useSearchParams();
+    const router = useRouter();
 
     const select = (category: Props_category): void => {
         setCategory_selected(category);
+    }
+
+    const redirect = (path:string) => {
+        router.push(path);
     }
 
     useEffect(() => {
@@ -54,9 +60,8 @@ export default function ComponentNotes() {
                         <ComponentHeader title="Seleccionar categoria" subtitle="Marque la categoria para crear su nota" />
                         <ComponentItems categorys={list_categorys} select={select} use_paint={true} />
                     </Fragment>
-
                     :
-                    <ComponentContainerForm category_selected={category_selected} setCategory_selected={setCategory_selected} note_selected={selected_note} />
+                    <ComponentContainerForm category_selected={category_selected} setCategory_selected={setCategory_selected} note_selected={selected_note} redirect={redirect} />
             }
         </section>
     )

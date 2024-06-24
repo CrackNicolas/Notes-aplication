@@ -26,4 +26,9 @@ export const categorys: Props_category[] = [
         use: true,
         icon: 'others'
     }
-] 
+]
+export const category: Props_category = {
+    title: 'Viajes',
+    use: true,
+    icon: 'plane'
+}
