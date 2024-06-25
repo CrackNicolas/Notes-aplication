@@ -6,11 +6,11 @@ import ComponentModal from "@/frontend/components/partials/modal";
 type Props = {
     open: boolean,
     setOpen: Dispatch<SetStateAction<boolean>>,
-    setConfirmation: Dispatch<SetStateAction<boolean>>
+    action: () => Promise<void>
 }
 
 export default function ComponentMessageConfirmationDelete(props: Props) {
-    const { open, setOpen, setConfirmation } = props;
+    const { open, setOpen, action } = props;
 
     return (
         <ComponentModal open={open} setOpen={setOpen}>
@@ -23,12 +23,12 @@ export default function ComponentMessageConfirmationDelete(props: Props) {
                 </p>
             </div>
             <div className="flex gap-x-2 sm:gap-x-5">
-                <button type="button" title="SI" onClick={() => setConfirmation(true)} className='relative outline-none rounded-full w-[135px] sm:w-[200px] bg-primary hover:opacity-100 opacity-70 cursor-pointer text-secondary border-[0.1px] border-secondary'>
+                <button type="button" title="SI" onClick={() => action()} className='relative outline-none rounded-full w-[135px] sm:w-[200px] bg-primary hover:opacity-100 opacity-70 cursor-pointer text-secondary border-[0.1px] border-secondary'>
                     <ComponentIcon name="check" size={20} description_class="absolute left-1.5 top-[2.5px] text-secondary" />
                     SI
                 </button>
                 <button type="button" title="NO" onClick={() => setOpen(false)} className='relative outline-none rounded-full w-[135px] sm:w-[200px] bg-primary hover:opacity-100 opacity-70 cursor-pointer text-error border-[0.1px] border-error'>
-                <ComponentIcon name="close" size={24} description_class="absolute right-1 top-0 text-error" />
+                    <ComponentIcon name="close" size={24} description_class="absolute right-1 top-0 text-error" />
                     NO
                 </button>
             </div>

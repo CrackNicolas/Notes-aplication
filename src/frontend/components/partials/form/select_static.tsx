@@ -46,7 +46,7 @@ export default function ComponentSelect(props: Props) {
             <ul ref={list} title="Lista de opciones" className={`${(!open) && 'hidden'} absolute z-10 mt-[32px] w-full bg-primary border-[0.1px] border-secondary rounded-b-md border-opacity-50`}>
                 {
                     select != `${title}...` && (
-                        <li onClick={() => selected(`${title}...`)} className="group flex justify-between hover:bg-secondary items-center px-2 py-1 cursor-pointer hover:font-semibold">
+                        <li onClick={() => selected(`${title}...`)} title={`${title}...`} className="group flex justify-between hover:bg-secondary items-center px-2 py-1 cursor-pointer hover:font-semibold">
                             <span className="text-md font-normal group-hover:font-semibold group-hover:text-primary text-secondary">
                                 {title}...
                             </span>
@@ -56,7 +56,7 @@ export default function ComponentSelect(props: Props) {
                 {
                     items.map((item: Props_items_select, index: number) => {
                         return (
-                            <li key={index} onClick={() => selected(item.value)} className="group flex justify-between items-center hover:bg-secondary px-2 py-1 cursor-pointer">
+                            <li key={index} onClick={() => selected(item.value)} title={item.value} className="group flex justify-between items-center hover:bg-secondary px-2 py-1 cursor-pointer">
                                 <span className="text-md font-normal group-hover:font-semibold group-hover:text-primary text-secondary">
                                     {item.value}
                                 </span>

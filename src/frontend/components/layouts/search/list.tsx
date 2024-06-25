@@ -10,13 +10,13 @@ import ComponentLoading from "@/frontend/components/layouts/notes/list/loading";
 import ComponentButtonCreate from "@/frontend/components/layouts/search/button_create";
 
 type Props = {
-    loading: Props_loading_notes | undefined,
-    notes: Props_note[],
-    update_note: (note: Props_note) => void,
-    description_class?: string,
     state: boolean,
+    notes: Props_note[],
+    loading: Props_loading_notes | undefined,
+    update_note: (note: Props_note) => void,
     notes_selected: Props_delete_note[],
     setNotes_selected: Dispatch<SetStateAction<Props_delete_note[]>>
+    description_class?: string,
 }
 
 export default function ComponentList(props: Props) {
