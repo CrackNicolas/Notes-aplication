@@ -32,10 +32,7 @@ export async function File_edit(id: string, file: File): Promise<Props_file> {
     const buffer = Buffer.from(bytes);
 
     const response: UploadApiResponse | undefined = await new Promise((resolve, reject) => {
-        cloudinary.uploader.upload_stream({
-            public_id: id,
-            overwrite: true
-        }, (err, result) => {
+        cloudinary.uploader.upload_stream({ public_id: id, overwrite: true }, (err, result) => {
             if (err) reject(err);
             resolve(result);
         }).end(buffer);
@@ -46,7 +43,7 @@ export async function File_edit(id: string, file: File): Promise<Props_file> {
         url: response?.secure_url
     }
 }
-export async function File_delete(files_id: string[]) {
+export async function File_delete(files_id: string[]): Promise<UploadApiResponse[] | undefined> {
     if (files_id.length === 0) return;
 
     const promises: Promise<UploadApiResponse>[] = files_id.map(id => {

@@ -35,6 +35,14 @@ export default function ComponentNavTop(props: Props_context) {
         setOpacity(!view_toggle);
     }
 
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+
+    useEffect(() => {
+        setTimeout(() => {
+            setIsLoading(false);
+        }, 2000);
+    }, []);
+
     return (
         <nav className="fixed w-full bg-primary mt-[-7px] z-50">
             <div className="mx-auto max-w-7xl px-3 sm:px-10">
@@ -62,16 +70,19 @@ export default function ComponentNavTop(props: Props_context) {
                     </div>
                     <div className="absolute inset-y-0 right-0 flex items-center pr-1 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                         {
-                            (session.id) ?
-                                <div ref={ref_button_user} className="flex gap-x-4 rounded-full" onClick={() => setOpacity(!opacity)} title="Usuario">
-                                    {button_sesion}
-                                </div>
+                            isLoading ?
+                                <span className="animate-pulse bg-secondary opacity-30 rounded-full w-[32px] h-[32px] " />
                                 :
-                                <Link href="/sign-in" title="Iniciar sesion" className="group border border-tertiary hover:border-secondary border-[0.1px] px-3 rounded-md flex py-[3px] outline-none transition duration-500">
-                                    <span className="group-hover:text-secondary text-sm tracking-wider text-tertiary">
-                                        Iniciar sesion
-                                    </span>
-                                </Link>
+                                (session.id) ?
+                                    <div ref={ref_button_user} className="flex gap-x-4 rounded-full" onClick={() => setOpacity(!opacity)} title="Usuario">
+                                        {button_sesion}
+                                    </div>
+                                    :
+                                    <Link href="/sign-in" title="Iniciar sesion" className="group border border-tertiary hover:border-secondary border-[0.1px] px-3 rounded-md flex py-[3px] outline-none transition duration-500">
+                                        <span className="group-hover:text-secondary text-sm tracking-wider text-tertiary">
+                                            Iniciar sesion
+                                        </span>
+                                    </Link>
                         }
                     </div>
                 </div>

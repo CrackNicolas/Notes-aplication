@@ -23,7 +23,7 @@ export const Context = createContext<Props_context>({
     session: {},
     button_sesion: <ComponentUserButton />,
     opacity: false,
-    setOpacity: () => {}
+    setOpacity: () => { }
 });
 
 export default function Provider({ children }: Props_layouts) {
@@ -42,9 +42,9 @@ export default function Provider({ children }: Props_layouts) {
                 name: data_user.user.fullName,
                 email: data_user.user.emailAddresses.toString(),
                 image: data_user.user.imageUrl,
-                rol: (data_user.user.id === 'user_2Z2e0jzKi44dKmBj2q6kOLeKJeR') ? 'admin' : 'member'
+                rol: (data_user.user.id === process.env.ROL_ADMIN_USER_ID) ? 'admin' : 'member'
             }
-            
+
             const instance_session: Props_session = {
                 id: data_user.user.id,
                 status: (data_session.status === 'active'),
@@ -78,7 +78,7 @@ export default function Provider({ children }: Props_layouts) {
     }, [path])
 
     return (
-        <Context.Provider value={{ section_current: path.substring(1), session, button_sesion: <ComponentUserButton />, opacity:false, setOpacity:() => {} }}>
+        <Context.Provider value={{ section_current: path.substring(1), session, button_sesion: <ComponentUserButton />, opacity: false, setOpacity: () => { } }}>
             <ProgressBar color="#00ffff" options={{ showSpinner: false }} />
             <Template>
                 {children}
