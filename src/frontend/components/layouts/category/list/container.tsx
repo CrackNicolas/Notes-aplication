@@ -2,6 +2,7 @@ import { Dispatch, Fragment, SetStateAction, useState } from "react";
 
 import axios from "axios";
 
+import ComponentIcon from "@/frontend/components/partials/icon";
 import ComponentItems from "@/frontend/components/layouts/category/list/items";
 import ComponentMessageWait from '@/frontend/components/layouts/messages/wait';
 import ComponentMessageConfirmation from "@/frontend/components/layouts/messages/confirmation";
@@ -11,11 +12,12 @@ import { Props_response } from "@/context/types/response";
 
 type Props = {
     categorys: Props_category[],
-    setRestart: Dispatch<SetStateAction<boolean>>
+    setRestart: Dispatch<SetStateAction<boolean>>,
+    redirect: (path:string) => void
 }
 
 export default function ComponentList(props: Props) {
-    const { categorys, setRestart } = props;
+    const { categorys, setRestart, redirect } = props;
 
     const [open, setOpen] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
@@ -36,7 +38,10 @@ export default function ComponentList(props: Props) {
     }
 
     return (
-        <Fragment>
+        <article className="relative">
+            <span className="absolute left-0 top-[-40px] bg-primary rounded-full p-1.5 hover:bg-room transition duration-500" title="Volver atras" onClick={() => redirect('/dashboard/config') }>
+                <ComponentIcon name="return" size={22} description_class="rotate-[-180deg] text-secondary cursor-pointer" />
+            </span>
             <ComponentItems categorys={categorys} select={select} />
             {
                 (response) && <ComponentMessageConfirmation open={open} setOpen={setOpen} response={response} />
@@ -44,6 +49,6 @@ export default function ComponentList(props: Props) {
             {
                 (loading) && <ComponentMessageWait open={loading} setOpen={setLoading} />
             }
-        </Fragment>
+        </article>
     )
 }
