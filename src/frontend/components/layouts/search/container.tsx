@@ -63,6 +63,20 @@ export default function ComponentSearch(props: Props) {
         setNotes_selected([]);
     }
 
+    const note_all = (notes_selected.length === list_notes.length);
+
+    const select_all = () => {
+        if (note_all) {
+            setNotes_selected([]);
+            return;
+        }
+        list_notes.map(note => {
+            if (!notes_selected.map(note => note._id).includes(note._id)) {
+                setNotes_selected(prev => [...prev, { _id: note._id, file: note.file?.id }])
+            }
+        })
+    }
+
     const load_notes = async () => {
         setLoading_notes({ value: true, button: true });
         const { data } = await axios.get(`/api/notes${(search !== '{}') ? `/${search}` : ''}`);
@@ -124,19 +138,45 @@ export default function ComponentSearch(props: Props) {
     return (
         <section className="flex flex-col gap-5 mt-[30px] pt-7 h-[calc(100vh-30px)]">
             <article className={`flex gap-y-6 gap-x-3 justify-between items-center bg-primary transition-width ${view_filter ? 'sz:w-full md:w-[calc(100%-200px)]' : 'w-full'}`}>
-                <ComponentInputSearch setValue={setValue} />
+                {
+                    state_select ?
+                        <div className="flex gap-x-3">
+                            <span title="Marcar todo" onClick={() => select_all()} className={`my-auto border-[0.1px] cursor-pointer ${note_all ? ' border-error bg-primary rounded-full px-[0.5px] ' : 'border-secondary rounded-sm'}`}>
+                                <ComponentIcon
+                                    name='check'
+                                    size={12}
+                                    description_class={`cursor-pointer ${note_all ? 'text-error m-auto mt-[1px] icon-transition icon-visible' : 'text-secondary transition-width icon-transition icon-hidden'} `}
+                                />
+                            </span>
+                            <div className="flex gap-x-1.5">
+                                {
+                                    (notes_selected.length !== 0) && (
+                                        <button type="button" title="Eliminar" onClick={() => setOpen_confirmation_delete(true)} className="group cursor-pointer hover:bg-error border-[0.1px] border-error rounded-md px-2 py-[0.6px] " >
+                                            <span className="group-hover:text-primary text-error text-sm group-hover:font-semibold font-normal tracking-wider transition duration-500">
+                                                Eliminar
+                                            </span>
+                                        </button>
+                                    )
+                                }
+                                <button type="button" title="Cancelar eliminacion" onClick={() => setState_select(false)} className="group cursor-pointer hover:bg-error border-[0.1px] border-error rounded-md px-2 py-[0.6px] " >
+                                    <span className="group-hover:text-primary text-error text-sm group-hover:font-semibold font-normal tracking-wider transition duration-500">
+                                        Cancelar
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                        :
+                        <ComponentInputSearch setValue={setValue} />
+                }
                 <div className="flex items-center gap-2 h-full">
                     <ComponentButtonCreate />
-                    <button type="button" title="Eliminar todo" onClick={() => setOpen_confirmation_delete(true)} className={`${(notes_selected.length === 0) && 'hidden'} border-[0.1px] border-error rounded-md px-2`} >
-                        <span className="text-error text-sm">
-                            {
-                                (list_notes.length === notes_selected.length) ? 'Eliminar todo' : 'Eliminar'
-                            }
-                        </span>
-                    </button>
-                    <button type="button" title={`${state_select ? 'Cancelar eliminacion' : 'Eliminar notas'}`} onClick={() => select_note(!state_select)} className={`${list_notes.length === 0 && 'hidden'}`} >
-                        <ComponentIcon name={state_select ? 'close' : 'delete'} description_class={`transition-width cursor-pointer ${state_select ? 'text-error' : 'hover:text-error text-fifth'}`} size={state_select ? 32 : 20} view_box="0 0 16 16" />
-                    </button>
+                    {
+                        !state_select && (
+                            <button type="button" title="Eliminar notas" onClick={() => select_note(true)} className={`${list_notes.length === 0 && 'hidden'}`} >
+                                <ComponentIcon name="delete" description_class="cursor-pointer hover:text-error text-fifth" size={20} view_box="0 0 16 16" />
+                            </button>
+                        )
+                    }
                     <button ref={ref_button_view_toggle} onClick={() => setView_filter(!view_filter)} type="button" title="Filtros">
                         <ComponentIcon name="list" description_class="cursor-pointer hover:text-secondary text-fifth" size={24} view_box="0 0 16 16" />
                     </button>
@@ -159,7 +199,10 @@ export default function ComponentSearch(props: Props) {
                             <ComponentIcon name="close" description_class="cursor-pointer hover:text-secondary text-fifth" size={24} view_box="0 0 16 16" />
                         </button>
                     </p>
-                    <div className="flex flex-col gap-y-3 py-3 w-full">
+                    <div className="relative flex flex-col gap-y-3 py-3 w-full">
+                        {
+                            state_select && <ComponentInputSearch setValue={setValue} design={state_select} />
+                        }
                         <ComponentSelectDynamic
                             select_category={select_category}
                             setSelect_category={setSelect_category}

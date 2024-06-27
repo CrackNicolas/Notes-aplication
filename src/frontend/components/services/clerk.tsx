@@ -12,7 +12,7 @@ export function ComponentUserButton() {
     }} />
 }
 export function ComponentSignIn() {
-    return <SignIn appearance={{
+    return <SignIn afterSignInUrl="/dashboard/main" appearance={{
         elements: {
             logoBox: 'hidden',
             alert: "hidden",

@@ -1,3 +1,5 @@
+import { MouseEvent } from 'react';
+
 import { Dispatch, SetStateAction, useState } from "react";
 
 import ComponentIcon from "@/frontend/components/partials/icon";
@@ -28,8 +30,7 @@ export default function ComponentNote(props: Props) {
     }
 
     const include_note = (id?: string) => {
-        const notes = notes_selected.map(note => note._id);
-        return notes.includes(id);
+        return notes_selected.map(note => note._id).includes(id);
     }
 
     const note_selection = (data: Props_delete_note) => {
@@ -38,26 +39,31 @@ export default function ComponentNote(props: Props) {
         }
     }
 
+    const redirect = (event: MouseEvent<HTMLButtonElement>) => {
+        event.stopPropagation();
+        update_note(note);
+    }
+
     return (
-        <div onClick={() => note_selection({ _id: (note._id) ? note._id : '', file: note.file?.id })} title="Nota" className={`relative transition-padding group grid grid-cols-9 w-full bg-sixth ${state ? 'sm:pl-12.5 pl-12 sm:pr-2.5 pr-2' : 'sm:px-2.5 px-2'} sm:py-2 py-1.5 cursor-pointer rounded-md border-[0.1px] border-secondary ${paint ? 'border-opacity-100' : 'border-opacity-20 hover:border-opacity-100'}`}>
+        <div onClick={() => state ? note_selection({ _id: (note._id) ? note._id : '', file: note.file?.id }) : open_view(note)} title="Nota" className={`relative transition-padding group grid grid-cols-9 w-full bg-sixth ${state ? 'sm:pl-12.5 pl-12 sm:pr-2.5 pr-2' : 'sm:px-2.5 px-2'} sm:py-2 py-1.5 cursor-pointer rounded-md border-[0.1px] border-secondary ${paint ? 'border-opacity-100' : 'border-opacity-20 hover:border-opacity-100'}`}>
             {
                 state && (
                     <div className="absolute h-full flex items-center px-2">
                         {
                             include_note(note._id) ?
-                                <span className='border-[0.1px] border-error bg-primary rounded-full transition-padding p-1'>
+                                <span title="Nota seleccionada" className='cursor-pointer border-[0.1px] border-error bg-primary rounded-full transition-padding p-1'>
                                     <ComponentIcon
                                         name='check'
                                         size={20}
-                                        description_class="text-error m-auto mt-[1px] icon-transition icon-visible"
+                                        description_class="cursor-pointer text-error m-auto mt-[1px] icon-transition icon-visible"
                                     />
                                 </span>
                                 :
-                                <span className='border-[0.1px] border-secondary'>
+                                <span title="Marcar nota" className='cursor-pointer border-[0.1px] border-secondary rounded-sm'>
                                     <ComponentIcon
                                         name='check'
                                         size={12}
-                                        description_class="text-secondary transition-width icon-transition icon-hidden"
+                                        description_class="cursor-pointer text-secondary transition-width icon-transition icon-hidden"
                                     />
                                 </span>
                         }
@@ -80,15 +86,10 @@ export default function ComponentNote(props: Props) {
                     {Time_elapsed(createdAt)}
                 </span>
             </div>
-            <div className="col-span-1 flex flex-col items-end">
-                <div className="flex gap-2 items-end justify-center w-[45px] h-full">
-                    <button onClick={() => update_note(note)} type="button" title="Editar" className="outline-none border-none">
-                        <ComponentIcon name="update" size={18} description_class="text-fifth hover:text-secondary cursor-pointer" />
-                    </button>
-                    <button onClick={() => open_view(note)} type="button" title="Ver" className="outline-none border-none">
-                        <ComponentIcon name="see" size={19} description_class="text-fifth hover:text-secondary cursor-pointer" />
-                    </button>
-                </div>
+            <div className="col-span-1 flex flex-col items-end justify-end">
+                <button onClick={(e) => redirect(e)} type="button" title="Editar" className="outline-none border-none">
+                    <ComponentIcon name="update" size={18} description_class="text-fifth hover:text-secondary cursor-pointer" />
+                </button>
             </div>
             {
                 (view_note) && <ComponentView open={open_modal_view} setOpen={setOpen_modal_view} note={view_note} />

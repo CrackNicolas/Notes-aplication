@@ -3,5 +3,5 @@ import ComponentTemplateDashboard from "@/frontend/components/partials/template/
 import { items_config } from "@/frontend/enums/dashboard"
 
 export default function ComponentDashboardConfig() {
-    return <ComponentTemplateDashboard items={items_config} />
+    return <ComponentTemplateDashboard items={items_config} redirect={true} />
 }
