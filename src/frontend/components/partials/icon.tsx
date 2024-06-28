@@ -29,6 +29,13 @@ export default function ComponentIcon(props: Props) {
                 return <path fillRule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5" />
             case 'check':
                 return <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0" />
+            case 'not-found':
+                return <g>
+                    <circle cx="100" cy="100" r="90" fill="#00FFFF" />
+                    <circle cx="100" cy="100" r="80" fill="#000000" />
+                    <polygon className="" points="100,40 115,100 100,160 85,100" fill="#00FFFF" />
+                    <circle cx="100" cy="100" r="10" fill="#FFFFFF" />
+                </g>
             case 'arrow':
                 return <path fillRule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1" />
             case 'return':

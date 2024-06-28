@@ -68,6 +68,11 @@ body::-webkit-scrollbar-thumb:hover,
   transform: scale(1);
 }
 
+polygon {
+  transform-origin: center;
+  animation: rotate 10s linear infinite;
+}
+
 .icon-hidden {
   opacity: 0;
   transform: scale(0.5);
@@ -97,6 +102,15 @@ body::-webkit-scrollbar-thumb:hover,
     transform: rotate(0deg);
   }
   100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
     transform: rotate(360deg);
   }
 }

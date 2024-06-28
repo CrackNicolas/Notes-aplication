@@ -17,12 +17,12 @@ export default function manifest(): Manifest {
                 purpose: "any"
             },
             {
-                src: "/images/logo.png",
+                src: "/images/logo-512.png",
                 sizes: "512x512",
                 type: "image/png"
             },
             {
-                src: "/images/logo.png",
+                src: "/images/logo-512.png",
                 sizes: "512x512",
                 type: "image/png",
                 purpose: "maskable"

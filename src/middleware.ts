@@ -6,7 +6,7 @@ export default authMiddleware({
 
 export const config = {
     matcher: [
-        '/((?!api/|_next|favicon.ico|images/logo.png|manifest.webmanifest).*)',
+        '/((?!api/|_next|favicon.ico|images/logo.png|images/logo-512|robots.txt|manifest.webmanifest).*)',
         '/(trpc)(.*)',
     ]
 }
