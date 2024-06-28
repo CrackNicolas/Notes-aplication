@@ -22,7 +22,7 @@ export default function manifest(): Manifest {
                 type: "image/png"
             },
             {
-                src: "/images/logo-512.png",
+                src: "/images/logo-512-black.png",
                 sizes: "512x512",
                 type: "image/png",
                 purpose: "maskable"
