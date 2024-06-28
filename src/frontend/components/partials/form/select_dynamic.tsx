@@ -84,7 +84,7 @@ export default function ComponentSelect(props: Props) {
                             <span title="Seleccionar categoria" className={`${!error ? 'text-secondary' : 'text-error'} text-md`}>
                                 {select_category.title}
                             </span>
-                            <ComponentIcon name={open_category ? 'caret-up' : 'caret-down'} size={20} description_class={`${!error ? 'text-secondary' : 'text-error'}`} />
+                            <ComponentIcon name={open_category ? 'caret-up' : 'caret-down'} size={20} description_class={`${!error ? 'text-secondary' : 'text-error'} cursor-pointer`} />
                         </div>
                         <ul ref={list} title="Lista de categorias" className={`${(!open_category) && 'hidden'} absolute z-10 mt-[32px] w-full ${(categorys.length >= 4) && 'overflow-hidden overflow-y-scroll h-[130px]'} bg-primary border-[0.1px] ${!error ? 'border-secondary scroll-select' : 'border-error scroll-select-error'} rounded-b-md border-opacity-50`}>
                             {

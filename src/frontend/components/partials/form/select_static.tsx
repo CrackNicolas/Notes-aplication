@@ -41,7 +41,7 @@ export default function ComponentSelect(props: Props) {
                 <span title={`Seleccionar ${title}`} className="text-secondary text-md">
                     {select}
                 </span>
-                <ComponentIcon name={open ? 'caret-up' : 'caret-down'} size={20} description_class="text-secondary" />
+                <ComponentIcon name={open ? 'caret-up' : 'caret-down'} size={20} description_class="text-secondary cursor-pointer" />
             </div>
             <ul ref={list} title="Lista de opciones" className={`${(!open) && 'hidden'} absolute z-10 mt-[32px] w-full bg-primary border-[0.1px] border-secondary rounded-b-md border-opacity-50`}>
                 {

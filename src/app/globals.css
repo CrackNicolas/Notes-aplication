@@ -56,7 +56,9 @@ body::-webkit-scrollbar-thumb:hover,
 }
 
 .scroll-text::-webkit-scrollbar-thumb {
+  cursor: pointer;
   border-top-right-radius: 10px;
+  border-bottom-right-radius: 15px;
 }
 
 .icon-transition {
@@ -95,6 +97,10 @@ polygon {
   border-left-color: theme("colors.secondary");
   box-shadow: 0 0 10px 2px theme("colors.secondary");
   animation: animation_spinner 1s linear infinite;
+}
+
+textarea{
+  resize: none;
 }
 
 @keyframes animation_spinner {

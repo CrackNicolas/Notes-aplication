@@ -3,12 +3,12 @@ import { Fragment, ReactNode } from "react"
 type Props = {
     children: ReactNode
     count: number,
-    description_class: string,
+    description_class?: string,
     title?: string
 }
 
 export default function ComponentTemplateLoading(props: Props) {
-    const { children, count, description_class, title = 'Cargando...' } = props;
+    const { children, count, description_class = "", title = 'Cargando...' } = props;
 
     return (
         <Fragment>

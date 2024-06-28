@@ -108,7 +108,7 @@ export default function ComponentContainerForm(props: Props) {
                     {(!note_selected) ? 'Crear nota' : 'Actualizar nota'}
                 </span>
                 <span className="absolute right-0" title={`Categoria ${note_selected?.category.title}`}>
-                    <ComponentIcon name={(note_selected) ? note_selected?.category.icon : category_selected?.icon} size={24} description_class="text-secondary cursor-pointer" />
+                    <ComponentIcon name={(note_selected) ? note_selected?.category.icon : category_selected?.icon} size={24} description_class="text-secondary" />
                 </span>
             </div>
             <form method="POST" onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-y-6">
@@ -194,11 +194,11 @@ export default function ComponentContainerForm(props: Props) {
                 </div>
                 <div className="flex gap-x-10">
                     <button type="submit" title="Guardar" name="Guardar" className="relative flex w-full justify-center rounded-md text-secondary border-[0.1px] border-secondary border-opacity-80 px-3 py-1 text-md font-normal hover:font-semibold bg-primary tracking-wider hover:bg-sixth outline-none">
-                        <ComponentIcon name={!note_selected ? 'add' : 'load'} size={20} description_class="absolute left-1 top-[6px] text-secondary" />
+                        <ComponentIcon name={!note_selected ? 'add' : 'load'} size={20} description_class="absolute left-1 top-[6px] text-secondary cursor-pointer" />
                         Guardar
                     </button>
                     <button onClick={() => restart(true)} type="button" name="Deshacer" title="Reiniciar" className="relative flex w-full justify-center rounded-md text-error border-[0.1px] border-error border-opacity-80 px-3 py-1 text-md font-normal hover:font-semibold bg-primary tracking-wider hover:bg-sixth outline-none">
-                        <ComponentIcon name="close" size={26} description_class="absolute right-1 top-[3px] text-error" />
+                        <ComponentIcon name="close" size={26} description_class="absolute right-1 top-[3px] text-error cursor-pointer" />
                         Deshacer
                     </button>
                 </div>

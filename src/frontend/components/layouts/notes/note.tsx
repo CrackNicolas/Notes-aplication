@@ -75,9 +75,9 @@ export default function ComponentNote(props: Props) {
                     <span className="line-clamp-1 text-md font-normal group-hover:font-semibold tracking-wide text-secondary">
                         {title}
                     </span>
-                    {(priority === "Alta") && <ComponentIcon name="arrow" size={15} description_class="sm:relative absolute sm:right-auto right-3 text-red-500 rotate-[-180deg] mt-[3px] " />}
-                    {(priority === "Media") && <ComponentIcon name="arrow" size={15} description_class="sm:relative absolute sm:right-auto right-3 text-orange-500 rotate-[-180deg] mt-[3px] " />}
-                    {(priority === "Baja") && <ComponentIcon name="arrow" size={15} description_class="sm:relative absolute sm:right-auto right-3 text-green-500 mt-[2.7px] " />}
+                    {(priority === "Alta") && <ComponentIcon name="arrow" size={15} description_class="sm:relative absolute sm:right-auto right-3 cursor-pointer text-red-500 rotate-[-180deg] mt-[3px] " />}
+                    {(priority === "Media") && <ComponentIcon name="arrow" size={15} description_class="sm:relative absolute sm:right-auto right-3 cursor-pointer text-orange-500 rotate-[-180deg] mt-[3px] " />}
+                    {(priority === "Baja") && <ComponentIcon name="arrow" size={15} description_class="sm:relative absolute sm:right-auto right-3 cursor-pointer text-green-500 mt-[2.7px] " />}
                 </span>
                 <p className="line-clamp-1 text-sm text-tertiary opacity-50">
                     {description}

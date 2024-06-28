@@ -26,10 +26,12 @@ export default function ComponentNavTop(props: Props_context) {
         }
     };
 
-    useEffect(() => {
-        document.addEventListener('mousedown', handle_click_outside);
-        return () => document.removeEventListener('mousedown', handle_click_outside);
-    }, []);
+    const handle_resize = () => {
+        if (window.innerWidth > 640) {
+            setView_toggle(false);
+            setOpacity(false);
+        }
+    }
 
     const handle_click_nav = () => {
         setView_toggle(!view_toggle);
@@ -39,6 +41,16 @@ export default function ComponentNavTop(props: Props_context) {
     const get_focus = (name: string) => {
         return (focus === name);
     }
+
+    useEffect(() => {
+        window.addEventListener('resize', handle_resize);
+        return () => window.removeEventListener('resize', handle_resize);
+    }, []);
+
+    useEffect(() => {
+        document.addEventListener('mousedown', handle_click_outside);
+        return () => document.removeEventListener('mousedown', handle_click_outside);
+    }, []);
 
     useEffect(() => {
         setTimeout(() => {
@@ -56,7 +68,7 @@ export default function ComponentNavTop(props: Props_context) {
                         </button>
                     </div>
                     <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-                        <Link href="/" title="Logo" onMouseOver={() => setFocus('logo')} onMouseLeave={() => setFocus('')}  className="sm:flex hidden flex-shrink-0 items-center">
+                        <Link href="/" title="Logo" onMouseOver={() => setFocus('logo')} onMouseLeave={() => setFocus('')} className="sm:flex hidden flex-shrink-0 items-center">
                             <ComponentIcon testid="icon-home" name={`${get_focus('logo') ? 'logo-fill' : 'logo'}`} size={27} description_class="icon-home text-secondary cursor-pointer" />
                         </Link>
                         {
@@ -77,7 +89,7 @@ export default function ComponentNavTop(props: Props_context) {
                                 <span className="animate-pulse bg-secondary opacity-30 rounded-full w-[32px] h-[32px] " />
                                 :
                                 (session.id) ?
-                                    <div ref={ref_button_user} className="flex gap-x-4 rounded-full" onClick={() => setOpacity(!opacity)} title="Usuario">
+                                    <div ref={ref_button_user} className="flex gap-x-4 rounded-full" title="Usuario">
                                         {button_sesion}
                                     </div>
                                     :

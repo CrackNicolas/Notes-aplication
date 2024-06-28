@@ -2,7 +2,7 @@ import ComponentTemplateLoading from "@/frontend/components/partials/template/li
 
 export default function ComponentLoading({ count }: { count: number }) {
     return (
-        <ComponentTemplateLoading count={count} description_class="">
+        <ComponentTemplateLoading count={count}>
             <div className="flex w-full flex-col items-start justify-between sm:px-4 px-3 pt-3 pb-4">
                 <div className="flex items-center justify-between w-full gap-x-4 text-xs pr-1 mb-3">
                     <span className="rounded-full w-[calc(85%-40px)] h-[11.5px] bg-tertiary opacity-20" />
