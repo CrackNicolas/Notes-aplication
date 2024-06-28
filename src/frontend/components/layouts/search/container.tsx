@@ -178,7 +178,7 @@ export default function ComponentSearch(props: Props) {
                         )
                     }
                     <button ref={ref_button_view_toggle} onClick={() => setView_filter(!view_filter)} type="button" title="Filtros">
-                        <ComponentIcon name="list" description_class="cursor-pointer hover:text-secondary text-fifth" size={24} view_box="0 0 16 16" />
+                        <ComponentIcon name="filter" description_class="cursor-pointer hover:text-secondary text-fifth" size={24} view_box="0 0 16 16" />
                     </button>
                 </div>
             </article>
@@ -193,12 +193,14 @@ export default function ComponentSearch(props: Props) {
                     description_class={`transition-width ${view_filter ? 'w-full sz:w-full md:w-[calc(100%-200px)]' : 'w-full'}`}
                 />
                 <div ref={ref_nav_toggle} className={`absolute toggle-search ${view_filter ? 'translate-x-0' : 'translate-x-[120%]'} right-0 bg-primary z-50 top-[-30px] w-[200px] border-secondary border-l-[0.1px] p-2 h-[100vh]`}>
-                    <p className="flex justify-between text-secondary py-1 border-b-[1px] border-opacity-50 border-secondary w-full">
-                        Filtrar notas
+                    <div className="flex justify-between items-center py-1 border-b-[1px] border-opacity-50 border-secondary w-full">
+                        <span className="text-secondary tracking-wide">
+                            Filtrar notas
+                        </span>
                         <button ref={ref_button_close_toggle} type="button" title="Cerrar menu" onClick={() => setView_filter(!view_filter)}>
-                            <ComponentIcon name="close" description_class="cursor-pointer hover:text-secondary text-fifth" size={24} view_box="0 0 16 16" />
+                            <ComponentIcon name="close" description_class="cursor-pointer hover:text-secondary text-fifth" size={27} view_box="0 0 16 16" />
                         </button>
-                    </p>
+                    </div>
                     <div className="relative flex flex-col gap-y-3 py-3 w-full">
                         {
                             state_select && <ComponentInputSearch setValue={setValue} design={state_select} />

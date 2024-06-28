@@ -15,6 +15,7 @@ export type Props_items_select = {
 }
 export type Props_items_dashboard = {
     url: string,
+    icon: string,
     title: string,
     description: string
 }

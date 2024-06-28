@@ -14,7 +14,7 @@ export default function ComponentInputSearch(props: Props) {
         <div className="flex items-center sm:w-auto w-full">
             {
                 !design && (
-                    <div className="bg-sixth border-[0.1px] border-secondary border-opacity-40 py-[4.2px] px-2 sm:rounded-l-xl rounded-l-md">
+                    <div className="bg-sixth border-[0.1px] border-secondary border-opacity-40 py-[4.5px] px-2 sm:rounded-l-xl rounded-l-md">
                         <ComponentIcon name="search" description_class="text-fifth mt-[3px]" size={20} view_box="0 0 24 24" />
                     </div>
                 )

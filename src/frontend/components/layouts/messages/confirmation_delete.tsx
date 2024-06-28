@@ -19,7 +19,7 @@ export default function ComponentMessageConfirmationDelete(props: Props) {
                     <ComponentIcon name='delete-note' description_class='text-error' size={25} />
                 </span>
                 <p title="¿Seguro que desea eliminar?" className="mt-2 text-center text-xl text-gray-500">
-                    ¿Seguro que desea eliminar?
+                    ¿Seguro que deseas eliminar?
                 </p>
             </div>
             <div className="flex gap-x-2 sm:gap-x-5">

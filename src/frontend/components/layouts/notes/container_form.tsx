@@ -38,7 +38,7 @@ export default function ComponentContainerForm(props: Props) {
         reset();
         setFile(undefined);
         if (use_redirect) {
-            redirect('/dashboard/main');
+            redirect((note_selected) ? '/notes/search' : '/dashboard/main');
         }
     }
 
@@ -108,7 +108,7 @@ export default function ComponentContainerForm(props: Props) {
                     {(!note_selected) ? 'Crear nota' : 'Actualizar nota'}
                 </span>
                 <span className="absolute right-0" title={`Categoria ${note_selected?.category.title}`}>
-                    <ComponentIcon name={note_selected?.category.icon} size={24} description_class="text-secondary cursor-pointer" />
+                    <ComponentIcon name={(note_selected) ? note_selected?.category.icon : category_selected?.icon} size={24} description_class="text-secondary cursor-pointer" />
                 </span>
             </div>
             <form method="POST" onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-y-6">

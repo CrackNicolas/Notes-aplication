@@ -41,8 +41,8 @@ export default function ComponentTemplateDashboard(props: Props) {
                     (items.length === 0) ?
                         <ComponentLoading count={6} />
                         :
-                        items.map((item, index) => {
-                            return <ComponentItem key={index} url={item.url} title={item.title} description={item.description} />
+                        items.map((item: Props_items_dashboard, index: number) => {
+                            return <ComponentItem key={index} url={item.url} icon={item.icon} title={item.title} description={item.description} />
                         })
                 }
             </div>
