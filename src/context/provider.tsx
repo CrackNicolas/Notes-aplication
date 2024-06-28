@@ -71,10 +71,29 @@ export default function Provider({ children }: Props_layouts) {
         load_user();
     }, [data_user.user])
 
-    useEffect(() => {
-        if (!navigator.onLine) {
-            router.push(process.env.DEVELOPMENT_DOMAIN + "/without_internet")
+
+    const handleOffline = () => {
+        router.push('/without_internet');
+    };
+
+    const handleOnline = () => {
+        if (path === '/offline') {
+            router.push('/');
         }
+    };
+
+    useEffect(() => {
+        window.addEventListener('offline', handleOffline);
+        window.addEventListener('online', handleOnline);
+
+        if (!navigator.onLine) {
+            handleOffline();
+        }
+
+        return () => {
+            window.removeEventListener('offline', handleOffline);
+            window.removeEventListener('online', handleOnline);
+        };
     }, [path])
 
     return (
