@@ -73,7 +73,7 @@ export default function Provider({ children }: Props_layouts) {
 
     useEffect(() => {
         if (!navigator.onLine) {
-            router.push("/without_internet")
+            router.push(process.env.DEVELOPMENT_DOMAIN + "/without_internet")
         }
     }, [path])
 

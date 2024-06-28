@@ -15,7 +15,7 @@ export default function NotFound() {
                         La página que estás buscando no existe.
                     </span>
                 </div>
-                <Link href="/" title="Volver al inicio de la aplicacion" className="border-[0.1px] border-secondary px-2 py-1 b rounded-md hover:bg-secondary hover:text-primary bg-primary text-secondary text-center text-md tracking-wide">
+                <Link href={`${process.env.DEVELOPMENT_DOMAIN}/`} title="Volver al inicio de la aplicacion" className="border-[0.1px] border-secondary px-2 py-1 b rounded-md hover:bg-secondary hover:text-primary bg-primary text-secondary text-center text-md tracking-wide">
                     Volver al inicio
                 </Link>
             </article>
