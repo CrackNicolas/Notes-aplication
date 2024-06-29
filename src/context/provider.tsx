@@ -72,6 +72,7 @@ export default function Provider({ children }: Props_layouts) {
     }, [data_user.user])
 
 
+    /*
     const handleOffline = () => {
         router.push('/without_internet');
     };
@@ -94,7 +95,7 @@ export default function Provider({ children }: Props_layouts) {
             window.removeEventListener('offline', handleOffline);
             window.removeEventListener('online', handleOnline);
         };
-    }, [path])
+    }, [path])*/
 
     return (
         <Context.Provider value={{ section_current: path.substring(1), session, button_sesion: <ComponentUserButton />, opacity: false, setOpacity: () => { } }}>
