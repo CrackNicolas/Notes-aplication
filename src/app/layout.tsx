@@ -27,7 +27,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Props_layouts) {
   return (
-    <html lang="en">
+    <html lang="en" manifest="/public/manifest.appcache">
       <head>
         <meta name="theme-color" content="#00ffff" />
       </head>

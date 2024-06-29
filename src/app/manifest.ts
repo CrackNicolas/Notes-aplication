@@ -2,13 +2,14 @@ import { Manifest } from 'next/dist/lib/metadata/types/manifest-types';
 
 export default function manifest(): Manifest {
     return {
+        theme_color: "#000000",
+        background_color: "#00ffff",
+        display: "browser",
+        scope: "/",
+        start_url: "/",
         name: "Aplicacion de notas",
         short_name: "Notas",
-        description: "Aplicación construida en Next.js",
-        start_url: "/",
-        display: "standalone",
-        background_color: "#000000",
-        theme_color: "#00ffff",
+        description: "Aplicacion para crear notas",
         icons: [
             {
                 src: "/images/logo.png",
@@ -28,5 +29,5 @@ export default function manifest(): Manifest {
                 purpose: "maskable"
             }
         ]
-    };
+    }
 }
