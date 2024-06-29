@@ -72,7 +72,7 @@ export default function Provider({ children }: Props_layouts) {
     }, [data_user.user])
 
     const handleOffline = () => {
-        router.push('/offline.html');
+        router.push('/without_internet');
     };
 
     const handleOnline = () => {
