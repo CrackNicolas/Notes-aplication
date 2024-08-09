@@ -45,7 +45,7 @@ export default function ComponentCategory() {
 
     return (
         <section className="relative flex flex-col gap-12 sm:pt-20 pt-16 pb-7">
-            <ComponentHeader title="Categorias de notas" subtitle="Selecciona las categorias que deseas agregar o quitar de tus notas" />
+            <ComponentHeader title="Tus Categorías" subtitle="Toca para agregar o quitar categorías de tus notas" />
             <ComponentList categorys={list_categorys} setRestart={setRestart} redirect={redirect} />
             {
                 (response) && <ComponentMessageConfirmation open={open} setOpen={setOpen} response={response} />

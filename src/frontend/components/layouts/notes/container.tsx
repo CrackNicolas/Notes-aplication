@@ -57,7 +57,7 @@ export default function ComponentNotes() {
             {
                 !category_selected ?
                     <Fragment>
-                        <ComponentHeader title="Seleccionar categoria" subtitle="Marque la categoria para crear su nota" />
+                        <ComponentHeader title="Elige una categoría" subtitle="Selecciona una categoría para tu nota" />
                         <ComponentItems categorys={list_categorys} select={select} use_paint={true} />
                     </Fragment>
                     :

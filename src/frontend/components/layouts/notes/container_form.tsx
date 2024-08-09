@@ -112,7 +112,7 @@ export default function ComponentContainerForm(props: Props) {
                 </span>
             </div>
             <form method="POST" onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-y-6">
-                <div className="flex flex-col gap-y-3">
+                <div className="flex flex-col gap-y-4">
                     <div className="flex flex-col gap-y-0.5">
                         <ComponentLabel title="Titulo" html_for="title" errors={errors} />
                         <ComponentInput
