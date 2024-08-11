@@ -16,8 +16,11 @@ export default function ComponentHome() {
                     </span>
                 </div>
                 <div className="mt-3 flex items-center justify-center gap-x-6">
-                    <Link href="/dashboard/main" title="Empezar" rel="noopener noreferrer" className="rounded-md border-[1px] border-secondary text-secondary hover:bg-gradient-to-r from-secondary vie-secondary px-3.5 py-2.5 text-sm font-normal hover:font-semibold hover:text-primary tracking-wider transition duration-500 cursor-pointer">
-                        Click para iniciar
+                    <Link href="/dashboard/main" title="Empezar" rel="noopener noreferrer" className="group flex items-center gap-x-2 rounded-md border-[1px] border-secondary hover:bg-secondary px-3.5 py-2.5 transition duration-700 cursor-pointer">
+                        <ComponentIcon name="box" size={16} description_class="group-hover:rotate-[360deg] group-hover:text-primary text-secondary duration-700" />
+                        <span className="group-hover:text-primary text-secondary text-sm group-hover:font-semibold tracking-wider duration-300">
+                            Click para iniciar
+                        </span>
                     </Link>
                 </div>
             </div>

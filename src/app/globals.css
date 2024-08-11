@@ -7,12 +7,9 @@
   padding: 0px;
 }
 
-html {
-  overflow-y: scroll;
-}
-
 html,
 body {
+  overflow-y: scroll;
   width: 100%;
   overflow-x: hidden;
   user-select: none;
@@ -100,6 +97,13 @@ polygon {
   border: 2.3px solid theme("colors.primary");
   border-left-color: theme("colors.secondary");
   box-shadow: 0 0 10px 2px theme("colors.secondary");
+  animation: animation_spinner 1s linear infinite;
+}
+
+.spinner-load-category {
+  border: 2.3px solid theme("colors.primary");
+  border-left-color: theme("colors.fifth");
+  box-shadow: 0 0 10px 2px theme("colors.fifth");
   animation: animation_spinner 1s linear infinite;
 }
 

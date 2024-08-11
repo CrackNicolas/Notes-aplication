@@ -27,10 +27,13 @@ type Props = {
 export default function ComponentContainerForm(props: Props) {
     const { category_selected, setCategory_selected, note_selected, redirect } = props;
 
+    const MAX_FILE_SIZE = 1 * 1024 * 1024; // 1MB en bytes
+
     const [open, setOpen] = useState<boolean>(false);
     const [file, setFile] = useState<File | undefined>(undefined);
     const [loading, setLoading] = useState<boolean>(false);
     const [response, setResponse] = useState<Props_response>();
+    const [message_image, setMessage_image] = useState<{ paint: boolean, value: string }>({ paint: true, value: 'Selecciona una imagen (máximo 4MB)' });
 
     const { register, handleSubmit, formState: { errors }, setValue, reset, watch } = useForm();
 
@@ -49,9 +52,16 @@ export default function ComponentContainerForm(props: Props) {
     }
 
     const capture_file = (event: ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0];
-        if (file) {
-            setFile(file);
+        const new_file = event.target.files?.[0];
+
+        if (new_file && !new_file.type.startsWith('image/')) {
+            event.target.value = "";
+        } else if (new_file && new_file.size > MAX_FILE_SIZE) {
+            event.target.value = "";
+            setMessage_image({ paint: false, value: 'Tu imagen no debe superar los 4MB.' });
+        } else {
+            setMessage_image({ paint: true, value: 'Imagen adecuada' });
+            setFile(new_file);
         }
     }
 
@@ -181,16 +191,19 @@ export default function ComponentContainerForm(props: Props) {
                             />
                         </div>
                     </div>
-                    <label htmlFor="file-upload" title="Seleccionar para subir un archivo" className="grid gap-y-0.5 place-items-center mt-0.5 p-1.5 cursor-pointer border-secondary border-opacity-20 bg-primary w-full rounded-md border-[0.1px] cursor-pointer hover:border-opacity-60 transition duration-500">
-                        <ComponentIcon name={`upload-file${(note_selected?.file?.id) ? '-selected' : (file === undefined) ? '' : '-selected'}`} size={27} description_class="icon-home text-secondary cursor-pointer" />
-                        <span className='line-clamp-1 text-secondary text-md font-normal tracking-wide'>
-                            {
-                                (file) ? `${file.name} seleccionado` :
-                                    (note_selected?.file?.id) ? `${note_selected.file.name} cargado` : "Subir imagen..."
-                            }
-                        </span>
-                        <input id="file-upload" accept="image/*" name="file-upload" type="file" onChange={(e) => capture_file(e)} className="sr-only" />
-                    </label>
+                    <div className="flex flex-col gap-y-0.5">
+                        <ComponentLabel title={message_image.value} html_for="" color={message_image.paint ? 'text-secondary' : 'text-error'} />
+                        <label htmlFor="file-upload" title="Seleccionar para subir un archivo" className="grid gap-y-0.5 place-items-center mt-0.5 p-1.5 cursor-pointer border-secondary border-opacity-20 bg-primary w-full rounded-md border-[0.1px] cursor-pointer hover:border-opacity-60 transition duration-500">
+                            <ComponentIcon name={`upload-file${(note_selected?.file?.id) ? '-selected' : (file === undefined) ? '' : '-selected'}`} size={27} description_class="icon-home text-secondary cursor-pointer" />
+                            <span className='line-clamp-1 text-secondary text-md font-normal tracking-wide'>
+                                {
+                                    (file) ? `${file.name} seleccionado` :
+                                        (note_selected?.file?.id) ? `${note_selected.file.name} cargado` : "Subir imagen..."
+                                }
+                            </span>
+                            <input id="file-upload" accept="image/*" name="file-upload" type="file" onChange={(e) => capture_file(e)} className="sr-only" />
+                        </label>
+                    </div>
                 </div>
                 <div className="flex gap-x-10">
                     <button type="submit" title="Guardar" name="Guardar" className="relative flex w-full justify-center rounded-md text-secondary border-[0.1px] border-secondary border-opacity-80 px-3 py-1 text-md font-normal hover:font-semibold bg-primary tracking-wider hover:bg-sixth outline-none">

@@ -55,7 +55,7 @@ export default function ComponentNavTop(props: Props_context) {
     useEffect(() => {
         setTimeout(() => {
             setIsLoading(false);
-        }, 2000);
+        }, 2200);
     }, []);
 
     return (
@@ -93,8 +93,9 @@ export default function ComponentNavTop(props: Props_context) {
                                         {button_sesion}
                                     </div>
                                     :
-                                    <Link href="/sign-in" title="Iniciar sesion" className="group border border-tertiary hover:border-secondary border-[0.1px] px-3 rounded-md flex py-[3px] outline-none transition duration-500">
-                                        <span className="group-hover:text-secondary text-sm tracking-wider text-tertiary">
+                                    <Link href="/sign-in" title="Iniciar sesion" className="group border border-tertiary hover:border-secondary border-[0.1px] px-3 rounded-md flex py-[3px] flex items-center gap-x-1 outline-none transition duration-500">
+                                        <ComponentIcon name="user" size={16} description_class="group-hover:text-secondary text-tertiary cursor-pointer" />
+                                        <span className="group-hover:text-secondary text-sm tracking-wider text-tertiary duration-500">
                                             Iniciar sesion
                                         </span>
                                     </Link>

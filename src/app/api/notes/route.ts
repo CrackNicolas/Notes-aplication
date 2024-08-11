@@ -43,6 +43,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     try {
         const file = data.get('file') as File;
 
+        if (!file.type.startsWith('image/')) {
+            return NextResponse.json<Props_response>({ status: 400, info: { message: "Solo se permiten archivos de imagen" } });
+        }
+
         const category_prev = data.get('category');
         const category: Props_category = category_prev && typeof category_prev === 'string' ? JSON.parse(category_prev) : null;
 
@@ -110,6 +114,10 @@ export async function PUT(req: NextRequest): Promise<NextResponse> {
         exists_note.user_id = user_id;
 
         const file = data.get('file') as File;
+
+        if (!file.type.startsWith('image/')) {
+            return NextResponse.json<Props_response>({ status: 400, info: { message: "Solo se permiten archivos de imagen" } });
+        }
 
         if (file) {
             const { id, url } = await File_edit(exists_note.file.id, file);

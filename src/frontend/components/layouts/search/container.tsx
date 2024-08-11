@@ -58,6 +58,13 @@ export default function ComponentSearch(props: Props) {
         }
     };
 
+    const restart = () => {
+        setSelect_category({ title: 'Categoria...' });
+        setSelect_priority('Prioridad...');
+        setSelect_featured('Nota destacada...');
+        setSelect_date('Fecha...');
+    }
+
     const select_note = (value: boolean) => {
         setState_select(value);
         setNotes_selected([]);
@@ -192,55 +199,67 @@ export default function ComponentSearch(props: Props) {
                     setNotes_selected={setNotes_selected}
                     description_class={`transition-width ${view_filter ? 'w-full sz:w-full md:w-[calc(100%-200px)]' : 'w-full'}`}
                 />
-                <div ref={ref_nav_toggle} className={`absolute toggle-search ${view_filter ? 'translate-x-0' : 'translate-x-[120%]'} right-0 bg-primary z-50 top-[-30px] w-[200px] border-secondary border-l-[0.1px] p-2 h-[100vh]`}>
-                    <div className="flex justify-between items-center py-1 border-b-[1px] border-opacity-50 border-secondary w-full">
-                        <span className="text-secondary tracking-wide">
-                            Filtrar notas
+                <div ref={ref_nav_toggle} className={`flex flex-col justify-between absolute toggle-search ${view_filter ? 'translate-x-0' : 'translate-x-[120%]'} right-0 bg-primary z-50 top-[-30px] w-[200px] border-fifth border-l-[0.1px] p-2 h-[100vh]`}>
+                    <div className="flex flex-col">
+                        <div className="flex justify-between items-center py-1 border-b-[3px] rounded-md border-opacity-50 border-secondary w-full">
+                            <span className="text-fifth tracking-wide">
+                                Filtrar notas
+                            </span>
+                            <button ref={ref_button_close_toggle} type="button" title="Cerrar menu" onClick={() => setView_filter(!view_filter)}>
+                                <ComponentIcon name="close" description_class="cursor-pointer hover:text-secondary text-fifth" size={27} view_box="0 0 16 16" />
+                            </button>
+                        </div>
+                        <div className="relative flex flex-col gap-y-3 py-3 w-full">
+                            {
+                                state_select && <ComponentInputSearch setValue={setValue} design={state_select} />
+                            }
+                            <ComponentSelectStatic
+                                title="Fecha"
+                                select={select_date}
+                                setSelect={setSelect_date}
+                                items={[
+                                    { value: "Hoy", icon: { name: 'date', class: 'text-fifth' } },
+                                    { value: "Ayer", icon: { name: 'date', class: 'text-fifth' } },
+                                    { value: "Hace 7 dias", icon: { name: 'date', class: 'text-fifth' } },
+                                    { value: "Hace 1 mes", icon: { name: 'date', class: 'text-fifth' } }
+                                ]}
+                                style={{ text: 'text-fifth', border: 'border-fifth', bg: 'bg-secondary' }}
+                            />
+                            <ComponentSelectStatic
+                                title="Prioridad"
+                                select={select_priority}
+                                setSelect={setSelect_priority}
+                                items={[
+                                    { value: 'Alta', icon: { name: 'arrow', class: 'text-fifth rotate-[-180deg]' } },
+                                    { value: 'Media', icon: { name: 'arrow', class: 'text-fifth rotate-[-180deg]' } },
+                                    { value: 'Baja', icon: { name: 'arrow', class: 'text-fifth' } }
+                                ]}
+                                style={{ text: 'text-fifth', border: 'border-fifth', bg: 'bg-secondary' }}
+                            />
+                            <ComponentSelectStatic
+                                title="Nota destacada"
+                                select={select_featured}
+                                setSelect={setSelect_featured}
+                                items={[
+                                    { value: 'SI', icon: { name: 'star-fill', class: 'text-fifth' } },
+                                    { value: 'NO', icon: { name: 'star-half', class: 'text-fifth' } }
+                                ]}
+                                style={{ text: 'text-fifth', border: 'border-fifth', bg: 'bg-secondary' }}
+                            />
+                            <ComponentSelectDynamic
+                                select_category={select_category}
+                                setSelect_category={setSelect_category}
+                                register={register}
+                                style={{ text: 'text-fifth', border: 'border-fifth', bg: 'bg-secondary' }}
+                            />
+                        </div>
+                    </div>
+                    <button onClick={() => restart()} title="Reiniciar filtro" className="mx-auto group border border-tertiary hover:border-secondary border-[0.1px] px-3 rounded-md flex items-center py-[3px] gap-x-1 outline-none transition duration-500">
+                        <ComponentIcon name="load" size={16} description_class="group-hover:text-secondary text-tertiary cursor-pointer" />
+                        <span className="group-hover:text-secondary text-sm tracking-wider text-tertiary duration-500">
+                            Reiniciar filtro
                         </span>
-                        <button ref={ref_button_close_toggle} type="button" title="Cerrar menu" onClick={() => setView_filter(!view_filter)}>
-                            <ComponentIcon name="close" description_class="cursor-pointer hover:text-secondary text-fifth" size={27} view_box="0 0 16 16" />
-                        </button>
-                    </div>
-                    <div className="relative flex flex-col gap-y-3 py-3 w-full">
-                        {
-                            state_select && <ComponentInputSearch setValue={setValue} design={state_select} />
-                        }
-                        <ComponentSelectDynamic
-                            select_category={select_category}
-                            setSelect_category={setSelect_category}
-                            register={register}
-                        />
-                        <ComponentSelectStatic
-                            title="Prioridad"
-                            select={select_priority}
-                            setSelect={setSelect_priority}
-                            items={[
-                                { value: 'Alta', icon: { name: 'arrow', class: 'text-red-500 rotate-[-180deg]' } },
-                                { value: 'Media', icon: { name: 'arrow', class: 'text-orange-500 rotate-[-180deg]' } },
-                                { value: 'Baja', icon: { name: 'arrow', class: 'text-green-500' } }
-                            ]}
-                        />
-                        <ComponentSelectStatic
-                            title="Nota destacada"
-                            select={select_featured}
-                            setSelect={setSelect_featured}
-                            items={[
-                                { value: 'SI', icon: { name: 'star-fill', class: 'text-secondary' } },
-                                { value: 'NO', icon: { name: 'star-half', class: 'text-secondary' } }
-                            ]}
-                        />
-                        <ComponentSelectStatic
-                            title="Fecha"
-                            select={select_date}
-                            setSelect={setSelect_date}
-                            items={[
-                                { value: "Hoy", icon: { name: 'date', class: 'text-secondary' } },
-                                { value: "Ayer", icon: { name: 'date', class: 'text-secondary' } },
-                                { value: "Hace 7 dias", icon: { name: 'date', class: 'text-secondary' } },
-                                { value: "Hace 1 mes", icon: { name: 'date', class: 'text-secondary' } }
-                            ]}
-                        />
-                    </div>
+                    </button>
                 </div>
             </article>
             {

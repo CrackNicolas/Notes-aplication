@@ -14,8 +14,8 @@ type Props = {
     loading: Props_loading_notes | undefined,
     update_note: (note: Props_note) => void,
     notes_selected: Props_delete_note[],
-    setNotes_selected: Dispatch<SetStateAction<Props_delete_note[]>>
-    description_class?: string,
+    setNotes_selected: Dispatch<SetStateAction<Props_delete_note[]>>,
+    description_class?: string
 }
 
 export default function ComponentList(props: Props) {
