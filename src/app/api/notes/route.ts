@@ -8,7 +8,7 @@ import { Props_category } from "@/context/types/category";
 import { Props_response } from "@/context/types/response";
 
 import { Conect_database } from "@/backend/utils/db";
-import { File_transformer, File_edit } from '@/backend/utils/cloudinary';
+import { File_transformer, File_edit, File_delete } from '@/backend/utils/cloudinary';
 
 import Notes from '@/backend/schemas/note'
 
@@ -124,8 +124,10 @@ export async function PUT(req: NextRequest): Promise<NextResponse> {
             if (!url) {
                 return NextResponse.json<Props_response>({ status: 404, info: { message: "Archivo no encontrado" } });
             }
-
             exists_note.file = { id, name: file.name, url };
+        } else {
+            await File_delete([exists_note.file.id]);
+            exists_note.file = undefined;
         }
 
         await exists_note.save();

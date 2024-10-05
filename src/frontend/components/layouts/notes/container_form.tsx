@@ -31,6 +31,7 @@ export default function ComponentContainerForm(props: Props) {
 
     const [open, setOpen] = useState<boolean>(false);
     const [file, setFile] = useState<File | undefined>(undefined);
+    const [view_file, setView_file] = useState<string | undefined>(undefined);
     const [loading, setLoading] = useState<boolean>(false);
     const [response, setResponse] = useState<Props_response>();
     const [message_image, setMessage_image] = useState<{ paint: boolean, value: string }>({ paint: true, value: 'Selecciona una imagen (máximo 4MB)' });
@@ -62,7 +63,15 @@ export default function ComponentContainerForm(props: Props) {
         } else {
             setMessage_image({ paint: true, value: 'Imagen adecuada' });
             setFile(new_file);
+            setView_file(URL.createObjectURL(new_file as File));
         }
+    }
+
+    const remove_file = () => {
+        setFile(undefined);
+        (document.getElementById("file-upload") as HTMLInputElement).value = "";
+        setView_file(undefined);
+        setMessage_image({ paint: true, value: 'Selecciona una imagen (máximo 4MB)' });
     }
 
     const onSubmit: SubmitHandler<FieldValues | Props_note> = async (data) => {
@@ -103,6 +112,11 @@ export default function ComponentContainerForm(props: Props) {
         setValue('featured', note_selected?.featured ? 'SI' : 'NO');
         setValue('category', note_selected?.category);
 
+        if (note_selected?.file?.id) {
+            setView_file(note_selected?.file?.url)
+            setMessage_image({ paint: true, value: 'Imagen adecuada' });
+        }
+
         if (note_selected?.category) {
             setCategory_selected(note_selected.category);
         }
@@ -128,9 +142,9 @@ export default function ComponentContainerForm(props: Props) {
                         <ComponentInput
                             type="text"
                             name="title"
-                            placeholder="Escriba el titulo..."
-                            register={register}
                             error={errors.title?.type}
+                            register={register}
+                            placeholder="Escriba el titulo..."
                             description_class="border-opacity-50 dark:bg-dark-primary bg-primary w-full rounded-md border-[0.1px] py-1 px-2 outline-none tracking-wide placeholder:opacity-70 sm:text-md"
                         />
                     </div>
@@ -139,9 +153,9 @@ export default function ComponentContainerForm(props: Props) {
                         <ComponentInput
                             rows={3}
                             name="description"
-                            placeholder="Escriba la descripcion..."
-                            register={register}
                             error={errors.description?.type}
+                            register={register}
+                            placeholder="Escriba la descripcion..."
                             description_class="border-opacity-50 dark:bg-dark-primary bg-primary w-full rounded-md border-[0.1px] min-h-[65px] scroll-text py-1 px-2 outline-none tracking-wide placeholder:opacity-70 sm:text-md"
                         />
                     </div>
@@ -151,26 +165,26 @@ export default function ComponentContainerForm(props: Props) {
                             <ComponentItemPriority
                                 id="option_1"
                                 value='Alta'
-                                class_icon="text-red-500 rotate-[-180deg]"
                                 paint={watch('priority') === "Alta"}
                                 error={errors.priority?.type}
                                 register={register}
+                                class_icon="text-red-500 rotate-[-180deg]"
                             />
                             <ComponentItemPriority
                                 id="option_2"
                                 value='Media'
-                                class_icon="text-yellow-500 rotate-[-180deg]"
                                 paint={watch('priority') === "Media"}
                                 error={errors.priority?.type}
                                 register={register}
+                                class_icon="text-yellow-500 rotate-[-180deg]"
                             />
                             <ComponentItemPriority
                                 id="option_3"
                                 value='Baja'
-                                class_icon="text-green-500"
                                 paint={watch('priority') === "Baja"}
                                 error={errors.priority?.type}
                                 register={register}
+                                class_icon="text-green-500"
                             />
                         </div>
                     </div>
@@ -192,13 +206,26 @@ export default function ComponentContainerForm(props: Props) {
                         </div>
                     </div>
                     <div className="flex flex-col gap-y-0.5">
-                        <ComponentLabel title={message_image.value} html_for="" color={message_image.paint ? 'dark:text-dark-secondary text-secondary' : 'dark:text-dark-error text-error'} />
-                        <label htmlFor="file-upload" title="Seleccionar para subir una imagen" className="grid gap-y-0.5 place-items-center mt-0.5 p-1.5 cursor-pointer dark:border-dark-secondary border-secondary border-opacity-20 dark:bg-dark-primary bg-primary w-full rounded-md border-[0.1px] cursor-pointer hover:border-opacity-60 transition duration-500">
-                            <ComponentIcon name={`upload-file${(note_selected?.file?.id) ? '-selected' : (file === undefined) ? '' : '-selected'}`} size={27} description_class="icon-home dark:text-dark-secondary text-secondary cursor-pointer" />
+                        <div className="flex justify-between items-center">
+                            <ComponentLabel title={message_image.value} html_for="" color={message_image.paint ? 'dark:text-dark-secondary text-secondary' : 'dark:text-dark-error text-error'} />
+                            {
+                                (view_file) && (
+                                    <button onClick={() => remove_file()} type="button" className="dark:text-dark-secondary text-secondary bg-primary dark:bg-dark-primary hover:bg-secondary dark:hover:bg-dark-secondary hover:text-primary dark:hover:text-dark-primary text-[12.3px] border border-[0.1px] border-secondary dark:border-dark-secondary px-2 rounded-md font-semibold tracking-wider">
+                                        Quitar imagen
+                                    </button>
+                                )
+                            }
+                        </div>
+                        <label htmlFor="file-upload" title="Seleccionar para subir una imagen" className="grid gap-y-0.5 place-items-center mt-0.5 p-1 cursor-pointer dark:border-dark-secondary border-secondary border-opacity-20 dark:bg-dark-primary bg-primary w-full rounded-md border-[0.1px] cursor-pointer hover:border-opacity-60 transition duration-500">
+                            {
+                                (!file || !note_selected?.file?.id) && (!view_file) && (
+                                    <ComponentIcon name="upload-file" size={27} description_class="icon-home dark:text-dark-secondary text-secondary cursor-pointer" />
+                                )
+                            }
+                            <img src={view_file} className="max-w-[70px] max-h-[70px] rounded-md" />
                             <span className='line-clamp-1 dark:text-dark-secondary text-secondary text-md font-normal tracking-wide'>
                                 {
-                                    (file) ? `${file.name} seleccionado` :
-                                        (note_selected?.file?.id) ? `${note_selected.file.name} cargado` : "Subir imagen..."
+                                    (!file || !note_selected?.file?.id) && (!view_file) && "Subir imagen..."
                                 }
                             </span>
                             <input id="file-upload" accept="image/*" name="file-upload" type="file" onChange={(e) => capture_file(e)} className="sr-only" />
