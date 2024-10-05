@@ -125,9 +125,13 @@ export default function ComponentContainerForm(props: Props) {
     return (
         <div className={`flex flex-col mt-[-23px] gap-y-4 w-full sm:w-[450px] mx-auto`}>
             <div className="relative flex justify-center items-center">
-                <span className="absolute left-0 dark:bg-dark-primary bg-primary rounded-full p-1 dark:hover:bg-dark-room hover:bg-room transition duration-5" title="Volver atras" onClick={() => setCategory_selected(undefined)}>
-                    <ComponentIcon name="return" size={22} description_class="rotate-[-180deg] dark:text-dark-secondary text-secondary cursor-pointer" />
-                </span>
+                {
+                    (!note_selected) && (
+                        <span onClick={() => setCategory_selected(undefined)} className="absolute left-0 dark:bg-dark-primary bg-primary rounded-full p-1 dark:hover:bg-dark-room hover:bg-room transition duration-5" title="Volver atras">
+                            <ComponentIcon name="return" size={22} description_class="rotate-[-180deg] dark:text-dark-secondary text-secondary cursor-pointer" />
+                        </span>
+                    )
+                }
                 <span title="Titulo formulario" className="text-2xl dark:text-dark-secondary text-secondary font-semibold text-center tracking-wider">
                     {(!note_selected) ? 'Crear nota' : 'Actualizar nota'}
                 </span>

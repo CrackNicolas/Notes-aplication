@@ -23,18 +23,25 @@ export default function ComponentInput(props: Props) {
         event.target.value = event.target.value.replace(/[\r\n]+/g, "").replace(/\s\s+/g, " ");
     }
 
+    const props_input = {
+        ...register(name, validation(name, required)),
+        id,
+        type,
+        name,
+        value,
+        className: ` ${(!error) ? 'dark:border-dark-secondary border-secondary dark:text-dark-secondary text-secondary dark:placeholder:text-dark-secondary placeholder:text-secondary' : 'dark:border-dark-error border-error dark:text-dark-error text-error dark:placeholder:text-dark-error placeholder:text-error'} ${description_class}`,
+        placeholder
+    };
+
     return (
         (!rows) ?
-            <input
-                {...register(name, validation(name, required))}
-                id={id}
-                type={type}
-                name={name}
-                value={value}
-                onChange={(event) => additional_validation(event)}
-                className={` ${(!error) ? 'dark:border-dark-secondary border-secondary dark:text-dark-secondary text-secondary dark:placeholder:text-dark-secondary placeholder:text-secondary' : 'dark:border-dark-error border-error dark:text-dark-error text-error dark:placeholder:text-dark-error placeholder:text-error'} ${description_class}`}
-                placeholder={placeholder}
-            />
+            (type == "radio") ?
+                <input {...props_input} />
+                :
+                <input
+                    {...props_input}
+                    onChange={(type != "radio") ? (event) => additional_validation(event) : undefined}
+                />
             :
             <textarea
                 {...register(name, validation(name))}

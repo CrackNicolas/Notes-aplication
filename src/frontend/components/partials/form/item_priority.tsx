@@ -5,11 +5,11 @@ import ComponentIcon from "@/frontend/components/partials/icon";
 import ComponentInput from "@/frontend/components/partials/form/input";
 
 type Props = {
-    id?: string,
+    id: string,
     class_icon: string,
     value?: string,
-    paint?: boolean
-    error?: FieldError | Merge<FieldError, FieldErrorsImpl<any>> | LiteralUnion<"required", string> | undefined
+    paint?: boolean,
+    error?: FieldError | Merge<FieldError, FieldErrorsImpl<any>> | LiteralUnion<"required", string> | undefined,
     register: UseFormRegister<FieldValues>
 }
 
