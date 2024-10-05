@@ -3,16 +3,16 @@ import { FieldError, FieldErrorsImpl, FieldValues, LiteralUnion, Merge, UseFormR
 import { validation } from "@/frontend/validations/form";
 
 type Props = {
+    id?: string,
     type?: string,
     name: string,
-    id?: string,
-    placeholder?: string,
-    description_class: string,
+    rows?: number,
     value?: string,
-    rows?: number
     error?: FieldError | Merge<FieldError, FieldErrorsImpl<any>> | LiteralUnion<"required" | "pattern" | "maxLength" | "minLength", string> | undefined
     register: UseFormRegister<FieldValues>,
-    required?: boolean
+    required?: boolean,
+    placeholder?: string,
+    description_class: string
 }
 
 export default function ComponentInput(props: Props) {
@@ -27,7 +27,7 @@ export default function ComponentInput(props: Props) {
                 name={name}
                 placeholder={placeholder}
                 value={value}
-                className={` ${(!error) ? 'border-secondary text-secondary placeholder:text-secondary' : 'border-error text-error placeholder:text-error'} ${description_class}`}
+                className={` ${(!error) ? 'dark:border-dark-secondary border-secondary dark:text-dark-secondary text-secondary dark:placeholder:text-dark-secondary placeholder:text-secondary' : 'dark:border-dark-error border-error dark:text-dark-error text-error dark:placeholder:text-dark-error placeholder:text-error'} ${description_class}`}
             />
             :
             <textarea
@@ -36,7 +36,7 @@ export default function ComponentInput(props: Props) {
                 placeholder={placeholder}
                 name={name}
                 rows={rows}
-                className={` ${(!error) ? 'border-secondary text-secondary placeholder:text-secondary' : 'border-error text-error placeholder:text-error'} ${description_class}`}
+                className={` ${(!error) ? 'dark:border-dark-secondary border-secondary dark:text-dark-secondary text-secondary dark:placeholder:text-dark-secondary placeholder:text-secondary' : 'dark:border-dark-error border-error dark:text-dark-error text-error dark:placeholder:text-dark-error placeholder:text-error'} ${description_class}`}
             />
     )
 }

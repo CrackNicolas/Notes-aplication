@@ -22,7 +22,7 @@ export const items_main: Props_items_dashboard[] = [
     {
         url: '/notes/search',
         icon: 'list',
-        title: 'Lista de notas',
+        title: 'Mis notas creadas',
         description: 'Encuentra rápidamente tus notas con esta funcion y mejora tu productividad en un instante.'
     }
 ]

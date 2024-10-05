@@ -15,24 +15,37 @@ import { Props_session, Props_user } from "@/context/types/session";
 import { ComponentUserButton } from "@/frontend/components/services/clerk";
 
 import Template from '@/frontend/template/init'
-import { Props_layouts } from "@/frontend/types/props";
+
+import { Props_layouts, Props_theme, Theme_name } from "@/frontend/types/props";
 import { Time_elapsed } from "@/frontend/logic/format_time";
+import { Change_topic } from "@/frontend/logic/theme";
 
 export const Context = createContext<Props_context>({
     section_current: '',
     session: {},
     button_sesion: <ComponentUserButton />,
     opacity: false,
+    theme: Theme_name.ligth,
+    setTheme: () => { },
     setOpacity: () => { }
 });
 
 export default function Provider({ children }: Props_layouts) {
     const [session, setSession] = useState<Props_session>({});
 
+    const [theme, setTheme] = useState<Props_theme>(Theme_name.ligth);
+
     const data_user = useUser();
 
     const router = useRouter();
     const path = usePathname();
+
+    useEffect(() => {
+        const stored_theme = localStorage.getItem('theme') as Props_theme;
+        if (stored_theme) {
+            Change_topic({ theme: stored_theme, setTheme });
+        }
+    }, []);
 
     const load_user = async () => {
         if (data_user.isSignedIn && data_user.user.fullName) {
@@ -67,10 +80,6 @@ export default function Provider({ children }: Props_layouts) {
         }
     }
 
-    useEffect(() => {
-        load_user();
-    }, [data_user.user])
-
     const handleOffline = () => {
         router.push('/without_internet');
     };
@@ -80,6 +89,10 @@ export default function Provider({ children }: Props_layouts) {
             router.push('/');
         }
     };
+
+    useEffect(() => {
+        load_user();
+    }, [data_user.user])
 
     useEffect(() => {
         window.addEventListener('offline', handleOffline);
@@ -96,8 +109,8 @@ export default function Provider({ children }: Props_layouts) {
     }, [path])
 
     return (
-        <Context.Provider value={{ section_current: path.substring(1), session, button_sesion: <ComponentUserButton />, opacity: false, setOpacity: () => { } }}>
-            <ProgressBar color="#00ffff" options={{ showSpinner: false }} />
+        <Context.Provider value={{ section_current: path.substring(1), session, button_sesion: <ComponentUserButton />, opacity: false, theme, setTheme, setOpacity: () => { }, path }}>
+            <ProgressBar color={theme} options={{ showSpinner: false }} />
             <Template>
                 {children}
             </Template>

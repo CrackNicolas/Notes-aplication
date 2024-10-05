@@ -39,8 +39,8 @@ export default function ComponentList(props: Props) {
 
     return (
         <article className="relative">
-            <span className="absolute left-0 top-[-40px] bg-primary rounded-full p-1.5 hover:bg-room transition duration-500" title="Volver atras" onClick={() => redirect('/dashboard/config') }>
-                <ComponentIcon name="return" size={22} description_class="rotate-[-180deg] text-secondary cursor-pointer" />
+            <span className="absolute left-0 top-[-40px] dark:bg-dark-primary bg-primary rounded-full p-1.5 dark:hover:bg-dark-room hover:bg-room transition duration-500" title="Volver atras" onClick={() => redirect('/dashboard/config') }>
+                <ComponentIcon name="return" size={22} description_class="rotate-[-180deg] dark:text-dark-secondary text-secondary cursor-pointer" />
             </span>
             <ComponentItems categorys={categorys} select={select} />
             {

@@ -144,29 +144,29 @@ export default function ComponentSearch(props: Props) {
 
     return (
         <section className="flex flex-col gap-5 mt-[30px] pt-7 h-[calc(100vh-30px)]">
-            <article className={`flex gap-y-6 gap-x-3 justify-between items-center bg-primary transition-width ${view_filter ? 'sz:w-full md:w-[calc(100%-200px)]' : 'w-full'}`}>
+            <article className={`flex gap-y-6 gap-x-3 justify-between items-center dark:bg-dark-primary bg-primary transition-width ${view_filter ? 'sz:w-full md:w-[calc(100%-200px)]' : 'w-full'}`}>
                 {
                     state_select ?
                         <div className="flex gap-x-3">
-                            <span title="Marcar todo" onClick={() => select_all()} className={`my-auto border-[0.1px] cursor-pointer ${note_all ? ' border-error bg-primary rounded-full px-[0.5px] ' : 'border-secondary rounded-sm'}`}>
+                            <span title="Marcar todo" onClick={() => select_all()} className={`my-auto border-[0.1px] cursor-pointer ${note_all ? ' dark:border-dark-error border-error dark:bg-dark-primary bg-primary rounded-full px-[0.5px] ' : 'dark:border-dark-secondary border-secondary rounded-sm'}`}>
                                 <ComponentIcon
                                     name='check'
                                     size={12}
-                                    description_class={`cursor-pointer ${note_all ? 'text-error m-auto mt-[1px] icon-transition icon-visible' : 'text-secondary transition-width icon-transition icon-hidden'} `}
+                                    description_class={`cursor-pointer ${note_all ? 'dark:text-dark-error text-error m-auto mt-[1px] icon-transition icon-visible' : 'dark:text-dark-secondary text-secondary transition-width icon-transition icon-hidden'} `}
                                 />
                             </span>
                             <div className="flex gap-x-1.5">
                                 {
                                     (notes_selected.length !== 0) && (
-                                        <button type="button" title="Eliminar" onClick={() => setOpen_confirmation_delete(true)} className="group cursor-pointer hover:bg-error border-[0.1px] border-error rounded-md px-2 py-[0.6px] " >
-                                            <span className="group-hover:text-primary text-error text-sm group-hover:font-semibold font-normal tracking-wider transition duration-500">
+                                        <button type="button" title="Eliminar" onClick={() => setOpen_confirmation_delete(true)} className="group cursor-pointer dark:hover:bg-dark-error hover:bg-error border-[0.1px] dark:border-dark-error border-error rounded-md px-2.5 py-[0.6px] " >
+                                            <span className="dark:group-hover:text-dark-primary group-hover:text-primary dark:text-dark-error text-error text-sm group-hover:font-semibold font-normal tracking-wider transition duration-500">
                                                 Eliminar
                                             </span>
                                         </button>
                                     )
                                 }
-                                <button type="button" title="Cancelar eliminacion" onClick={() => setState_select(false)} className="group cursor-pointer hover:bg-error border-[0.1px] border-error rounded-md px-2 py-[0.6px] " >
-                                    <span className="group-hover:text-primary text-error text-sm group-hover:font-semibold font-normal tracking-wider transition duration-500">
+                                <button type="button" title="Cancelar eliminacion" onClick={() => setState_select(false)} className="group cursor-pointer dark:hover:bg-dark-error hover:bg-error border-[0.1px] dark:border-dark-error border-error rounded-md px-2.5 py-[0.6px] " >
+                                    <span className="dark:group-hover:text-dark-primary group-hover:text-primary dark:text-dark-error text-error text-sm group-hover:font-semibold font-normal tracking-wider transition duration-500">
                                         Cancelar
                                     </span>
                                 </button>
@@ -180,12 +180,12 @@ export default function ComponentSearch(props: Props) {
                     {
                         !state_select && (
                             <button type="button" title="Eliminar notas" onClick={() => select_note(true)} className={`${list_notes.length === 0 && 'hidden'}`} >
-                                <ComponentIcon name="delete" description_class="cursor-pointer hover:text-error text-fifth" size={20} view_box="0 0 16 16" />
+                                <ComponentIcon name="delete" description_class="cursor-pointer dark:hover:text-dark-error hover:text-error dark:text-dark-fifth text-fifth" size={20} view_box="0 0 16 16" />
                             </button>
                         )
                     }
                     <button ref={ref_button_view_toggle} onClick={() => setView_filter(!view_filter)} type="button" title="Filtros">
-                        <ComponentIcon name="filter" description_class="cursor-pointer hover:text-secondary text-fifth" size={24} view_box="0 0 16 16" />
+                        <ComponentIcon name="filter" description_class="cursor-pointer dark:hover:text-dark-secondary hover:text-secondary dark:text-dark-fifth text-fifth" size={24} view_box="0 0 16 16" />
                     </button>
                 </div>
             </article>
@@ -199,14 +199,14 @@ export default function ComponentSearch(props: Props) {
                     setNotes_selected={setNotes_selected}
                     description_class={`transition-width ${view_filter ? 'w-full sz:w-full md:w-[calc(100%-200px)]' : 'w-full'}`}
                 />
-                <div ref={ref_nav_toggle} className={`flex flex-col justify-between absolute toggle-search ${view_filter ? 'translate-x-0' : 'translate-x-[120%]'} right-0 bg-primary z-50 top-[-30px] w-[200px] border-fifth border-l-[0.1px] p-2 h-[100vh]`}>
+                <div ref={ref_nav_toggle} className={`flex flex-col justify-between absolute toggle-search ${view_filter ? 'translate-x-0' : 'translate-x-[120%]'} right-0 dark:bg-dark-primary bg-primary z-50 top-[-30px] w-[200px] border-fifth border-opacity-50 border-l-[0.1px] p-2 h-[100vh]`}>
                     <div className="flex flex-col">
-                        <div className="flex justify-between items-center py-1 border-b-[3px] rounded-md border-opacity-50 border-secondary w-full">
-                            <span className="text-fifth tracking-wide">
+                        <div className="flex justify-between items-center py-1 border-b-[3px] rounded-md border-opacity-50 dark:border-dark-secondary border-secondary w-full">
+                            <span className="dark:text-dark-tertiary text-tertiary opacity-70 tracking-wider font-semibold">
                                 Filtrar notas
                             </span>
                             <button ref={ref_button_close_toggle} type="button" title="Cerrar menu" onClick={() => setView_filter(!view_filter)}>
-                                <ComponentIcon name="close" description_class="cursor-pointer hover:text-secondary text-fifth" size={27} view_box="0 0 16 16" />
+                                <ComponentIcon name="close" description_class="cursor-pointer dark:hover:text-dark-secondary hover:text-secondary hover:opacity-100 dark:text-dark-tertiary text-tertiary opacity-70" size={27} view_box="0 0 16 16" />
                             </button>
                         </div>
                         <div className="relative flex flex-col gap-y-3 py-3 w-full">
@@ -218,45 +218,45 @@ export default function ComponentSearch(props: Props) {
                                 select={select_date}
                                 setSelect={setSelect_date}
                                 items={[
-                                    { value: "Hoy", icon: { name: 'date', class: 'text-fifth' } },
-                                    { value: "Ayer", icon: { name: 'date', class: 'text-fifth' } },
-                                    { value: "Hace 7 dias", icon: { name: 'date', class: 'text-fifth' } },
-                                    { value: "Hace 1 mes", icon: { name: 'date', class: 'text-fifth' } }
+                                    { value: "Hoy", icon: { name: 'date', class: 'dark:text-dark-fifth text-fifth' } },
+                                    { value: "Ayer", icon: { name: 'date', class: 'dark:text-dark-fifth text-fifth' } },
+                                    { value: "Hace 7 dias", icon: { name: 'date', class: 'dark:text-dark-fifth text-fifth' } },
+                                    { value: "Hace 1 mes", icon: { name: 'date', class: 'dark:text-dark-fifth text-fifth' } }
                                 ]}
-                                style={{ text: 'text-fifth', border: 'border-fifth', bg: 'bg-secondary' }}
+                                style={{ text: 'dark:text-dark-fifth text-fifth', border: 'dark:border-dark-fifth border-fifth', bg: 'dark:bg-dark-secondary bg-secondary' }}
                             />
                             <ComponentSelectStatic
                                 title="Prioridad"
                                 select={select_priority}
                                 setSelect={setSelect_priority}
                                 items={[
-                                    { value: 'Alta', icon: { name: 'arrow', class: 'text-fifth rotate-[-180deg]' } },
-                                    { value: 'Media', icon: { name: 'arrow', class: 'text-fifth rotate-[-180deg]' } },
-                                    { value: 'Baja', icon: { name: 'arrow', class: 'text-fifth' } }
+                                    { value: 'Alta', icon: { name: 'arrow', class: 'dark:text-dark-fifth text-fifth rotate-[-180deg]' } },
+                                    { value: 'Media', icon: { name: 'arrow', class: 'dark:text-dark-fifth text-fifth rotate-[-180deg]' } },
+                                    { value: 'Baja', icon: { name: 'arrow', class: 'dark:text-dark-fifth text-fifth' } }
                                 ]}
-                                style={{ text: 'text-fifth', border: 'border-fifth', bg: 'bg-secondary' }}
+                                style={{ text: 'dark:text-dark-fifth text-fifth', border: 'dark:border-dark-fifth border-fifth', bg: 'dark:bg-dark-secondary bg-secondary' }}
                             />
                             <ComponentSelectStatic
                                 title="Nota destacada"
                                 select={select_featured}
                                 setSelect={setSelect_featured}
                                 items={[
-                                    { value: 'SI', icon: { name: 'star-fill', class: 'text-fifth' } },
-                                    { value: 'NO', icon: { name: 'star-half', class: 'text-fifth' } }
+                                    { value: 'SI', icon: { name: 'star-fill', class: 'dark:text-dark-fifth text-fifth' } },
+                                    { value: 'NO', icon: { name: 'star-half', class: 'dark:text-dark-fifth text-fifth' } }
                                 ]}
-                                style={{ text: 'text-fifth', border: 'border-fifth', bg: 'bg-secondary' }}
+                                style={{ text: 'dark:text-dark-fifth text-fifth', border: 'dark:border-dark-fifth border-fifth', bg: 'dark:bg-dark-secondary bg-secondary' }}
                             />
                             <ComponentSelectDynamic
                                 select_category={select_category}
                                 setSelect_category={setSelect_category}
                                 register={register}
-                                style={{ text: 'text-fifth', border: 'border-fifth', bg: 'bg-secondary' }}
+                                style={{ text: 'dark:text-dark-fifth text-fifth', border: 'dark:border-dark-fifth border-fifth' }}
                             />
                         </div>
                     </div>
-                    <button onClick={() => restart()} title="Reiniciar filtro" className="mx-auto group border border-tertiary hover:border-secondary border-[0.1px] px-3 rounded-md flex items-center py-[3px] gap-x-1 outline-none transition duration-500">
-                        <ComponentIcon name="load" size={16} description_class="group-hover:text-secondary text-tertiary cursor-pointer" />
-                        <span className="group-hover:text-secondary text-sm tracking-wider text-tertiary duration-500">
+                    <button onClick={() => restart()} title="Reiniciar filtro" className="w-full group border dark:border-dark-fifth border-fifth border-opacity-50 dark:hover:border-dark-secondary hover:border-secondary border-[0.1px] px-3 rounded-md flex items-center justify-center py-[3px] gap-x-1 outline-none transition duration-500">
+                        <ComponentIcon name="load" size={16} description_class="dark:group-hover:text-dark-secondary group-hover:text-secondary group-hover:opacity-100 dark:text-dark-tertiary text-tertiary dark:opacity-100 opacity-70 cursor-pointer" />
+                        <span className="dark:group-hover:text-dark-secondary group-hover:text-secondary group-hover:opacity-100 text-sm tracking-wider dark:text-dark-tertiary text-tertiary dark:opacity-100 opacity-70 duration-500">
                             Reiniciar filtro
                         </span>
                     </button>

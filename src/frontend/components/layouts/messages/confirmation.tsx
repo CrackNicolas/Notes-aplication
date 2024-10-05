@@ -42,11 +42,11 @@ export default function ComponentMessageConfirmation(props: Props) {
                         icon(status)
                     }
                 </span>
-                <p className="mt-2 text-center text-xl text-gray-500">
+                <p className="mt-2 text-center text-xl dark:text-dark-tertiary text-tertiary opacity-50 dark:opacity-100">
                     {info?.message}
                 </p>
             </div>
-            <button type="button" name="Aceptar" onClick={() => reply()} className={`outline-none rounded-full w-[200px] bg-primary hover:opacity-100 opacity-70 cursor-pointer text-${color(status)} border-[0.1px] border-${color(status)} `}>
+            <button type="button" name="Aceptar" onClick={() => reply()} className={`outline-none rounded-full w-[200px] dark:bg-dark-primary bg-primary dark:hover:bg-dark-${color(status)} dark:hover:border-transparent dark:hover:text-dark-primary hover:opacity-100  dark:opacity-100 opacity-70 cursor-pointer dark:text-dark-${color(status)} text-${color(status)} border-[0.1px] dark:border-dark-${color(status)} border-${color(status)} `}>
                 Aceptar
             </button>
         </ComponentModal>

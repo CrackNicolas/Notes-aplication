@@ -4,9 +4,9 @@ const config: Config = {
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/frontend/components/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
-    './node_modules/react-tailwindcss-datepicker/dist/index.esm.js',
+    './src/app/**/*.{js,ts,jsx,tsx,mdx}'
   ],
+  darkMode:'class',
   theme: {
     extend: {
       screens: {
@@ -22,7 +22,16 @@ const config: Config = {
         "room": "#141313",
         "fifth": "#808080",
         "sixth": "#141313a4",
-        "error": "#ff0000"
+        "error": "#ff0000",
+        dark: {
+          primary: '#F3F4F6',
+          secondary: '#1F2937',
+          tertiary: '#4B5563',
+          room: '#FFFFFF',
+          fifth: '#1F2937',
+          sixth: '#FFFFFF',
+          error: 'red',
+        },
       }
     }
   },

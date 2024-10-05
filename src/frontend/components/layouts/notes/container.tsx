@@ -53,7 +53,7 @@ export default function ComponentNotes() {
     }, [])
 
     return (
-        <section className="flex flex-col gap-y-6 justify-center mt-4 pt-12 pb-5">
+        <section className="flex h-screen flex-col gap-y-6 justify-start pt-20">
             {
                 !category_selected ?
                     <Fragment>

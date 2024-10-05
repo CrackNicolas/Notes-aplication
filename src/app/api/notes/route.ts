@@ -41,12 +41,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     if (!connection) return NextResponse.json<Props_response>({ status: 500, info: { message: "Error al conectarse a la base de datos" } });
 
     try {
-        const file = data.get('file') as File;
-
-        if (!file.type.startsWith('image/')) {
-            return NextResponse.json<Props_response>({ status: 400, info: { message: "Solo se permiten archivos de imagen" } });
-        }
-
         const category_prev = data.get('category');
         const category: Props_category = category_prev && typeof category_prev === 'string' ? JSON.parse(category_prev) : null;
 
@@ -61,6 +55,12 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
             featured: (data.get('featured') === 'SI'),
             user_id
         };
+
+        const file = data.get('file') as File;
+
+        if (file && !file.type.startsWith('image/')) {
+            return NextResponse.json<Props_response>({ status: 400, info: { message: "Solo se permiten archivos de imagen" } });
+        }
 
         if (file) {
             const { id, url } = await File_transformer(file);
@@ -115,7 +115,7 @@ export async function PUT(req: NextRequest): Promise<NextResponse> {
 
         const file = data.get('file') as File;
 
-        if (!file.type.startsWith('image/')) {
+        if (file && !file.type.startsWith('image/')) {
             return NextResponse.json<Props_response>({ status: 400, info: { message: "Solo se permiten archivos de imagen" } });
         }
 

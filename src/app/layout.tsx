@@ -32,7 +32,7 @@ export default function RootLayout({ children }: Props_layouts) {
         <meta name="theme-color" content="#00ffff" />
       </head>
       <body className={roboto.className}>
-        <ClerkProvider appearance={{ baseTheme: dark }} localization={esES} >
+        <ClerkProvider localization={esES} >
           <Provider>
             {children}
           </Provider>

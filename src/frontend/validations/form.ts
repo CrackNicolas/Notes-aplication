@@ -15,7 +15,7 @@ export const validation = (name: string, required: boolean = true): any => {
                     message: 'El titulo deber ser menor a 45 caracteres'
                 },
                 pattern: {
-                    value: /^[A-Za-z._áéíóúñ]+(?: [A-Za-z._áéíóúñ]+)* ?$/i,
+                    value: /^[A-Za-z._áéíóúñ0-9]+(?: [A-Za-z._áéíóúñ0-9]+)* ?$/i,
                     message: 'Solo caracteres válidos, sin dobles espacios'
                 }
             }

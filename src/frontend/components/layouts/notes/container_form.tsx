@@ -109,16 +109,16 @@ export default function ComponentContainerForm(props: Props) {
     }, [note_selected])
 
     return (
-        <div className={`flex flex-col gap-y-4 w-full sm:w-[450px] mx-auto`}>
+        <div className={`flex flex-col mt-[-23px] gap-y-4 w-full sm:w-[450px] mx-auto`}>
             <div className="relative flex justify-center items-center">
-                <span className="absolute left-0 bg-primary rounded-full p-1 hover:bg-room transition duration-5" title="Volver atras" onClick={() => setCategory_selected(undefined)}>
-                    <ComponentIcon name="return" size={22} description_class="rotate-[-180deg] text-secondary cursor-pointer" />
+                <span className="absolute left-0 dark:bg-dark-primary bg-primary rounded-full p-1 dark:hover:bg-dark-room hover:bg-room transition duration-5" title="Volver atras" onClick={() => setCategory_selected(undefined)}>
+                    <ComponentIcon name="return" size={22} description_class="rotate-[-180deg] dark:text-dark-secondary text-secondary cursor-pointer" />
                 </span>
-                <span title="Titulo formulario" className="text-2xl text-secondary font-semibold text-center tracking-wider">
+                <span title="Titulo formulario" className="text-2xl dark:text-dark-secondary text-secondary font-semibold text-center tracking-wider">
                     {(!note_selected) ? 'Crear nota' : 'Actualizar nota'}
                 </span>
-                <span className="absolute right-0" title={`Categoria ${note_selected?.category.title}`}>
-                    <ComponentIcon name={(note_selected) ? note_selected?.category.icon : category_selected?.icon} size={24} description_class="text-secondary" />
+                <span className="absolute right-0" title={`Categoria ${category_selected?.title}`}>
+                    <ComponentIcon name={(note_selected) ? note_selected?.category.icon : category_selected?.icon} size={24} description_class="dark:text-dark-secondary text-secondary" />
                 </span>
             </div>
             <form method="POST" onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-y-6">
@@ -131,7 +131,7 @@ export default function ComponentContainerForm(props: Props) {
                             placeholder="Escriba el titulo..."
                             register={register}
                             error={errors.title?.type}
-                            description_class="border-opacity-50 bg-primary w-full rounded-md border-[0.1px] py-1 px-2 outline-none tracking-wide placeholder:opacity-70 sm:text-md"
+                            description_class="border-opacity-50 dark:bg-dark-primary bg-primary w-full rounded-md border-[0.1px] py-1 px-2 outline-none tracking-wide placeholder:opacity-70 sm:text-md"
                         />
                     </div>
                     <div className="flex flex-col gap-y-0.5">
@@ -142,7 +142,7 @@ export default function ComponentContainerForm(props: Props) {
                             placeholder="Escriba la descripcion..."
                             register={register}
                             error={errors.description?.type}
-                            description_class="border-opacity-50 bg-primary w-full rounded-md border-[0.1px] min-h-[65px] scroll-text py-1 px-2 outline-none tracking-wide placeholder:opacity-70 sm:text-md"
+                            description_class="border-opacity-50 dark:bg-dark-primary bg-primary w-full rounded-md border-[0.1px] min-h-[65px] scroll-text py-1 px-2 outline-none tracking-wide placeholder:opacity-70 sm:text-md"
                         />
                     </div>
                     <div className="flex flex-col gap-y-0.5">
@@ -159,7 +159,7 @@ export default function ComponentContainerForm(props: Props) {
                             <ComponentItemPriority
                                 id="option_2"
                                 value='Media'
-                                class_icon="text-orange-500 rotate-[-180deg]"
+                                class_icon="text-yellow-500 rotate-[-180deg]"
                                 paint={watch('priority') === "Media"}
                                 error={errors.priority?.type}
                                 register={register}
@@ -192,10 +192,10 @@ export default function ComponentContainerForm(props: Props) {
                         </div>
                     </div>
                     <div className="flex flex-col gap-y-0.5">
-                        <ComponentLabel title={message_image.value} html_for="" color={message_image.paint ? 'text-secondary' : 'text-error'} />
-                        <label htmlFor="file-upload" title="Seleccionar para subir un archivo" className="grid gap-y-0.5 place-items-center mt-0.5 p-1.5 cursor-pointer border-secondary border-opacity-20 bg-primary w-full rounded-md border-[0.1px] cursor-pointer hover:border-opacity-60 transition duration-500">
-                            <ComponentIcon name={`upload-file${(note_selected?.file?.id) ? '-selected' : (file === undefined) ? '' : '-selected'}`} size={27} description_class="icon-home text-secondary cursor-pointer" />
-                            <span className='line-clamp-1 text-secondary text-md font-normal tracking-wide'>
+                        <ComponentLabel title={message_image.value} html_for="" color={message_image.paint ? 'dark:text-dark-secondary text-secondary' : 'dark:text-dark-error text-error'} />
+                        <label htmlFor="file-upload" title="Seleccionar para subir una imagen" className="grid gap-y-0.5 place-items-center mt-0.5 p-1.5 cursor-pointer dark:border-dark-secondary border-secondary border-opacity-20 dark:bg-dark-primary bg-primary w-full rounded-md border-[0.1px] cursor-pointer hover:border-opacity-60 transition duration-500">
+                            <ComponentIcon name={`upload-file${(note_selected?.file?.id) ? '-selected' : (file === undefined) ? '' : '-selected'}`} size={27} description_class="icon-home dark:text-dark-secondary text-secondary cursor-pointer" />
+                            <span className='line-clamp-1 dark:text-dark-secondary text-secondary text-md font-normal tracking-wide'>
                                 {
                                     (file) ? `${file.name} seleccionado` :
                                         (note_selected?.file?.id) ? `${note_selected.file.name} cargado` : "Subir imagen..."
@@ -206,12 +206,10 @@ export default function ComponentContainerForm(props: Props) {
                     </div>
                 </div>
                 <div className="flex gap-x-10">
-                    <button type="submit" title="Guardar" name="Guardar" className="relative flex w-full justify-center rounded-md text-secondary border-[0.1px] border-secondary border-opacity-80 px-3 py-1 text-md font-normal hover:font-semibold bg-primary tracking-wider hover:bg-sixth outline-none">
-                        <ComponentIcon name={!note_selected ? 'add' : 'load'} size={20} description_class="absolute left-1 top-[6px] text-secondary cursor-pointer" />
+                    <button type="submit" title="Guardar" name="Guardar" className="relative flex w-full justify-center rounded-md dark:text-dark-secondary text-secondary border-[0.1px] dark:border-dark-secondary border-secondary border-opacity-80 px-3 py-1 text-md font-normal hover:font-semibold dark:bg-dark-primary bg-primary tracking-wider dark:hover:bg-dark-sixth hover:bg-sixth outline-none">
                         Guardar
                     </button>
-                    <button onClick={() => restart(true)} type="button" name="Deshacer" title="Reiniciar" className="relative flex w-full justify-center rounded-md text-error border-[0.1px] border-error border-opacity-80 px-3 py-1 text-md font-normal hover:font-semibold bg-primary tracking-wider hover:bg-sixth outline-none">
-                        <ComponentIcon name="close" size={26} description_class="absolute right-1 top-[3px] text-error cursor-pointer" />
+                    <button onClick={() => restart(true)} type="button" name="Deshacer" title="Deshacer" className="relative flex w-full justify-center rounded-md dark:text-dark-error text-error border-[0.1px] dark:border-dark-error border-error border-opacity-80 px-3 py-1 text-md font-normal hover:font-semibold dark:bg-dark-primary bg-primary tracking-wider dark:hover:bg-dark-sixth hover:bg-sixth outline-none">
                         Deshacer
                     </button>
                 </div>

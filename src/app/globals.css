@@ -16,6 +16,11 @@ body {
   background: theme("colors.primary");
 }
 
+.dark html,
+.dark body {
+  background: theme("colors.dark.primary"); /* Cambia esto por el color que desees para el tema oscuro */
+}
+
 body::-webkit-scrollbar,
 .scroll::-webkit-scrollbar,
 .scroll-select::-webkit-scrollbar,
@@ -40,6 +45,13 @@ body::-webkit-scrollbar-thumb,
 .scroll-select::-webkit-scrollbar-thumb,
 .scroll-text::-webkit-scrollbar-thumb {
   background: theme("colors.secondary");
+}
+
+.dark body::-webkit-scrollbar-thumb,
+.scroll::-webkit-scrollbar-thumb,
+.scroll-select::-webkit-scrollbar-thumb,
+.scroll-text::-webkit-scrollbar-thumb {
+  background: theme("colors.dark.secondary");
 }
 
 body::-webkit-scrollbar-thumb:hover,
@@ -101,9 +113,9 @@ polygon {
 }
 
 .spinner-load-category {
-  border: 2.3px solid theme("colors.primary");
+  border: 5.3px solid theme("colors.primary");
   border-left-color: theme("colors.fifth");
-  box-shadow: 0 0 10px 2px theme("colors.fifth");
+  box-shadow: 0 0 8px 2px theme("colors.fifth");
   animation: animation_spinner 1s linear infinite;
 }
 

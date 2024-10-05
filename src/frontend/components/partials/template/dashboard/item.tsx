@@ -25,18 +25,18 @@ export default function ComponentItem(props: Props_items_dashboard) {
 	}
 
 	return (
-		<Link href={url} onClick={() => view()} title={title} className="flex w-full flex-col items-start justify-between bg-sixth sm:px-4 px-3 py-3 cursor-pointer rounded-md hover:shadow-sm hover:shadow-secondary transition duration-700" onMouseOver={() => setFocus(true)} onMouseLeave={() => setFocus(false)}>
+		<Link href={url} onClick={() => view()} title={title} className="flex w-full flex-col items-start justify-between dark:bg-dark-sixth bg-sixth sm:px-4 px-3 py-3 cursor-pointer rounded-md hover:shadow-sm dark:hover:shadow-dark-secondary hover:shadow-secondary transition duration-700" onMouseOver={() => setFocus(true)} onMouseLeave={() => setFocus(false)}>
 			<div className="flex items-center justify-between w-full gap-x-4 text-xs pr-1">
-				<span className="text-tertiary opacity-50 hover:opacity-100 transition duration-700">
+				<span className="dark:text-dark-tertiary text-tertiary dark:opacity-100 opacity-50 hover:opacity-100 transition duration-700">
 					{last_time.replace('Creada', 'Ultima vez')}
 				</span>
-				<ComponentIcon name={`${focus ? `${icon + '-fill'}` : icon}`} testid="icon-item" size={20} description_class="text-secondary cursor-pointer" />
+				<ComponentIcon name={`${focus ? `${icon + '-fill'}` : icon}`} testid="icon-item" size={20} description_class="dark:text-dark-secondary text-secondary cursor-pointer" />
 			</div>
 			<div className="group relative">
-				<span className="line-clamp-1 text-lg font-normal hover:font-semibold tracking-wide text-secondary">
+				<span className="line-clamp-1 text-lg font-normal hover:font-semibold tracking-wide dark:text-dark-secondary text-secondary">
 					{title}
 				</span>
-				<p className="mt-2 line-clamp-2 text-sm leading-6 text-tertiary opacity-50 hover:opacity-100 transition duration-700">
+				<p className="mt-2 line-clamp-2 text-sm leading-6 dark:text-dark-tertiary text-tertiary dark:opacity-100 opacity-50 hover:opacity-100 transition duration-700">
 					{description}
 				</p>
 			</div>

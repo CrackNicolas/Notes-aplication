@@ -44,7 +44,7 @@ export default function ComponentCategory() {
     }, [restart])
 
     return (
-        <section className="relative flex flex-col gap-12 sm:pt-20 pt-16 pb-7">
+        <section className="relative h-screen flex flex-col gap-12 sm:pt-20 pt-16 pb-7">
             <ComponentHeader title="Tus Categorías" subtitle="Toca para agregar o quitar categorías de tus notas" />
             <ComponentList categorys={list_categorys} setRestart={setRestart} redirect={redirect} />
             {

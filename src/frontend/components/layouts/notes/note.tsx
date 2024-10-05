@@ -45,25 +45,25 @@ export default function ComponentNote(props: Props) {
     }
 
     return (
-        <div onClick={() => state ? note_selection({ _id: (note._id) ? note._id : '', file: note.file?.id }) : open_view(note)} title="Nota" className={`relative transition-padding group grid grid-cols-9 w-full bg-sixth ${state ? 'sm:pl-12.5 pl-12 sm:pr-2.5 pr-2' : 'sm:px-2.5 px-2'} sm:py-2 py-1.5 cursor-pointer rounded-md border-[0.1px] border-secondary ${paint ? 'border-opacity-100' : 'border-opacity-20 hover:border-opacity-100'}`}>
+        <div onClick={() => state ? note_selection({ _id: (note._id) ? note._id : '', file: note.file?.id }) : open_view(note)} title="Nota" className={`relative transition-padding group grid grid-cols-9 w-full dark:bg-dark-sixth bg-sixth ${state ? 'sm:pl-12.5 pl-12 sm:pr-2.5 pr-2' : 'sm:px-2.5 px-2'} sm:py-2 py-1.5 cursor-pointer rounded-md border-[0.1px] dark:border-dark-secondary border-secondary ${paint ? 'border-opacity-100' : 'border-opacity-20 hover:border-opacity-100'}`}>
             {
                 state && (
                     <div className="absolute h-full flex items-center px-2">
                         {
                             include_note(note._id) ?
-                                <span title="Nota seleccionada" className='cursor-pointer border-[0.1px] border-error bg-primary rounded-full transition-padding p-1'>
+                                <span title="Nota seleccionada" className='cursor-pointer border-[0.1px] dark:border-dark-error border-error dark:bg-transparent bg-primary rounded-full transition-padding p-1'>
                                     <ComponentIcon
                                         name='check'
                                         size={20}
-                                        description_class="cursor-pointer text-error m-auto mt-[1px] icon-transition icon-visible"
+                                        description_class="cursor-pointer dark:text-dark-error text-error m-auto mt-[1px] icon-transition icon-visible"
                                     />
                                 </span>
                                 :
-                                <span title="Marcar nota" className='cursor-pointer border-[0.1px] border-secondary rounded-sm'>
+                                <span title="Marcar nota" className='cursor-pointer border-[0.1px] dark:border-dark-secondary border-secondary rounded-sm'>
                                     <ComponentIcon
                                         name='check'
                                         size={12}
-                                        description_class="cursor-pointer text-secondary transition-width icon-transition icon-hidden"
+                                        description_class="cursor-pointer dark:text-dark-secondary text-secondary transition-width icon-transition icon-hidden"
                                     />
                                 </span>
                         }
@@ -72,24 +72,28 @@ export default function ComponentNote(props: Props) {
             }
             <div className="col-span-8 flex flex-col">
                 <span className="flex">
-                    <span className="line-clamp-1 text-md font-normal group-hover:font-semibold tracking-wide text-secondary">
+                    <span className="line-clamp-1 text-md font-normal group-hover:font-semibold tracking-wide dark:text-dark-secondary text-secondary">
                         {title}
                     </span>
                     {(priority === "Alta") && <ComponentIcon name="arrow" size={15} description_class="sm:relative absolute sm:right-auto right-3 cursor-pointer text-red-500 rotate-[-180deg] mt-[3px] " />}
                     {(priority === "Media") && <ComponentIcon name="arrow" size={15} description_class="sm:relative absolute sm:right-auto right-3 cursor-pointer text-orange-500 rotate-[-180deg] mt-[3px] " />}
                     {(priority === "Baja") && <ComponentIcon name="arrow" size={15} description_class="sm:relative absolute sm:right-auto right-3 cursor-pointer text-green-500 mt-[2.7px] " />}
                 </span>
-                <p className="line-clamp-1 text-sm text-tertiary opacity-50">
+                <p className="line-clamp-1 text-sm dark:text-dark-tertiary dark:opacity-90 text-tertiary opacity-50">
                     {description}
                 </p>
-                <span title="Tiempo transcurrido" className="sm:visible invisible absolute right-3 text-tertiary text-[11px] opacity-50">
+                <span title="Tiempo transcurrido" className="sm:visible invisible absolute right-3 dark:text-dark-tertiary dark:opacity-90 text-tertiary text-[11px] opacity-50">
                     {Time_elapsed(createdAt)}
                 </span>
             </div>
             <div className="col-span-1 flex flex-col items-end justify-end">
-                <button onClick={(e) => redirect(e)} type="button" title="Editar" className="outline-none border-none">
-                    <ComponentIcon name="update" size={18} description_class="text-fifth hover:text-secondary cursor-pointer" />
-                </button>
+                {
+                    !state && (
+                        <button onClick={(event) => redirect(event)} type="button" title="Editar" className="outline-none border-none">
+                            <ComponentIcon name="update" size={18} description_class="dark:text-dark-fifth text-fifth dark:hover:text-dark-secondary hover:text-secondary cursor-pointer" />
+                        </button>
+                    )
+                }
             </div>
             {
                 (view_note) && <ComponentView open={open_modal_view} setOpen={setOpen_modal_view} note={view_note} />
