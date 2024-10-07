@@ -10,7 +10,7 @@ const config: Config = {
   theme: {
     extend: {
       screens: {
-        sz: '1610px'
+        sz: '1400px'
       },
       boxShadow: {
         'sm': '0 0 7px 0px'

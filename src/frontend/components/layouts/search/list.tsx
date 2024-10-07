@@ -25,7 +25,7 @@ export default function ComponentList(props: Props) {
         <article className={`${description_class} grid grid-cols-1 xl:grid-cols-2 place-items-center gap-4`}>
             {
                 (loading?.value) ?
-                    <ComponentLoading count={10} />
+                    <ComponentLoading count={14} />
                     :
                     (notes.length === 0) ?
                         <div className="col-span-full flex flex-col items-center gap-5 pt-16">

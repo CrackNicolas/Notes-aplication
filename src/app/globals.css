@@ -26,7 +26,6 @@ body::-webkit-scrollbar,
 .scroll-select::-webkit-scrollbar,
 .scroll-select-error::-webkit-scrollbar,
 .scroll-text::-webkit-scrollbar {
-  overflow-y: scroll;
   width: 6px;
 }
 

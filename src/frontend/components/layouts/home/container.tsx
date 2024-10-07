@@ -25,7 +25,7 @@ export default function ComponentHome() {
                 </div>
             </div>
             <span className="text-center text-sm dark:text-dark-tertiary text-tertiary opacity-60 font-normal tracking-wide">
-                Version 1.2.5
+                Version 1.2.6
             </span>
         </div>
     )

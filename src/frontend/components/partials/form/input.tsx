@@ -20,7 +20,13 @@ export default function ComponentInput(props: Props) {
     const { type, name, id = name, placeholder, description_class, value, rows, error, register, required = true } = props;
 
     const additional_validation = (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-        event.target.value = event.target.value.replace(/[\r\n]+/g, "").replace(/\s\s+/g, " ");
+        event.target.value = event.target.value
+            .replace(/[\r\n-]+/g, "")                                // Elimina saltos de línea
+            .replace(/\s\s+/g, " ")                                  // Reduce múltiples espacios a uno
+            .replace(/\.{2,}/g, ".")                                 // Reduce múltiples puntos a uno
+            .replace(/,{2,}/g, ",")                                  // Reduce múltiples comas a una
+            .replace(/_{2,}/g, "_")                                  // Reduce múltiples guiones bajos a uno
+            .replace(/\b\w{23,}\b/g, (match) => match.slice(0, 22)); // Limita palabras a 9 caracteres
     }
 
     const props_input = {

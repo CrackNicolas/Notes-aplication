@@ -35,12 +35,14 @@ export default function ComponentContainerForm(props: Props) {
     const [loading, setLoading] = useState<boolean>(false);
     const [response, setResponse] = useState<Props_response>();
     const [message_image, setMessage_image] = useState<{ paint: boolean, value: string }>({ paint: true, value: 'Selecciona una imagen (máximo 4MB)' });
+    const [values_exists, setValues_exists] = useState<boolean>(false);
 
     const { register, handleSubmit, formState: { errors }, setValue, reset, watch } = useForm();
 
     const restart = (use_redirect: boolean): void => {
         reset();
         setFile(undefined);
+        setValues_exists(false);
         if (use_redirect) {
             redirect((note_selected) ? '/notes/search' : '/dashboard/main');
         }
@@ -75,6 +77,11 @@ export default function ComponentContainerForm(props: Props) {
     }
 
     const onSubmit: SubmitHandler<FieldValues | Props_note> = async (data) => {
+        if (data.title == data.description) {
+            setValues_exists(true);
+            return;
+        }
+
         let response;
 
         const form = new FormData();
@@ -153,7 +160,7 @@ export default function ComponentContainerForm(props: Props) {
                         />
                     </div>
                     <div className="flex flex-col gap-y-0.5">
-                        <ComponentLabel title="Descripcion" html_for="description" errors={errors} />
+                        <ComponentLabel values_exists={values_exists} title="Descripcion" html_for="description" errors={errors} />
                         <ComponentInput
                             rows={3}
                             name="description"

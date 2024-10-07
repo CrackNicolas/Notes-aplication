@@ -126,12 +126,16 @@ export default function ComponentSearch(props: Props) {
             setState_select(false);
             setLoading_message(false);
             setNotes_selected([]);
+            restart();
         }
     }
 
     useEffect(() => {
         document.addEventListener('mousedown', handle_click_outside);
-        return () => document.removeEventListener('mousedown', handle_click_outside);
+
+        return () => {
+            document.removeEventListener('mousedown', handle_click_outside);
+        };
     }, []);
 
     useEffect(() => {
@@ -143,12 +147,12 @@ export default function ComponentSearch(props: Props) {
     }, [title, select_category, select_priority, select_featured, select_date]);
 
     return (
-        <section className="flex flex-col gap-5 mt-[30px] pt-7 h-[calc(100vh-30px)]">
-            <article className={`flex gap-y-6 gap-x-3 justify-between items-center dark:bg-dark-primary bg-primary transition-width ${view_filter ? 'sz:w-full md:w-[calc(100%-200px)]' : 'w-full'}`}>
+        <section className="relative h-[calc(100vh-30px)] flex flex-col gap-5 mt-[30px] pt-6">
+            <article className={`fixed pb-3 max-w-7xl pr-[29px] sm:pr-[85px] z-50 flex gap-y-6 gap-x-3 justify-between items-center dark:bg-dark-primary bg-primary transition-width ${view_filter ? 'w-full sz:w-full md:w-[calc(100%-175px)]' : 'w-full'}`}>
                 {
                     state_select ?
                         <div className="flex gap-x-3">
-                            <span title="Marcar todo" onClick={() => select_all()} className={`my-auto border-[0.1px] cursor-pointer ${note_all ? ' dark:border-dark-error border-error dark:bg-dark-primary bg-primary rounded-full px-[0.5px] ' : 'dark:border-dark-secondary border-secondary rounded-sm'}`}>
+                            <span title={note_all ? "Desmarcar todo" : "Marcar todo"} onClick={() => select_all()} className={`my-auto border-[0.1px] cursor-pointer ${note_all ? ' dark:border-dark-error border-error dark:bg-dark-primary bg-primary rounded-full px-[0.5px] ' : 'dark:border-dark-secondary border-secondary rounded-sm'}`}>
                                 <ComponentIcon
                                     name='check'
                                     size={12}
@@ -189,7 +193,7 @@ export default function ComponentSearch(props: Props) {
                     </button>
                 </div>
             </article>
-            <article className="flex w-full pb-10">
+            <article className="flex pb-10 pt-12">
                 <ComponentList
                     state={state_select}
                     notes={list_notes}
@@ -197,9 +201,9 @@ export default function ComponentSearch(props: Props) {
                     update_note={update_note}
                     notes_selected={notes_selected}
                     setNotes_selected={setNotes_selected}
-                    description_class={`transition-width ${view_filter ? 'w-full sz:w-full md:w-[calc(100%-200px)]' : 'w-full'}`}
+                    description_class={`transition-width ${view_filter ? 'w-full sz:w-full md:w-[calc(100%-175px)]' : 'w-full'}`}
                 />
-                <div ref={ref_nav_toggle} className={`flex flex-col justify-between absolute toggle-search ${view_filter ? 'translate-x-0' : 'translate-x-[120%]'} right-0 dark:bg-dark-primary bg-primary z-50 top-[-30px] w-[200px] border-fifth border-opacity-50 border-l-[0.1px] p-2 h-[100vh]`}>
+                <div ref={ref_nav_toggle} className={`fixed top-0 flex flex-col justify-between toggle-search ${view_filter ? 'translate-x-0' : 'translate-x-[120%]'} right-0 dark:bg-dark-primary bg-primary z-50 w-[200px] border-fifth border-opacity-50 border-l-[0.1px] p-2 h-[100vh]`}>
                     <div className="flex flex-col">
                         <div className="flex justify-between items-center py-1 border-b-[3px] rounded-md border-opacity-50 dark:border-dark-secondary border-secondary w-full">
                             <span className="dark:text-dark-tertiary text-tertiary opacity-70 tracking-wider font-semibold">
