@@ -9,13 +9,12 @@ export default function ComponentHeader(props: Props) {
 
     return (
         <article className="w-full flex justify-between items-center">
-            <span className="flex items-center gap-3 dark:text-dark-secondary text-secondary text-xl tracking-wider">
+            <button type="button" title="Sesiones de usuario" className="outline-none">
                 <ComponentIcon name="users-fill" size={24} description_class="dark:text-dark-secondary text-secondary" />
-                Lista de usuarios
-            </span>
-            <span className="dark:text-dark-secondary text-secondary text-xl">
-                {count_sessions}
-            </span>
+            </button>
+            <button type="button" title="Lista de notas creadas" className="outline-none">
+                <ComponentIcon name="list-fill" size={24} description_class="dark:text-dark-secondary text-secondary" />
+            </button>
         </article>
     )
 }

@@ -171,14 +171,14 @@ export default function ComponentSearch(props: Props) {
                             <div className="flex gap-x-1.5">
                                 {
                                     (notes_selected.length !== 0) && (
-                                        <button type="button" title="Eliminar" onClick={() => setOpen_confirmation_delete(true)} className="group cursor-pointer dark:hover:bg-dark-error hover:bg-error border-[0.1px] dark:border-dark-error border-error rounded-md px-2.5 py-[0.6px] " >
+                                        <button type="button" title="Eliminar" onClick={() => setOpen_confirmation_delete(true)} className="group cursor-pointer dark:hover:bg-dark-error hover:bg-error border-[0.1px] dark:border-dark-error border-error outline-none rounded-md px-2.5 py-[0.6px] " >
                                             <span className="dark:group-hover:text-dark-primary group-hover:text-primary dark:text-dark-error text-error text-sm group-hover:font-semibold font-normal tracking-wider transition duration-500">
                                                 Eliminar
                                             </span>
                                         </button>
                                     )
                                 }
-                                <button type="button" title="Cancelar eliminacion" onClick={() => close_delete()} className="group cursor-pointer dark:hover:bg-dark-error hover:bg-error border-[0.1px] dark:border-dark-error border-error rounded-md px-2.5 py-[0.6px] " >
+                                <button type="button" title="Cancelar eliminacion" onClick={() => close_delete()} className="group cursor-pointer dark:hover:bg-dark-error hover:bg-error border-[0.1px] dark:border-dark-error border-error outline-none rounded-md px-2.5 py-[0.6px] " >
                                     <span className="dark:group-hover:text-dark-primary group-hover:text-primary dark:text-dark-error text-error text-sm group-hover:font-semibold font-normal tracking-wider transition duration-500">
                                         Cancelar
                                     </span>
@@ -194,14 +194,14 @@ export default function ComponentSearch(props: Props) {
                     </div>
                     {
                         !state_select && (
-                            <button ref={ref_button_delete_note} type="button" title="Eliminar notas" onClick={() => select_note(true)} className={`${list_notes.length === 0 && 'hidden'}`} >
+                            <button ref={ref_button_delete_note} type="button" title="Eliminar notas" onClick={() => select_note(true)} className={`outline-none ${list_notes.length === 0 && 'hidden'}`} >
                                 <ComponentIcon name="delete" description_class="cursor-pointer dark:hover:text-dark-error hover:text-error dark:text-dark-fifth text-fifth" size={20} view_box="0 0 16 16" />
                             </button>
                         )
                     }
                     {
                         !view_filter && (
-                            <button ref={ref_button_view_toggle} onClick={() => setView_filter(!view_filter)} type="button" title="Filtros">
+                            <button ref={ref_button_view_toggle} onClick={() => setView_filter(!view_filter)} type="button" title="Filtros" className="outline-none">
                                 <ComponentIcon name="filter" description_class="cursor-pointer dark:hover:text-dark-secondary hover:text-secondary dark:text-dark-fifth text-fifth" size={24} view_box="0 0 16 16" />
                             </button>
                         )
@@ -224,7 +224,7 @@ export default function ComponentSearch(props: Props) {
                             <span className="dark:text-dark-tertiary text-tertiary opacity-70 tracking-wider font-semibold">
                                 Filtrar notas
                             </span>
-                            <button ref={ref_button_close_toggle} type="button" title="Cerrar menu" onClick={() => setView_filter(!view_filter)}>
+                            <button ref={ref_button_close_toggle} type="button" title="Cerrar menu" onClick={() => setView_filter(!view_filter)} className="outline-none">
                                 <ComponentIcon name="close" description_class="cursor-pointer dark:hover:text-dark-secondary hover:text-secondary hover:opacity-100 dark:text-dark-tertiary text-tertiary opacity-70" size={27} view_box="0 0 16 16" />
                             </button>
                         </div>
