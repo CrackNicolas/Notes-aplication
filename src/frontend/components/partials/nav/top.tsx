@@ -42,6 +42,14 @@ export default function ComponentNavTop(props: Props_context) {
 
     const get_focus = (name: string) => (focus === name);
 
+    const restricted_routes = (path?: string): boolean => {
+        if (!path) return false;
+
+        const rutes = ["/", "/dashboard/config", "/dashboard/main", "/notes/category"];
+
+        return !rutes.includes(path);
+    }
+
     useEffect(() => {
         window.addEventListener('resize', handle_resize);
         document.addEventListener('mousedown', handle_click_outside);
@@ -71,7 +79,7 @@ export default function ComponentNavTop(props: Props_context) {
                             <ComponentIcon testid="icon-home" name={`${get_focus('logo') ? 'logo-fill' : 'logo'}`} size={27} description_class="icon-home text-secondary cursor-pointer" />
                         </Link>
                         {
-                            (session.id && path != "/" && path != "/dashboard/main") && (
+                            (session.id && restricted_routes(path)) && (
                                 <div className="hidden sm:ml-4 sm:block">
                                     <div className="flex space-x-1">
                                         <Link href="/dashboard/main" className={`${section_current === "/dashboard/main" ? 'dark:text-dark-secondary text-secondary' : ''} dark:hover:text-dark-secondary hover:text-secondary tracking-wider dark:text-dark-fifth text-fifth px-1 py-2 text-md font-normal transition duration-500`} title="Panel">

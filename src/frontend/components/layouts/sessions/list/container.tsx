@@ -6,7 +6,7 @@ import ComponentLoading from "@/frontend/components/layouts/sessions/list/loadin
 
 export default function ComponentList({ sessions }: { sessions: Props_session[] }) {
     return (
-        <article className="grid grid-cols-1 lg:grid-cols-2 place-items-center gap-4">
+        <article className="grid grid-cols-1 lg:grid-cols-2 place-items-center gap-4 pb-5">
             {
                 (sessions.length === 0) ?
                     <ComponentLoading count={10} />

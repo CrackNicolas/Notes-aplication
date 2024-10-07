@@ -30,8 +30,10 @@ export default function ComponentSearch(props: Props) {
     const title = watch('title');
 
     const ref_nav_toggle = useRef<HTMLDivElement>(null);
-    const ref_button_close_toggle = useRef<HTMLButtonElement>(null);
     const ref_button_view_toggle = useRef<HTMLButtonElement>(null);
+    const ref_button_close_toggle = useRef<HTMLButtonElement>(null);
+    const ref_button_delete_note = useRef<HTMLButtonElement>(null);
+    const ref_button_create_note = useRef<HTMLDivElement>(null);
 
     const [open, setOpen] = useState<boolean>(false);
     const [search, setSearch] = useState<string>('');
@@ -52,7 +54,9 @@ export default function ComponentSearch(props: Props) {
         if (ref_nav_toggle.current &&
             !ref_nav_toggle.current.contains(event.target as Node) &&
             !ref_button_close_toggle.current?.contains(event.target as Node) &&
-            !ref_button_view_toggle.current?.contains(event.target as Node)
+            !ref_button_view_toggle.current?.contains(event.target as Node) &&
+            !ref_button_delete_note.current?.contains(event.target as Node) &&
+            !ref_button_create_note.current?.contains(event.target as Node)
         ) {
             setView_filter(false);
         }
@@ -63,6 +67,11 @@ export default function ComponentSearch(props: Props) {
         setSelect_priority('Prioridad...');
         setSelect_featured('Nota destacada...');
         setSelect_date('Fecha...');
+    }
+
+    const close_delete = () => {
+        setState_select(false);
+        setSearch('');
     }
 
     const select_note = (value: boolean) => {
@@ -169,7 +178,7 @@ export default function ComponentSearch(props: Props) {
                                         </button>
                                     )
                                 }
-                                <button type="button" title="Cancelar eliminacion" onClick={() => setState_select(false)} className="group cursor-pointer dark:hover:bg-dark-error hover:bg-error border-[0.1px] dark:border-dark-error border-error rounded-md px-2.5 py-[0.6px] " >
+                                <button type="button" title="Cancelar eliminacion" onClick={() => close_delete()} className="group cursor-pointer dark:hover:bg-dark-error hover:bg-error border-[0.1px] dark:border-dark-error border-error rounded-md px-2.5 py-[0.6px] " >
                                     <span className="dark:group-hover:text-dark-primary group-hover:text-primary dark:text-dark-error text-error text-sm group-hover:font-semibold font-normal tracking-wider transition duration-500">
                                         Cancelar
                                     </span>
@@ -180,17 +189,23 @@ export default function ComponentSearch(props: Props) {
                         <ComponentInputSearch setValue={setValue} />
                 }
                 <div className="flex items-center gap-2 h-full">
-                    <ComponentButtonCreate />
+                    <div ref={ref_button_create_note}>
+                        <ComponentButtonCreate />
+                    </div>
                     {
                         !state_select && (
-                            <button type="button" title="Eliminar notas" onClick={() => select_note(true)} className={`${list_notes.length === 0 && 'hidden'}`} >
+                            <button ref={ref_button_delete_note} type="button" title="Eliminar notas" onClick={() => select_note(true)} className={`${list_notes.length === 0 && 'hidden'}`} >
                                 <ComponentIcon name="delete" description_class="cursor-pointer dark:hover:text-dark-error hover:text-error dark:text-dark-fifth text-fifth" size={20} view_box="0 0 16 16" />
                             </button>
                         )
                     }
-                    <button ref={ref_button_view_toggle} onClick={() => setView_filter(!view_filter)} type="button" title="Filtros">
-                        <ComponentIcon name="filter" description_class="cursor-pointer dark:hover:text-dark-secondary hover:text-secondary dark:text-dark-fifth text-fifth" size={24} view_box="0 0 16 16" />
-                    </button>
+                    {
+                        !view_filter && (
+                            <button ref={ref_button_view_toggle} onClick={() => setView_filter(!view_filter)} type="button" title="Filtros">
+                                <ComponentIcon name="filter" description_class="cursor-pointer dark:hover:text-dark-secondary hover:text-secondary dark:text-dark-fifth text-fifth" size={24} view_box="0 0 16 16" />
+                            </button>
+                        )
+                    }
                 </div>
             </article>
             <article className="flex pb-10 pt-12">
@@ -234,9 +249,9 @@ export default function ComponentSearch(props: Props) {
                                 select={select_priority}
                                 setSelect={setSelect_priority}
                                 items={[
-                                    { value: 'Alta', icon: { name: 'arrow', class: 'dark:text-dark-fifth text-fifth rotate-[-180deg]' } },
-                                    { value: 'Media', icon: { name: 'arrow', class: 'dark:text-dark-fifth text-fifth rotate-[-180deg]' } },
-                                    { value: 'Baja', icon: { name: 'arrow', class: 'dark:text-dark-fifth text-fifth' } }
+                                    { value: 'Alta', icon: { name: 'arrow', class: 'dark:text-dark-fifth text-red-500 rotate-[-180deg]' } },
+                                    { value: 'Media', icon: { name: 'arrow', class: 'dark:text-dark-fifth text-yellow-500 rotate-[-180deg]' } },
+                                    { value: 'Baja', icon: { name: 'arrow', class: 'dark:text-dark-fifth text-green-500' } }
                                 ]}
                                 style={{ text: 'dark:text-dark-fifth text-fifth', border: 'dark:border-dark-fifth border-fifth', bg: 'dark:bg-dark-secondary bg-secondary' }}
                             />
