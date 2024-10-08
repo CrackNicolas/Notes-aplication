@@ -4,7 +4,7 @@ import ComponentIcon from "@/frontend/components/partials/icon";
 
 export default function NotFound() {
     return (
-        <section className="dark:bg-dark-primary bg-primary pt-24 pb-9">
+        <section className="dark:bg-dark-primary bg-primary pt-24 pb-9 h-screen">
             <article className="flex flex-col items-center gap-y-4 max-w-7xl px-2 lg:px-10">
                 <div className="flex flex-col place-items-center">
                     <ComponentIcon name="not-found" size={200} view_box="0 0 200 200" />

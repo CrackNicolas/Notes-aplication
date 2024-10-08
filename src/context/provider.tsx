@@ -45,7 +45,7 @@ export default function Provider({ children }: Props_layouts) {
         if (stored_theme) {
             Change_topic({ theme: stored_theme, setTheme });
         }
-    }, []);
+    }, [])
 
     const load_user = async () => {
         if (data_user.isSignedIn && data_user.user.fullName) {
@@ -55,8 +55,11 @@ export default function Provider({ children }: Props_layouts) {
                 name: data_user.user.fullName,
                 email: data_user.user.emailAddresses.toString(),
                 image: data_user.user.imageUrl,
-                rol: (data_user.user.id === process.env.ROL_ADMIN_USER_ID) ? 'admin' : 'member'
+                rol: 'member'
             }
+
+            const { data } = await axios.get(`/api/role/${data_user.user.id}`);
+            instance_user.rol = data.data;
 
             const instance_session: Props_session = {
                 id: data_user.user.id,
@@ -82,13 +85,13 @@ export default function Provider({ children }: Props_layouts) {
 
     const handleOffline = () => {
         router.push('/without_internet');
-    };
+    }
 
     const handleOnline = () => {
         if (path === '/offline') {
             router.push('/');
         }
-    };
+    }
 
     useEffect(() => {
         load_user();

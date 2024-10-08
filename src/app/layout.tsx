@@ -1,5 +1,4 @@
 import { ClerkProvider } from '@clerk/nextjs'
-import { dark } from '@clerk/themes'
 import { esES } from '@clerk/localizations'
 
 import { Metadata } from 'next/types'
