@@ -4,7 +4,7 @@ import { Theme_name, Props_theme } from "@/frontend/types/props";
 type Props = {
     theme: Props_theme;
     setTheme: Dispatch<SetStateAction<Props_theme>>;
-};
+}
 
 export function Change_topic({ theme, setTheme }: Props): void {
     switch (theme) {

@@ -9,7 +9,7 @@ export default function ComponentHeader(props: Props) {
 
     return (
         <article className="w-full flex justify-between items-center">
-            <button type="button" title="Sesiones de usuario" className="flex items-center gap-x-3 outline-none">
+            <button type="button" title="Sesiones de usuario" className="flex items-center gap-x-3 outline-none cursor-default ">
                 <ComponentIcon name="users-fill" size={24} description_class="dark:text-dark-secondary text-secondary" />
                 <span className="text-secondary dark:text-dark-secondary text-xl tracking-wider font-semibold">
                     Sesiones de usuario
