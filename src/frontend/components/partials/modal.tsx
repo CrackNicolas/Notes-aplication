@@ -28,7 +28,7 @@ export default function ComponentModal(props: Props) {
                                     <ComponentIcon name='logo' description_class={`absolute top-1.5 left-2 dark:text-dark-${color} text-${color} dark:opacity-100 opacity-70 `} size={20} />
                                     {
                                         button_close && (
-                                            <button type='button' title="Boton cerrar" onClick={() => setOpen(false)}>
+                                            <button type='button' title="Boton cerrar" onClick={() => setOpen(false)} className="outline-none" >
                                                 <ComponentIcon name='close' description_class={`absolute top-0 right-0 dark:text-dark-${color} text-${color} dark:opacity-100 opacity-70 cursor-pointer`} size={30} />
                                             </button>
                                         )

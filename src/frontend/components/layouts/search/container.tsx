@@ -94,6 +94,8 @@ export default function ComponentSearch(props: Props) {
     }
 
     const load_notes = async () => {
+        if (search == "") return;
+
         setLoading_notes({ value: true, button: true });
         const { data } = await axios.get(`/api/notes${(search !== '{}') ? `/${search}` : ''}`);
         if (data.status === 200) {
@@ -141,10 +143,7 @@ export default function ComponentSearch(props: Props) {
 
     useEffect(() => {
         document.addEventListener('mousedown', handle_click_outside);
-
-        return () => {
-            document.removeEventListener('mousedown', handle_click_outside);
-        };
+        return () => document.removeEventListener('mousedown', handle_click_outside);
     }, []);
 
     useEffect(() => {
@@ -156,7 +155,7 @@ export default function ComponentSearch(props: Props) {
     }, [title, select_category, select_priority, select_featured, select_date]);
 
     return (
-        <section className="relative h-[calc(100vh-30px)] flex flex-col gap-5 mt-[30px] pt-6">
+        <section className={`relative h-[calc(100vh-30px)] flex flex-col gap-5 mt-[30px] pt-6`}>
             <article className={`fixed pb-3 max-w-7xl pr-[29px] sm:pr-[85px] z-50 flex gap-y-6 gap-x-3 justify-between items-center dark:bg-dark-primary bg-primary transition-width ${view_filter ? 'w-full sz:w-full md:w-[calc(100%-175px)]' : 'w-full'}`}>
                 {
                     state_select ?

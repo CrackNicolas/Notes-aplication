@@ -28,8 +28,8 @@ export default function ComponentList(props: Props) {
                     <ComponentLoading count={14} />
                     :
                     (notes.length === 0) ?
-                        <div className="col-span-full flex flex-col items-center gap-5 pt-16">
-                            <ComponentIcon name={loading?.icon} size={200} description_class={`size-[150px] sm:size-[200px] dark:text-dark-secondary text-secondary cursor-pointer`} />
+                        <div className="col-span-full flex flex-col items-center gap-5 pt-12">
+                            <ComponentIcon name={loading?.icon} size={180} description_class={`size-[150px] sm:size-[200px] dark:text-dark-secondary text-secondary cursor-pointer`} />
                             <ComponentHeader title={loading?.description} />
                         </div>
                         :
