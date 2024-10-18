@@ -4,8 +4,8 @@ export const items_main: Props_items_dashboard[] = [
     {
         url: '/sessions',
         icon: 'users',
-        title: 'Administra sesiones de usuario',
-        description: 'Revisa sesiones activas y cerradas en tu aplicacion de notas de forma facil.'
+        title: 'Administrar usuarios',
+        description: 'Revisa la actividad de tus usuarios facilmente.'
     },
     {
         url: '/notes',

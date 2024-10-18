@@ -18,6 +18,7 @@ export default function ComponentSessions() {
     const [user_selected, setUser_selected] = useState<Props_session>();
 
     const load_notes = async (session: Props_session) => {
+        setNotes([]);
         setUser_selected(session);
 
         const { data } = await axios.get(`/api/private/notes/${session.id}`);
