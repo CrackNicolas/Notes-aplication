@@ -74,11 +74,11 @@ export default function Provider({ children }: Props_layouts) {
             }
 
             await axios.get(`/api/categorys`);
-            await axios.post("/api/sessions", instance_session);
+            await axios.post("/api/private/sessions", instance_session);
 
             setSession(instance_session);
         } else {
-            await axios.put("/api/sessions", { id: session.id, status: false });
+            await axios.put("/api/private/sessions", { id: session.id, status: false });
             setSession({});
         }
     }

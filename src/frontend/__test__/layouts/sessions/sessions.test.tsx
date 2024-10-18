@@ -4,8 +4,8 @@ import { render } from '@testing-library/react';
 import ResizeObserver from 'resize-observer-polyfill';
 global.ResizeObserver = ResizeObserver;
 
-import ComponentList from '@/frontend/components/layouts/sessions/list/container';
-import ComponentHeader from '@/frontend/components/layouts/sessions/header';
+import ComponentList from '@/frontend/components/layouts/private/sessions/container';
+import ComponentHeader from '@/frontend/components/layouts/private/header';
 
 import { sessions } from '@/frontend/__test__/mocks/session';
 

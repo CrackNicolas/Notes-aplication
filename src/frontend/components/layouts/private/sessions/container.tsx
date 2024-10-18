@@ -2,9 +2,16 @@ import Image from "next/image";
 
 import { Props_session } from "@/context/types/session"
 
-import ComponentLoading from "@/frontend/components/layouts/sessions/list/loading";
+import ComponentLoading from "@/frontend/components/layouts/private/sessions/loading";
 
-export default function ComponentList({ sessions }: { sessions: Props_session[] }) {
+type Props = {
+    sessions: Props_session[],
+    load_notes: (session: Props_session) => Promise<void>
+}
+
+export default function ComponentList(props: Props) {
+    const { sessions, load_notes } = props;
+
     return (
         <article className="grid grid-cols-1 lg:grid-cols-2 place-items-center gap-4 pb-5">
             {
@@ -13,7 +20,7 @@ export default function ComponentList({ sessions }: { sessions: Props_session[] 
                     :
                     sessions.map(session => {
                         return (
-                            <div key={session.id} title={`Sesion ${session.user?.name}`} className="relative flex items-start gap-3 w-full overflow-hidden dark:bg-dark-sixth bg-sixth rounded-md border-[0.1px] border-opacity-30 dark:border-dark-secondary border-secondary p-2.5 group hover:border-opacity-100 cursor-pointer">
+                            <div key={session.id} onClick={() => load_notes(session)} title={`Sesion ${session.user?.name}`} className="relative flex items-start gap-3 w-full overflow-hidden dark:bg-dark-sixth bg-sixth rounded-md border-[0.1px] border-opacity-30 dark:border-dark-secondary border-secondary p-2.5 group hover:border-opacity-100 cursor-pointer">
                                 <span className={`absolute shadow-sm ${(session.status) ? 'dark:bg-dark-secondary bg-secondary dark:shadow-dark-secondary shadow-secondary' : 'dark:bg-dark-error bg-error dark:shadow-dark-error shadow-error'} w-2 h-2 rounded-full top-2 right-2`} title={`Usuario ${session.status ? 'activo' : 'desconectado'}`} />
                                 <Image src={(session.user) ? session.user?.image : 'https://cdn.icon-icons.com/icons2/1381/PNG/512/systemusers_94754.png'} alt="Imagen de usuario" width={34} height={24} className="rounded-full mt-1" />
                                 <div className="flex flex-col">

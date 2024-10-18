@@ -1,3 +1,5 @@
+import jwt from 'jsonwebtoken';
+
 import { type NextRequest } from 'next/server';
 import { NextResponse } from "next/server";
 
@@ -8,14 +10,22 @@ import { Conect_database } from "@/backend/utils/db";
 
 import Session from '@/backend/schemas/session';
 
-export async function GET(): Promise<NextResponse> {
+export async function GET(req: NextRequest): Promise<NextResponse> {
+    const token = req.cookies.get('__session')?.value as string;
+
+    if (!token) return NextResponse.json<Props_response>({ status: 401, info: { message: "Credenciales invalidas" } });
+
+    const user_id = jwt.decode(token)?.sub;
+
+    if (user_id !== process.env.ROL_ADMIN_USER_ID) return NextResponse.json<Props_response>({ status: 403, info: { message: "Acceso no autorizado" } });
+
     const connection: boolean = await Conect_database();
     if (!connection) return NextResponse.json<Props_response>({ status: 500, info: { message: "Error al conectarse a la base de datos" } })
 
     try {
         const sessions_expiret = await Session.find({ expiret: { $lt: new Date().toISOString() }, status: true });
 
-        for(let session of sessions_expiret){
+        for (let session of sessions_expiret) {
             session.status = false;
             await session.save();
         }
@@ -70,6 +80,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
 export async function PUT(req: NextRequest): Promise<NextResponse> {
     const { id, status } = await req.json();
+
+    const token = req.cookies.get('__session')?.value as string;
+
+    if (!token) return NextResponse.json<Props_response>({ status: 401, info: { message: "Credenciales invalidas" } });
 
     const connection: boolean = await Conect_database();
     if (!connection) return NextResponse.json<Props_response>({ status: 500, info: { message: "Error al conectarse a la base de datos" } })

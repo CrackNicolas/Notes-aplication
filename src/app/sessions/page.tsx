@@ -1,4 +1,4 @@
-import ComponentSessions from "@/frontend/components/layouts/sessions/container";
+import ComponentSessions from "@/frontend/components/layouts/private/container";
 
 export default function Sessions() {
     return <ComponentSessions />
