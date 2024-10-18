@@ -44,7 +44,7 @@ export function Query(user_id: string, segment: string) {
 
     return {
         user_id: user_id,
-        $or: [
+        $and: [
             { title: { $regex: `(?i)^${criteria?.title}` } },
             { 'category.title': criteria?.category?.title },
             { priority: criteria?.priority },

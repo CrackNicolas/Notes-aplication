@@ -17,6 +17,7 @@ const nextConfig = {
         ]
     },
     env: {
+        PROJECT_VERSION: "1.2.9",
         NEXT_PUBLIC_CLERK_SIGN_IN_URL: "/sign-in",
         NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL: "/",
         ROL_ADMIN_USER_ID: process.env.ROL_ADMIN_USER_ID,
