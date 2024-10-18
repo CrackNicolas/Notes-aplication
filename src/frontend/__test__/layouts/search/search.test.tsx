@@ -70,7 +70,7 @@ describe('Componente <Search/> principal', () => {
 
             expect(title).toBeInTheDocument();
             expect(title).toHaveAttribute('href', '/notes');
-            expect(title).toHaveClass('group relative flex items-center justify-between gap-x-1 rounded-md text-primary border-[0.1px] border-secondary border-opacity-80 px-1 bg-secondary py-0.5 text-md font-normal hover:font-semibold tracking-wider hover:bg-primary hover:text-secondary outline-none');
+            expect(title).toHaveClass("group relative flex items-center justify-between gap-x-1 rounded-md text-primary border-[0.1px] dark:border-dark-secondary border-secondary border-opacity-80 px-1 dark:bg-dark-secondary bg-secondary py-[2px] text-md font-normal hover:font-semibold tracking-wider dark:hover:bg-dark-primary hover:bg-primary dark:hover:text-dark-secondary hover:text-secondary outline-none");
         })
     })
 })

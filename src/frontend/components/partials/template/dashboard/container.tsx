@@ -1,7 +1,5 @@
 'use client'
 
-import { useRouter } from "next/navigation"
-
 import ComponentIcon from "@/frontend/components/partials/icon"
 import ComponentItem from "@/frontend/components/partials/template/dashboard/item"
 import ComponentHeader from "@/frontend/components/partials/template/dashboard/header"
@@ -15,24 +13,23 @@ type Props = {
         subtitle: string
     },
     items: Props_items_dashboard[],
-    redirect?: boolean
+    view_redirect?: boolean,
+    redirect?: (path:string) => void 
 }
 
 export default function ComponentTemplateDashboard(props: Props) {
     const { header = {
         title: 'Panel de Control',
         subtitle: 'Organiza tu mundo, mantente al tanto de lo más importante.'
-    }, items, redirect = false } = props;
-
-    const router = useRouter();
+    }, items, view_redirect = false, redirect = () => {} } = props;
 
     return (
         <article className="h-screen relative dark:bg-dark-primary bg-primary sm:pt-20 pt-16 pb-9">
             <ComponentHeader title={header.title} subtitle={header.subtitle} />
             <div className="relative pb-9 mx-auto place-items-center mt-1 sm:mt-7 grid max-w-2xl grid-cols-1 lg:gap-8 gap-3 pt-10 sm:mt-10 sm:pt-10 lg:mx-0 lg:max-w-none lg:grid-cols-3">
                 {
-                    redirect && (
-                        <span className="absolute top-0 left-0 dark:bg-dark-primary bg-primary rounded-full p-1.5 dark:hover:bg-dark-room hover:bg-room transition duration-500" title="Volver atras" onClick={() => router.push('/dashboard/main')}>
+                    view_redirect && (
+                        <span className="absolute top-0 left-0 dark:bg-dark-primary bg-primary rounded-full p-1.5 dark:hover:bg-dark-room hover:bg-room transition duration-500" title="Volver atras" onClick={() => redirect('/dashboard/main')}>
                             <ComponentIcon name="return" size={22} description_class="rotate-[-180deg] dark:text-dark-secondary text-secondary cursor-pointer" />
                         </span>
                     )

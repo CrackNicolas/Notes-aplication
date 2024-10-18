@@ -48,7 +48,7 @@ describe('Componente <Messages/>', () => {
 
                 const element_message = component.getByText(message.text);
                 expect(element_message).toBeInTheDocument();
-                expect(element_message).toHaveClass('text-gray-500');
+                expect(element_message).toHaveClass('mt-2 text-center text-xl dark:text-dark-tertiary text-tertiary opacity-50 dark:opacity-100');
             })
         })
     })

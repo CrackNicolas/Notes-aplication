@@ -11,7 +11,8 @@ const config: Config = {
   verbose: true,
   clearMocks: true,
   collectCoverage: true,
-  coverageDirectory: "coverage"
+  coverageDirectory: "coverage",
+  setupFiles: ['./jest.setup.ts'],
 }
 
 export default createJestConfig(config)

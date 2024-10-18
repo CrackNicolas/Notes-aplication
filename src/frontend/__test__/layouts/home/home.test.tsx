@@ -13,13 +13,15 @@ describe('Componente <Home/>', () => {
 
 function Analyze(component: RenderResult, url: string) {
     const logo = component.getByTestId("icon-home");
-    const title = component.getByText('Aplicacion de notas');
+    const title = component.getByText('Aplicación de notas');
     const subtitle = component.getByText('¡Organiza tu vida, toma notas sin límites!');
     const link = component.getByRole("link");
+    const version = component.getByText(`Version ${process.env.PROJECT_VERSION}`);
 
     expect(logo).toBeInTheDocument();
     expect(title).toBeInTheDocument();
     expect(subtitle).toBeInTheDocument();
     expect(link).toBeInTheDocument();
     expect(link).toHaveAttribute('href', url);
+    expect(version).toBeInTheDocument();
 }

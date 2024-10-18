@@ -22,6 +22,8 @@ mock.onPut('/api/categorys').reply(200, {
 });
 
 describe('Componente <Category/>', () => {
+    const setRestart = jest.fn();
+    const redirect = jest.fn();
 
     test('Renderizacion correcta en el Header', () => {
         const { getByText } = render(<ComponentHeader title="Categorias de notas" subtitle="Selecciona las categorias que deseas agregar o quitar de tus notas" />)
@@ -34,8 +36,7 @@ describe('Componente <Category/>', () => {
     });
 
     test('Renderizacion correcta loading Items', () => {
-        const setRestart = jest.fn();
-        const { getAllByTitle } = render(<ComponentList categorys={[]} setRestart={setRestart} />);
+        const { getAllByTitle } = render(<ComponentList categorys={[]} setRestart={setRestart} redirect={redirect} />);
 
         const items_loading = getAllByTitle('Cargando...');
 
@@ -48,7 +49,7 @@ describe('Componente <Category/>', () => {
         const setRestart = jest.fn();
 
         test('Renderizacion seleccionando una categoria y confirmacion exitosa', async () => {
-            const { getByTitle, getByRole } = render(<ComponentList categorys={categorys} setRestart={setRestart} />);
+            const { getByTitle, getByRole } = render(<ComponentList categorys={categorys} setRestart={setRestart} redirect={redirect} />);
 
             await waitFor(() => {
                 const item = getByTitle(`Categoria ${categorys[0].title}`);
@@ -68,7 +69,7 @@ describe('Componente <Category/>', () => {
         })
 
         test('Renderizacion seleccionando una categoria y cerrando confirmacion', async () => {
-            const { getByTitle } = render(<ComponentList categorys={categorys} setRestart={setRestart} />);
+            const { getByTitle } = render(<ComponentList categorys={categorys} setRestart={setRestart} redirect={redirect} />);
 
             await waitFor(() => {
                 const item = getByTitle(`Categoria ${categorys[0].title}`);

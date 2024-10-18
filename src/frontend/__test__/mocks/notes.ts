@@ -4,8 +4,8 @@ const current_date = new Date();
 
 export const note: Props_note = {
     _id: '1234',
-    title: 'Titulo de prueba',
-    description: 'Descripcion de prueba',
+    title: 'Programando',
+    description: 'Realizar configuraciones en la aplicacion',
     category: {
         title: 'Viajes',
         icon: 'plane'
@@ -24,7 +24,7 @@ export const note: Props_note = {
 export const notes: Props_note[] = [
     {
         _id: '1234',
-        title: 'Titulo de prueba 1',
+        title: 'Titulo de prueba, accionando',
         description: 'Descripcion de prueba 1',
         category: {
             title: 'Viajes',
