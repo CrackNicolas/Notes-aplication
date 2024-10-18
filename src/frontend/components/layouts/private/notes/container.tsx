@@ -24,7 +24,7 @@ export default function ComponentList(props: Props) {
                     :
                     notes.map(note => {
                         return (
-                            <div title="Nota" className={`relative transition-padding group grid grid-cols-9 w-full dark:bg-dark-sixth bg-sixth sm:px-2.5 px-2 sm:py-2 py-1.5 cursor-pointer rounded-md border-[0.1px] dark:border-dark-secondary border-secondary border-opacity-20 hover:border-opacity-100`}>
+                            <div key={note._id} title="Nota" className={`relative transition-padding group grid grid-cols-9 w-full dark:bg-dark-sixth bg-sixth sm:px-2.5 px-2 sm:py-2 py-1.5 cursor-pointer rounded-md border-[0.1px] dark:border-dark-secondary border-secondary border-opacity-20 hover:border-opacity-100`}>
                                 <div className="col-span-8 flex flex-col">
                                     <span className="flex">
                                         <span className="line-clamp-1 text-md font-normal group-hover:font-semibold tracking-wide dark:text-dark-secondary text-secondary">
