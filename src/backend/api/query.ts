@@ -37,19 +37,14 @@ export function Query(user_id: string, segment: string) {
             date['$gte'] = start_day(new Date(current_date));
             date['$lt'] = end_day(new Date());
             break;
-        default:
-            date = undefined;
-            break;
     }
 
     return {
         user_id: user_id,
-        $and: [
-            { title: { $regex: `(?i)^${criteria?.title}` } },
-            { 'category.title': criteria?.category?.title },
-            { priority: criteria?.priority },
-            { createdAt: date },
-            { featured: criteria?.featured }
-        ]
+        ...(criteria?.title && { title: { $regex: `(?i)^${criteria?.title}` } }),
+        ...(criteria?.category?.title && { 'category.title': criteria?.category?.title }),
+        ...(criteria?.priority && { priority: criteria?.priority }),
+        ...(criteria?.dates && { createdAt: date }),
+        ...(criteria?.featured && { featured: criteria?.featured })
     }
 }
