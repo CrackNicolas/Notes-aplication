@@ -1,5 +1,7 @@
 import jwt from 'jsonwebtoken';
 
+import { fileTypeFromBuffer } from "file-type";
+
 import { type NextRequest } from 'next/server';
 import { NextResponse } from "next/server";
 
@@ -11,12 +13,13 @@ import { Conect_database } from "@/backend/utils/db";
 import { File_transformer, File_edit, File_delete } from '@/backend/utils/cloudinary';
 
 import Notes from '@/backend/schemas/note'
+import axios from 'axios';
 
 export async function GET(req: NextRequest): Promise<NextResponse> {
     const token = req.cookies.get('__session')?.value as string;
-    
+
     if (!token) return NextResponse.json<Props_response>({ status: 401, info: { message: "Credenciales invalidas" } });
-    
+
     const user_id = jwt.decode(token)?.sub;
 
     const connection: boolean = await Conect_database();
@@ -59,15 +62,57 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
         const file = data.get('file') as File;
 
-        if (file && !file.type.startsWith('image/')) {
-            return NextResponse.json<Props_response>({ status: 400, info: { message: "Solo se permiten archivos de imagen" } });
-        }
-
         if (file) {
+            const fileBuffer = Buffer.from(await file.arrayBuffer());
+            const type = await fileTypeFromBuffer(fileBuffer);
+
+            if (!type || !type.mime.startsWith('image/')) {
+                return NextResponse.json<Props_response>({ status: 400, info: { message: "Solo se permiten archivos de imagen" } });
+            }
+
+            //Escanerar virus
+            try {
+                const form = new FormData();
+                const blob = new Blob([fileBuffer], { type: type.mime });
+                form.append('file', blob, file.name);
+
+                const response = await axios.post('https://www.virustotal.com/api/v3/files', form, {
+                    headers: {
+                        accept: 'application/json',
+                        'x-apikey': process.env.VIRUSTOTAL_API_KEY,
+                    },
+                })
+
+                const analysisId = response.data.data.id;
+
+                // Realiza una solicitud para obtener los resultados del análisis
+                const analysisResponse = await axios.get(`https://www.virustotal.com/api/v3/analyses/${analysisId}`, {
+                    headers: {
+                        accept: 'application/json',
+                        'x-apikey': process.env.VIRUSTOTAL_API_KEY,
+                    },
+                });
+
+                // Procesa la respuesta para ver si el archivo tiene virus
+                const { stats } = analysisResponse.data.data.attributes;
+
+                if (stats && stats.malicious > 0) {
+                    console.log("El archivo tiene virus.");
+                } else {
+                    console.log("El archivo está limpio.");
+                }
+
+            } catch (error) {
+                console.error(error);
+            }
+
+            //---------------
+
             const { id, url } = await File_transformer(file);
             if (!url) {
                 return NextResponse.json<Props_response>({ status: 404, info: { message: "Archivo no encontrado" } });
             }
+
             note_data.file = { id, name: file.name, url };
         }
 
@@ -116,11 +161,52 @@ export async function PUT(req: NextRequest): Promise<NextResponse> {
 
         const file = data.get('file') as File;
 
-        if (file && !file.type.startsWith('image/')) {
-            return NextResponse.json<Props_response>({ status: 400, info: { message: "Solo se permiten archivos de imagen" } });
-        }
-
         if (file) {
+            const fileBuffer = Buffer.from(await file.arrayBuffer());
+            const type = await fileTypeFromBuffer(fileBuffer);
+
+            if (!type || !type.mime.startsWith('image/')) {
+                return NextResponse.json<Props_response>({ status: 400, info: { message: "Solo se permiten archivos de imagen" } });
+            }
+
+            //Escanerar virus
+            try {
+                const form = new FormData();
+                const blob = new Blob([fileBuffer], { type: type.mime });
+                form.append('file', blob, file.name);
+
+                const response = await axios.post('https://www.virustotal.com/api/v3/files', form, {
+                    headers: {
+                        accept: 'application/json',
+                        'x-apikey': process.env.VIRUSTOTAL_API_KEY,
+                    },
+                })
+
+                const analysisId = response.data.data.id;
+
+                // Realiza una solicitud para obtener los resultados del análisis
+                const analysisResponse = await axios.get(`https://www.virustotal.com/api/v3/analyses/${analysisId}`, {
+                    headers: {
+                        accept: 'application/json',
+                        'x-apikey': process.env.VIRUSTOTAL_API_KEY,
+                    },
+                });
+
+                // Procesa la respuesta para ver si el archivo tiene virus
+                const { stats } = analysisResponse.data.data.attributes;
+
+                if (stats && stats.malicious > 0) {
+                    console.log("El archivo tiene virus.");
+                } else {
+                    console.log("El archivo está limpio.");
+                }
+
+            } catch (error) {
+                console.error(error);
+            }
+
+            //---------------
+
             const { id, url } = await File_edit(exists_note.file.id, file);
             if (!url) {
                 return NextResponse.json<Props_response>({ status: 404, info: { message: "Archivo no encontrado" } });

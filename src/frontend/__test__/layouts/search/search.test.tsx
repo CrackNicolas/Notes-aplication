@@ -39,18 +39,20 @@ describe('Componente <Search/> principal', () => {
         fireEvent.click(item_default);
     })
 
-    test('Renderizacion correcta <InputSearch/>', () => {
-        const setValue = jest.fn();
-        const { getByPlaceholderText } = render(
-            <ComponentInputSearch setValue={setValue} />
-        );
-
-        const input = getByPlaceholderText('Buscar...');
-
-        fireEvent.change(input, { target: { value: 'Titulo de nota' } });
-
-        expect(setValue).toHaveBeenCalledWith('title', 'Titulo de nota');
-        expect(input).toBeInTheDocument();
+    describe('Renderizacion correcta <InputSearch/>', () => {
+        test('Sin error', () => {
+            const setValue = jest.fn();
+            const { getByPlaceholderText } = render(
+                <ComponentInputSearch setValue={setValue} />
+            );
+    
+            const input = getByPlaceholderText('Buscar...');
+    
+            fireEvent.change(input, { target: { value: 'Titulo de nota' } });
+    
+            expect(setValue).toHaveBeenCalledWith('title', 'Titulo de nota');
+            expect(input).toBeInTheDocument();
+        })
     })
 
     describe('Renderizacion correcta <ButtonCreate/>', () => {
