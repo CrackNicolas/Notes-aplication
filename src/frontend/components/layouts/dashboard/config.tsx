@@ -1,3 +1,5 @@
+'use client'
+
 import { useRouter } from "next/navigation";
 
 import ComponentTemplateDashboard from "@/frontend/components/partials/template/dashboard/container"

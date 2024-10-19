@@ -5,7 +5,7 @@ import { useUser } from "@clerk/nextjs";
 import { usePathname, useRouter } from "next/navigation";
 import { AppProgressBar as ProgressBar } from "next-nprogress-bar";
 
-import { createContext, useEffect, useState } from "react";
+import { createContext, useCallback, useEffect, useState } from "react";
 
 import axios from "axios";
 
@@ -47,22 +47,24 @@ export default function Provider({ children }: Props_layouts) {
         }
     }, [])
 
-    const load_user = async () => {
-        if (data_user.isSignedIn && data_user.user.fullName) {
-            const data_session = (await data_user.user.getSessions())[0];
+    const load_user = useCallback(async () => {
+        const { isSignedIn, user } = data_user;
+
+        if (isSignedIn && user.fullName) {
+            const data_session = (await user.getSessions())[0];
 
             const instance_user: Props_user = {
-                name: data_user.user.fullName,
-                email: data_user.user.emailAddresses.toString(),
-                image: data_user.user.imageUrl,
+                name: user.fullName,
+                email: user.emailAddresses.toString(),
+                image: user.imageUrl,
                 rol: 'member'
             }
 
-            const { data } = await axios.get(`/api/role/${data_user.user.id}`);
+            const { data } = await axios.get(`/api/role/${user.id}`);
             instance_user.rol = data.data;
 
             const instance_session: Props_session = {
-                id: data_user.user.id,
+                id: user.id,
                 status: (data_session.status === 'active'),
                 last_time: Time_elapsed(data_session.lastActiveAt) + ' ' + data_session.lastActiveAt.toString().split(' ')[4] + 'hs',
                 expiret: data_session.expireAt.toISOString(),
@@ -81,21 +83,21 @@ export default function Provider({ children }: Props_layouts) {
             await axios.put("/api/private/sessions", { id: session.id, status: false });
             setSession({});
         }
-    }
+    }, [data_user, session.id]);
 
-    const handleOffline = () => {
+    const handleOffline = useCallback(() => {
         router.push('/without_internet');
-    }
+    }, [router])
 
-    const handleOnline = () => {
+    const handleOnline = useCallback(() => {
         if (path === '/offline') {
             router.push('/');
         }
-    }
+    }, [path, router])
 
     useEffect(() => {
         load_user();
-    }, [data_user.user])
+    }, [data_user.user, load_user])
 
     useEffect(() => {
         window.addEventListener('offline', handleOffline);
@@ -109,7 +111,7 @@ export default function Provider({ children }: Props_layouts) {
             window.removeEventListener('offline', handleOffline);
             window.removeEventListener('online', handleOnline);
         };
-    }, [path])
+    }, [path, handleOffline, handleOnline])
 
     return (
         <Context.Provider value={{ section_current: path.substring(1), session, button_sesion: <ComponentUserButton />, opacity: false, theme, setTheme, setOpacity: () => { }, path }}>

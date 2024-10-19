@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import axios from "axios";
@@ -93,7 +93,7 @@ export default function ComponentSearch(props: Props) {
         })
     }
 
-    const load_notes = async () => {
+    const load_notes = useCallback(async () => {
         if (search == "") return;
 
         setLoading_notes({ value: true, button: true });
@@ -113,9 +113,9 @@ export default function ComponentSearch(props: Props) {
             setList_notes([]);
             setLoading_notes({ value: false });
         }
-    }
+    }, [search]);
 
-    const listen_to_changes = async () => {
+    const listen_to_changes = useCallback(async () => {
         const criteria: Props_params_search = {
             title: (title !== '') ? title : undefined,
             category: (select_category.title !== 'Categoria...') ? select_category : undefined,
@@ -125,7 +125,7 @@ export default function ComponentSearch(props: Props) {
         }
 
         setSearch(JSON.stringify(criteria));
-    }
+    }, [title, select_category, select_priority, select_date, select_featured])
 
     const delete_notes = async () => {
         setLoading_message(true);
@@ -148,11 +148,11 @@ export default function ComponentSearch(props: Props) {
 
     useEffect(() => {
         load_notes();
-    }, [search]);
+    }, [search, load_notes]);
 
     useEffect(() => {
         listen_to_changes();
-    }, [title, select_category, select_priority, select_featured, select_date]);
+    }, [title, select_category, select_priority, select_featured, select_date, listen_to_changes]);
 
     return (
         <section className={`relative h-[calc(100vh-30px)] flex flex-col gap-5 mt-[30px] pt-6`}>

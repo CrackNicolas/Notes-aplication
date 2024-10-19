@@ -72,7 +72,7 @@ export default function ComponentSelect(props: Props) {
         if (select_category.title === 'Categoria...') {
             setValue('category', undefined);
         }
-    }, [select_category]);
+    }, [select_category.title, setValue]);
 
     return (
         <div ref={ref_select} className='relative flex w-full'>

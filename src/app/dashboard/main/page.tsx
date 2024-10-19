@@ -1,6 +1,6 @@
 'use client'
 
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { Context } from "@/context/provider";
 
 import ComponentDashboardMain from "@/frontend/components/layouts/dashboard/main";
@@ -15,7 +15,7 @@ export default function Dashboard() {
 
 	const [items, setItems] = useState<Props_items_dashboard[]>([]);
 
-	const load_items = async () => {
+	const load_items = useCallback(async () => {
 		try {
 			const { data } = await axios.get(`/api/role/${id}`);
 
@@ -33,13 +33,13 @@ export default function Dashboard() {
 		} catch (error) {
 			setItems([]);
 		}
-	};
+	}, [id]);
 
 	useEffect(() => {
 		if (user) {
 			load_items();
 		}
-	}, [user]);
+	}, [user, load_items]);
 
 	return <ComponentDashboardMain items={items} />
 }

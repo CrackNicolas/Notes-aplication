@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { Props_context } from "@/context/types/context";
 
@@ -21,19 +21,19 @@ export default function ComponentNavTop(props: Props_context) {
     const ref_button_user = useRef<HTMLDivElement>(null);
     const ref_button_toggle = useRef<HTMLButtonElement>(null);
 
-    const handle_click_outside = (event: MouseEvent) => {
+    const handle_click_outside = useCallback((event: MouseEvent) => {
         if (ref_nav_toggle.current && !ref_nav_toggle.current.contains(event.target as Node) && !ref_button_toggle.current?.contains(event.target as Node) && !ref_button_user.current?.contains(event.target as Node)) {
             setView_toggle(false);
             setOpacity(false);
         }
-    };
+    }, [ref_nav_toggle, ref_button_user, ref_button_toggle, setView_toggle, setOpacity]);
 
-    const handle_resize = () => {
+    const handle_resize = useCallback(() => {
         if (window.innerWidth > 640) {
             setView_toggle(false);
             setOpacity(false);
         }
-    }
+    }, [setView_toggle, setOpacity]);
 
     const handle_click_nav = () => {
         setView_toggle(!view_toggle);
@@ -63,7 +63,7 @@ export default function ComponentNavTop(props: Props_context) {
             document.removeEventListener('mousedown', handle_click_outside);
             clearTimeout(timeout);
         };
-    }, []);
+    }, [handle_resize, handle_click_outside]);
 
     return (
         <nav className="fixed w-full dark:bg-dark-primary bg-primary mt-[-7px] z-50">

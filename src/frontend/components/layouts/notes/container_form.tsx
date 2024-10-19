@@ -1,5 +1,7 @@
 'use client'
 
+import Image from 'next/image';
+
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { ChangeEvent, Dispatch, SetStateAction, useEffect, useState } from 'react';
 
@@ -127,7 +129,7 @@ export default function ComponentContainerForm(props: Props) {
         if (note_selected?.category) {
             setCategory_selected(note_selected.category);
         }
-    }, [note_selected])
+    }, [note_selected, reset, setCategory_selected, setValue])
 
     return (
         <div className={`flex flex-col mt-[-23px] gap-y-4 w-full sm:w-[450px] mx-auto`}>
@@ -229,11 +231,12 @@ export default function ComponentContainerForm(props: Props) {
                         </div>
                         <label htmlFor="file-upload" title="Seleccionar para subir una imagen" className="grid gap-y-0.5 place-items-center mt-0.5 p-1 cursor-pointer dark:border-dark-secondary border-secondary border-opacity-20 dark:bg-dark-primary bg-primary w-full rounded-md border-[0.1px] cursor-pointer hover:border-opacity-60 transition duration-500">
                             {
-                                (!file || !note_selected?.file?.id) && (!view_file) && (
+                                ((!file || !note_selected?.file?.id) && (!view_file)) ?
                                     <ComponentIcon name="upload-file" size={27} description_class="icon-home dark:text-dark-secondary text-secondary cursor-pointer" />
-                                )
+                                    :
+                                    <Image src={(view_file)? view_file : ""} alt="" width={60} height={60} className="max-w-[70px] max-h-[70px] rounded-md" />
                             }
-                            <img src={view_file} className="max-w-[70px] max-h-[70px] rounded-md" />
+
                             <span className='line-clamp-1 dark:text-dark-secondary text-secondary text-md font-normal tracking-wide'>
                                 {
                                     (!file || !note_selected?.file?.id) && (!view_file) && "Subir imagen..."

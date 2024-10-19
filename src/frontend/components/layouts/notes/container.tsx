@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useSearchParams } from "next/navigation";
 
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useCallback, useEffect, useState } from "react";
 
 import axios from "axios";
 
@@ -26,9 +26,24 @@ export default function ComponentNotes() {
         setCategory_selected(category);
     }
 
-    const redirect = (path:string) => {
+    const redirect = (path: string) => {
         router.push(path);
     }
+
+    const load_categorys = useCallback(async () => {
+        const { data } = await axios.get(`/api/categorys/true`);
+
+        if (data.status === 200) {
+            setList_categorys(data.data);
+        }
+        if (data.status === 500) {
+            setList_categorys([]);
+        }
+    }, [])
+
+    useEffect(() => {
+        load_categorys();
+    }, [load_categorys])
 
     useEffect(() => {
         if (search_params.get('data') !== null) {
@@ -36,21 +51,7 @@ export default function ComponentNotes() {
             setSelected_note(note);
             setCategory_selected(note.category);
         }
-    }, []);
-
-    useEffect(() => {
-        const load_categorys = async () => {
-            const { data } = await axios.get(`/api/categorys/true`);
-
-            if (data.status === 200) {
-                setList_categorys(data.data);
-            }
-            if (data.status === 500) {
-                setList_categorys([]);
-            }
-        }
-        load_categorys();
-    }, [])
+    }, [search_params]);
 
     return (
         <section className="flex h-screen flex-col gap-y-6 justify-start pt-20">
