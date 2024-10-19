@@ -13,7 +13,8 @@ import { Conect_database } from "@/backend/utils/db";
 import { File_transformer, File_edit, File_delete } from '@/backend/utils/cloudinary';
 
 import Notes from '@/backend/schemas/note'
-import axios from 'axios';
+import Malware from '@/backend/security/anti_malware';
+import { Anti_malware } from '@/backend/enums/anti_malware';
 
 export async function GET(req: NextRequest): Promise<NextResponse> {
     const token = req.cookies.get('__session')?.value as string;
@@ -63,50 +64,24 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         const file = data.get('file') as File;
 
         if (file) {
-            const fileBuffer = Buffer.from(await file.arrayBuffer());
-            const type = await fileTypeFromBuffer(fileBuffer);
+            const file_buffer = Buffer.from(await file.arrayBuffer());
+            const type = await fileTypeFromBuffer(file_buffer);
 
             if (!type || !type.mime.startsWith('image/')) {
                 return NextResponse.json<Props_response>({ status: 400, info: { message: "Solo se permiten archivos de imagen" } });
             }
 
-            //Escanerar virus
-            try {
-                const form = new FormData();
-                const blob = new Blob([fileBuffer], { type: type.mime });
-                form.append('file', blob, file.name);
+            const response_malware = await Malware({ file_buffer, type, file });
 
-                const response = await axios.post('https://www.virustotal.com/api/v3/files', form, {
-                    headers: {
-                        accept: 'application/json',
-                        'x-apikey': process.env.VIRUSTOTAL_API_KEY,
-                    },
-                })
-
-                const analysisId = response.data.data.id;
-
-                // Realiza una solicitud para obtener los resultados del análisis
-                const analysisResponse = await axios.get(`https://www.virustotal.com/api/v3/analyses/${analysisId}`, {
-                    headers: {
-                        accept: 'application/json',
-                        'x-apikey': process.env.VIRUSTOTAL_API_KEY,
-                    },
-                });
-
-                // Procesa la respuesta para ver si el archivo tiene virus
-                const { stats } = analysisResponse.data.data.attributes;
-
-                if (stats && stats.malicious > 0) {
-                    console.log("El archivo tiene virus.");
-                } else {
-                    console.log("El archivo está limpio.");
-                }
-
-            } catch (error) {
-                console.error(error);
+            if (response_malware != Anti_malware.FREE) {
+                return NextResponse.json<Props_response>(
+                    {
+                        status: 400, info: {
+                            message: (response_malware == Anti_malware.VIRUS) ? "Archivo con virus" : "Error al analizar el archivo"
+                        }
+                    }
+                );
             }
-
-            //---------------
 
             const { id, url } = await File_transformer(file);
             if (!url) {
@@ -143,7 +118,7 @@ export async function PUT(req: NextRequest): Promise<NextResponse> {
     try {
         const exists_note = await Notes.findById(data.get('_id'));
         if (!exists_note) {
-            return NextResponse.json<Props_response>({ status: 404, info: { message: "Id Nota no encontrada" } });
+            return NextResponse.json<Props_response>({ status: 404, info: { message: "Nota no encontrada" } });
         }
 
         const category_prev = data.get('category');
@@ -162,50 +137,24 @@ export async function PUT(req: NextRequest): Promise<NextResponse> {
         const file = data.get('file') as File;
 
         if (file) {
-            const fileBuffer = Buffer.from(await file.arrayBuffer());
-            const type = await fileTypeFromBuffer(fileBuffer);
+            const file_buffer = Buffer.from(await file.arrayBuffer());
+            const type = await fileTypeFromBuffer(file_buffer);
 
             if (!type || !type.mime.startsWith('image/')) {
                 return NextResponse.json<Props_response>({ status: 400, info: { message: "Solo se permiten archivos de imagen" } });
             }
 
-            //Escanerar virus
-            try {
-                const form = new FormData();
-                const blob = new Blob([fileBuffer], { type: type.mime });
-                form.append('file', blob, file.name);
+            const response_malware = await Malware({ file_buffer, type, file });
 
-                const response = await axios.post('https://www.virustotal.com/api/v3/files', form, {
-                    headers: {
-                        accept: 'application/json',
-                        'x-apikey': process.env.VIRUSTOTAL_API_KEY,
-                    },
-                })
-
-                const analysisId = response.data.data.id;
-
-                // Realiza una solicitud para obtener los resultados del análisis
-                const analysisResponse = await axios.get(`https://www.virustotal.com/api/v3/analyses/${analysisId}`, {
-                    headers: {
-                        accept: 'application/json',
-                        'x-apikey': process.env.VIRUSTOTAL_API_KEY,
-                    },
-                });
-
-                // Procesa la respuesta para ver si el archivo tiene virus
-                const { stats } = analysisResponse.data.data.attributes;
-
-                if (stats && stats.malicious > 0) {
-                    console.log("El archivo tiene virus.");
-                } else {
-                    console.log("El archivo está limpio.");
-                }
-
-            } catch (error) {
-                console.error(error);
+            if (response_malware != Anti_malware.FREE) {
+                return NextResponse.json<Props_response>(
+                    {
+                        status: 400, info: {
+                            message: (response_malware == Anti_malware.VIRUS) ? "Archivo con virus" : "Error al analizar el archivo"
+                        }
+                    }
+                );
             }
-
-            //---------------
 
             const { id, url } = await File_edit(exists_note.file.id, file);
             if (!url) {
