@@ -19,7 +19,7 @@ type Props = {
 
 export default function ComponentNote(props: Props) {
     const { note, paint = false, update_note, state, notes_selected, setNotes_selected } = props;
-    const { title, description, priority, createdAt } = note;
+    const { title, description, priority, createdAt, featured } = note;
 
     const [view_note, setView_note] = useState<Props_note | undefined>(undefined);
     const [open_modal_view, setOpen_modal_view] = useState<boolean>(false);
@@ -75,9 +75,11 @@ export default function ComponentNote(props: Props) {
                     <span className="line-clamp-1 text-md font-normal group-hover:font-semibold tracking-wide dark:text-dark-secondary text-secondary">
                         {title}
                     </span>
-                    {(priority === "Alta") && <ComponentIcon name="arrow" size={15} description_class="sm:relative absolute sm:right-auto right-3 cursor-pointer text-red-500 rotate-[-180deg] mt-[3px] " />}
-                    {(priority === "Media") && <ComponentIcon name="arrow" size={15} description_class="sm:relative absolute sm:right-auto right-3 cursor-pointer text-yellow-500 rotate-[-180deg] mt-[3px] " />}
-                    {(priority === "Baja") && <ComponentIcon name="arrow" size={15} description_class="sm:relative absolute sm:right-auto right-3 cursor-pointer text-green-500 mt-[2.7px] " />}
+                    {(priority === "Alta") && <ComponentIcon name="arrow" size={15} description_class="sm:relative absolute sm:right-auto right-[5px] cursor-pointer text-red-500 rotate-[-180deg] mt-[3px] " />}
+                    {(priority === "Media") && <ComponentIcon name="arrow" size={15} description_class="sm:relative absolute sm:right-auto right-[5px] cursor-pointer text-yellow-500 rotate-[-180deg] mt-[3px] " />}
+                    {(priority === "Baja") && <ComponentIcon name="arrow" size={15} description_class="sm:relative absolute sm:right-auto right-[5px] cursor-pointer text-green-500 mt-[2.7px] " />}
+                    {(featured) && <ComponentIcon name="star-fill" size={15} description_class="sm:relative absolute sm:right-auto right-[5px] cursor-pointer dark:text-dark-fifth text-fifth mt-[2.7px] " />}
+                    {(!featured) && <ComponentIcon name="star-half" size={15} description_class="sm:relative absolute sm:right-auto right-[5px] cursor-pointer dark:text-dark-fifth text-fifth mt-[2.7px] " />}
                 </span>
                 <p className="line-clamp-1 text-sm dark:text-dark-tertiary dark:opacity-90 text-tertiary opacity-50">
                     {description}

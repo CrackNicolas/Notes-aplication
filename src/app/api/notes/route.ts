@@ -153,7 +153,7 @@ export async function PUT(req: NextRequest): Promise<NextResponse> {
                             message: (response_malware == Anti_malware.VIRUS) ? "Archivo con virus" : "Error al analizar el archivo"
                         }
                     }
-                );
+                )
             }
 
             const { id, url } = await File_edit(exists_note.file.id, file);
@@ -161,7 +161,9 @@ export async function PUT(req: NextRequest): Promise<NextResponse> {
                 return NextResponse.json<Props_response>({ status: 404, info: { message: "Archivo no encontrado" } });
             }
             exists_note.file = { id, name: file.name, url };
-        } else {
+        }
+
+        if (exists_note.file.id) {
             await File_delete([exists_note.file.id]);
             exists_note.file = undefined;
         }
