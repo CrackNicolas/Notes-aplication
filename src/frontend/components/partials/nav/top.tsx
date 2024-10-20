@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 
 import { Props_context } from "@/context/types/context";
 
@@ -14,7 +14,6 @@ export default function ComponentNavTop(props: Props_context) {
     const { section_current, session, button_sesion, setOpacity, theme, setTheme, path } = props;
 
     const [focus, setFocus] = useState<string>('');
-    const [isLoading, setIsLoading] = useState<boolean>(true);
     const [view_toggle, setView_toggle] = useState<boolean>(false);
 
     const ref_nav_toggle = useRef<HTMLDivElement>(null);
@@ -54,14 +53,9 @@ export default function ComponentNavTop(props: Props_context) {
         window.addEventListener('resize', handle_resize);
         document.addEventListener('mousedown', handle_click_outside);
 
-        const timeout = setTimeout(() => {
-            setIsLoading(false);
-        }, 2200);
-
         return () => {
             window.removeEventListener('resize', handle_resize);
             document.removeEventListener('mousedown', handle_click_outside);
-            clearTimeout(timeout);
         };
     }, [handle_resize, handle_click_outside]);
 
@@ -90,22 +84,23 @@ export default function ComponentNavTop(props: Props_context) {
                             )
                         }
                     </div>
-                    <div className="absolute inset-y-0 right-0 flex items-center pr-1 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+                    <div className="relative inset-y-0 right-0 flex items-center pr-1 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                         {
-                            isLoading ?
-                                <span className="animate-pulse dark:bg-dark-secondary bg-secondary opacity-30 rounded-full w-[32px] h-[32px] " />
+                            (path == "/" && !session.id) ?
+                                <Link href="/sign-in" title="Iniciar sesion" className="group border dark:border-dark-tertiary border-tertiary dark:hover:border-dark-secondary hover:border-secondary border-[0.1px] px-3 rounded-md flex py-[3px] flex items-center gap-x-1 outline-none transition duration-500">
+                                    <ComponentIcon name="user" size={16} description_class="dark:group-hover:text-dark-secondary group-hover:text-secondary dark:text-dark-tertiary text-tertiary cursor-pointer" />
+                                    <span className="dark:group-hover:text-dark-secondary group-hover:text-secondary text-sm tracking-wider dark:text-dark-tertiary text-tertiary duration-500">
+                                        Iniciar sesion
+                                    </span>
+                                </Link>
                                 :
                                 (session.id) ?
                                     <div ref={ref_button_user} className="flex gap-x-4 rounded-full" title="Usuario">
                                         {button_sesion}
                                     </div>
                                     :
-                                    <Link href="/sign-in" title="Iniciar sesion" className="group border dark:border-dark-tertiary border-tertiary dark:hover:border-dark-secondary hover:border-secondary border-[0.1px] px-3 rounded-md flex py-[3px] flex items-center gap-x-1 outline-none transition duration-500">
-                                        <ComponentIcon name="user" size={16} description_class="dark:group-hover:text-dark-secondary group-hover:text-secondary dark:text-dark-tertiary text-tertiary cursor-pointer" />
-                                        <span className="dark:group-hover:text-dark-secondary group-hover:text-secondary text-sm tracking-wider dark:text-dark-tertiary text-tertiary duration-500">
-                                            Iniciar sesion
-                                        </span>
-                                    </Link>
+                                    (path != "/sign-in") &&
+                                    <span className="animate-pulse dark:bg-dark-secondary bg-secondary opacity-30 rounded-full w-[32px] h-[32px] " />
                         }
                     </div>
                 </div>

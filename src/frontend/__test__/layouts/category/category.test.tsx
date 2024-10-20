@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom'
-import { fireEvent, render, waitFor } from '@testing-library/react'
+import { fireEvent, render, RenderResult, waitFor } from '@testing-library/react'
 
 import ResizeObserver from 'resize-observer-polyfill';
 global.ResizeObserver = ResizeObserver;
@@ -21,10 +21,18 @@ mock.onPut('/api/categorys').reply(200, {
     }
 });
 
+const mock_push = jest.fn();
+
+jest.mock('next/navigation', () => ({
+    ...jest.requireActual('next/navigation'),
+    useRouter: () => ({
+        push: mock_push
+    })
+}));
+
 describe('Componente <Category/>', () => {
     const setRestart = jest.fn();
-    const redirect = jest.fn();
-
+    
     test('Renderizacion correcta en el Header', () => {
         const { getByText } = render(<ComponentHeader title="Categorias de notas" subtitle="Selecciona las categorias que deseas agregar o quitar de tus notas" />)
 
@@ -36,7 +44,7 @@ describe('Componente <Category/>', () => {
     });
 
     test('Renderizacion correcta loading Items', () => {
-        const { getAllByTitle } = render(<ComponentList categorys={[]} setRestart={setRestart} redirect={redirect} />);
+        const { getAllByTitle } = render(<ComponentList categorys={[]} setRestart={setRestart} />);
 
         const items_loading = getAllByTitle('Cargando...');
 
@@ -47,9 +55,14 @@ describe('Componente <Category/>', () => {
 
     describe('Renderizacion correcta en la <List/>', () => {
         const setRestart = jest.fn();
+        let component: RenderResult;
+
+        beforeEach(() => {
+            component = render(<ComponentList categorys={categorys} setRestart={setRestart} />);
+        });
 
         test('Renderizacion seleccionando una categoria y confirmacion exitosa', async () => {
-            const { getByTitle, getByRole } = render(<ComponentList categorys={categorys} setRestart={setRestart} redirect={redirect} />);
+            const { getByTitle, getByRole } = component;
 
             await waitFor(() => {
                 const item = getByTitle(`Categoria ${categorys[0].title}`);
@@ -69,7 +82,7 @@ describe('Componente <Category/>', () => {
         })
 
         test('Renderizacion seleccionando una categoria y cerrando confirmacion', async () => {
-            const { getByTitle } = render(<ComponentList categorys={categorys} setRestart={setRestart} redirect={redirect} />);
+            const { getByTitle } = component;
 
             await waitFor(() => {
                 const item = getByTitle(`Categoria ${categorys[0].title}`);
@@ -88,5 +101,14 @@ describe('Componente <Category/>', () => {
                 expect(modal_confirmation).not.toBeInTheDocument();
             })
         })
+
+        test('Redirigir a la ruta correcta', () => {
+            const volver = component.getByTitle("Volver atras");
+    
+            fireEvent.click(volver);
+    
+            expect(mock_push).toHaveBeenCalledWith('/dashboard/config');
+        });
+
     });
 })

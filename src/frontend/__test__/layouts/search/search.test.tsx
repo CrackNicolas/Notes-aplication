@@ -53,6 +53,19 @@ describe('Componente <Search/> principal', () => {
             expect(setValue).toHaveBeenCalledWith('title', 'Titulo de nota');
             expect(input).toBeInTheDocument();
         })
+
+        test('Con error', () => {
+            const setValue = jest.fn();
+            const { getByPlaceholderText } = render(
+                <ComponentInputSearch setValue={setValue} />
+            );
+    
+            const input = getByPlaceholderText('Buscar...');
+    
+            fireEvent.change(input, { target: { value: '-...' } });
+
+            expect(setValue).not.toHaveBeenCalledWith('title', '-...');
+        })
     })
 
     describe('Renderizacion correcta <ButtonCreate/>', () => {

@@ -50,8 +50,17 @@ jest.mock("next/navigation", () => ({
 jest.mock('next/image', () => ({
     __esModule: true,
     default: (props: any) => {
-        return <img {...props} />;  // Renderiza una imagen HTML normal
+        return <img {...props} />;
     },
+}));
+
+const mock_push = jest.fn();
+
+jest.mock('next/navigation', () => ({
+    ...jest.requireActual('next/navigation'),
+    useRouter: () => ({
+        push: mock_push
+    })
 }));
 
 describe('Componente <Form/> principal', () => {
@@ -60,11 +69,11 @@ describe('Componente <Form/> principal', () => {
         global.URL.createObjectURL = jest.fn();
     });
 
-    const register = jest.fn(), setSelected = jest.fn(), redirect = jest.fn();
+    const register = jest.fn(), setSelected = jest.fn();
 
     test('Renderizacion correcta de elementos', () => {
         const component = render(
-            <ComponentForm category_selected={category} setCategory_selected={setSelected} note_selected={undefined} redirect={redirect} />
+            <ComponentForm category_selected={category} setCategory_selected={setSelected} note_selected={undefined} />
         );
 
         const input_title = component.getByPlaceholderText('Escriba el titulo...');
@@ -85,12 +94,15 @@ describe('Componente <Form/> principal', () => {
         inputs_priority.map(input => {
             expect(input).toBeInTheDocument();
         })
+
+        const volver = component.getByTitle('Volver atras');
+        fireEvent.click(volver);
     })
 
     test('Renderizacion correcta al crear una nota', async () => {
         setSelected(undefined);
         const { getByTitle, getByRole, getByPlaceholderText, getByLabelText } = render(
-            <ComponentForm category_selected={category} setCategory_selected={setSelected} note_selected={undefined} redirect={redirect} />
+            <ComponentForm category_selected={category} setCategory_selected={setSelected} note_selected={undefined} />
         );
 
         const title = getByTitle('Titulo formulario');
@@ -110,12 +122,29 @@ describe('Componente <Form/> principal', () => {
         expect(input_title).toHaveValue(note.title);
         expect(input_description).toHaveValue(note.description);
         expect(input_priority).toBeChecked();
+        expect(getByTitle("Selecciona una imagen (máximo 1MB)")).toBeInTheDocument();
 
         const input_file = getByLabelText('Subir imagen...');
 
         fireEvent.change(input_file, {
-            target: { files: [new File(['archivo de prueba'], 'test-file.png', { type: 'image/*' })] },
+            target: { files: [new File(['archivo de prueba 1'], 'test-file.png', { type: 'image/*' })] },
         });
+
+        expect(getByTitle("Imagen adecuada")).toBeInTheDocument();
+
+        fireEvent.change(input_file, {
+            target: { files: [new File(['archivo de prueba 2'], 'test-file.pdf', { type: 'pdf/' })] },
+        });
+
+        expect(getByTitle("Solo se permiten imagenes")).toBeInTheDocument();
+
+        const slightlyBigFile = new File([new Blob([new Uint8Array(1024 * 1024 * 1.1)])], 'test-file.pdf', { type: 'image/*' });
+
+        fireEvent.change(input_file, {
+            target: { files: [slightlyBigFile] },
+        });
+
+        expect(getByTitle("Tu imagen no debe superar 1MB.")).toBeInTheDocument();
 
         await waitFor(() => {
             fireEvent.submit(button_submit);
@@ -124,7 +153,7 @@ describe('Componente <Form/> principal', () => {
 
     test('Renderizacion correcta al editar una nota', async () => {
         const { getByTitle } = render(
-            <ComponentForm category_selected={category} setCategory_selected={setSelected} note_selected={note} redirect={redirect} />
+            <ComponentForm category_selected={category} setCategory_selected={setSelected} note_selected={note} />
         );
 
         const title = getByTitle('Titulo formulario');
@@ -132,6 +161,10 @@ describe('Componente <Form/> principal', () => {
 
         expect(title.textContent).toBe('Actualizar nota');
         expect(button_submit.textContent).toBe('Guardar');
+
+        const remove_imagen = getByTitle('Quitar imagen');
+
+        fireEvent.click(remove_imagen);
 
         await waitFor(() => {
             fireEvent.submit(button_submit);
@@ -142,25 +175,39 @@ describe('Componente <Form/> principal', () => {
         })
     })
 
-    test('Renderizacion correcta al deshacer la operacion', () => {
-        const component = render(
-            <ComponentForm category_selected={category} setCategory_selected={setSelected} note_selected={note} redirect={redirect} />
-        );
+    describe('Renderizacion correcta al deshacer una operacion', () => {
+        test('Con nota seleccionada', () => {
+            const component = render(
+                <ComponentForm category_selected={category} setCategory_selected={setSelected} note_selected={note} />
+            );
 
-        const input_title = component.getByPlaceholderText('Escriba el titulo...');
-        const input_description = component.getByPlaceholderText('Escriba la descripcion...');
-        const input_priority = component.getByText('Alta');
+            const input_title = component.getByPlaceholderText('Escriba el titulo...');
+            const input_description = component.getByPlaceholderText('Escriba la descripcion...');
+            const input_priority = component.getByText('Alta');
 
-        expect(input_title).toHaveValue(note.title);
-        expect(input_description).toHaveValue(note.description);
-        expect(input_priority).toHaveClass('bg-secondary text-primary');
+            expect(input_title).toHaveValue(note.title);
+            expect(input_description).toHaveValue(note.description);
+            expect(input_priority).toHaveClass('bg-secondary text-primary');
 
-        const button_deshacer = component.getByRole('button', { name: 'Deshacer' });
-        fireEvent.click(button_deshacer);
+            const button_deshacer = component.getByRole('button', { name: 'Deshacer' });
+            fireEvent.click(button_deshacer);
 
-        expect(input_title).toHaveValue('');
-        expect(input_description).toHaveValue('');
-        expect(input_priority).toHaveClass('text-secondary group-hover:bg-secondary group-hover:text-primary');
+            expect(input_title).toHaveValue('');
+            expect(input_description).toHaveValue('');
+            expect(input_priority).toHaveClass('text-secondary group-hover:bg-secondary group-hover:text-primary');
+            expect(mock_push).toHaveBeenCalledWith('/notes/search');
+        })
+
+        test('Sin nota seleccionada', () => {
+            const component = render(
+                <ComponentForm category_selected={category} setCategory_selected={setSelected} note_selected={undefined} />
+            );
+
+            const button_deshacer = component.getByRole('button', { name: 'Deshacer' });
+            fireEvent.click(button_deshacer);
+
+            expect(mock_push).toHaveBeenCalledWith('/dashboard/main');
+        });
     })
 
     describe('Renderizacion correcta de mensajes de error', () => {

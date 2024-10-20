@@ -1,6 +1,7 @@
 'use client'
 
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { ChangeEvent, Dispatch, SetStateAction, useEffect, useState } from 'react';
@@ -22,12 +23,13 @@ import { Props_category } from '@/context/types/category';
 type Props = {
     category_selected: Props_category | undefined,
     setCategory_selected: Dispatch<SetStateAction<Props_category | undefined>>,
-    note_selected: Props_note | undefined,
-    redirect: (path: string) => void
+    note_selected: Props_note | undefined
 }
 
 export default function ComponentContainerForm(props: Props) {
-    const { category_selected, setCategory_selected, note_selected, redirect } = props;
+    const { category_selected, setCategory_selected, note_selected } = props;
+
+    const router = useRouter();
 
     const MAX_FILE_SIZE = 1 * 1024 * 1024; // 1MB en bytes
 
@@ -36,7 +38,7 @@ export default function ComponentContainerForm(props: Props) {
     const [view_file, setView_file] = useState<string | undefined>(undefined);
     const [loading, setLoading] = useState<boolean>(false);
     const [response, setResponse] = useState<Props_response>();
-    const [message_image, setMessage_image] = useState<{ paint: boolean, value: string }>({ paint: true, value: 'Selecciona una imagen (máximo 4MB)' });
+    const [message_image, setMessage_image] = useState<{ paint: boolean, value: string }>({ paint: true, value: 'Selecciona una imagen (máximo 1MB)' });
     const [values_exists, setValues_exists] = useState<boolean>(false);
 
     const { register, handleSubmit, formState: { errors }, setValue, reset, watch } = useForm();
@@ -46,7 +48,7 @@ export default function ComponentContainerForm(props: Props) {
         setFile(undefined);
         setValues_exists(false);
         if (use_redirect) {
-            redirect((note_selected) ? '/notes/search' : '/dashboard/main');
+            router.push((note_selected) ? '/notes/search' : '/dashboard/main');
         }
     }
 
@@ -61,9 +63,10 @@ export default function ComponentContainerForm(props: Props) {
 
         if (new_file && !new_file.type.startsWith('image/')) {
             event.target.value = "";
+            setMessage_image({ paint: false, value: 'Solo se permiten imagenes' });
         } else if (new_file && new_file.size > MAX_FILE_SIZE) {
             event.target.value = "";
-            setMessage_image({ paint: false, value: 'Tu imagen no debe superar los 4MB.' });
+            setMessage_image({ paint: false, value: 'Tu imagen no debe superar 1MB.' });
         } else {
             setMessage_image({ paint: true, value: 'Imagen adecuada' });
             setFile(new_file);
@@ -75,7 +78,7 @@ export default function ComponentContainerForm(props: Props) {
         setFile(undefined);
         (document.getElementById("file-upload") as HTMLInputElement).value = "";
         setView_file(undefined);
-        setMessage_image({ paint: true, value: 'Selecciona una imagen (máximo 4MB)' });
+        setMessage_image({ paint: true, value: 'Selecciona una imagen (máximo 1MB)' });
     }
 
     const onSubmit: SubmitHandler<FieldValues | Props_note> = async (data) => {
@@ -110,7 +113,7 @@ export default function ComponentContainerForm(props: Props) {
 
     const reply = () => {
         setOpen(false);
-        redirect('/notes/search');
+        router.push('/notes/search');
     }
 
     useEffect(() => {
@@ -223,7 +226,7 @@ export default function ComponentContainerForm(props: Props) {
                             <ComponentLabel title={message_image.value} html_for="" color={message_image.paint ? 'dark:text-dark-secondary text-secondary' : 'dark:text-dark-error text-error'} />
                             {
                                 (view_file) && (
-                                    <button onClick={() => remove_file()} type="button" className="dark:text-dark-secondary text-secondary bg-primary dark:bg-dark-primary hover:bg-secondary dark:hover:bg-dark-secondary hover:text-primary dark:hover:text-dark-primary text-[12.3px] border border-[0.1px] border-secondary dark:border-dark-secondary px-2 rounded-md font-semibold tracking-wider">
+                                    <button onClick={() => remove_file()} type="button" name="Quitar imagen" title="Quitar imagen" className="dark:text-dark-secondary text-secondary bg-primary dark:bg-dark-primary hover:bg-secondary dark:hover:bg-dark-secondary hover:text-primary dark:hover:text-dark-primary text-[12.3px] border border-[0.1px] border-secondary dark:border-dark-secondary px-2 rounded-md font-semibold tracking-wider">
                                         Quitar imagen
                                     </button>
                                 )

@@ -7,6 +7,15 @@ import ComponentTemplateDashboard from '@/frontend/components/partials/template/
 import { items_main } from '@/frontend/enums/dashboard'
 import { items_config } from '@/frontend/enums/dashboard'
 
+const mock_push = jest.fn();
+
+jest.mock('next/navigation', () => ({
+    ...jest.requireActual('next/navigation'),
+    useRouter: () => ({
+        push: mock_push
+    })
+}));
+
 describe('Componente <DashboardMain/>', () => {
     let component: RenderResult
 
@@ -50,7 +59,7 @@ describe('Componente <DashboardConfig/>', () => {
     let component: RenderResult
 
     beforeEach(() => {
-        component = render(<ComponentTemplateDashboard items={items_config} />);
+        component = render(<ComponentTemplateDashboard items={items_config} view_redirect={true} />);
     });
 
     test('Renderizacion correcta en el Header', () => {
@@ -63,6 +72,14 @@ describe('Componente <DashboardConfig/>', () => {
             expect(component.getByTitle(item.title)).toHaveAttribute('href', item.url);
             expect(component.getByText(item.description)).toBeInTheDocument()
         })
+    });
+
+    test('Redirigir a la ruta correcta', () => {
+        const volver = component.getByTitle("Volver atras");
+
+        fireEvent.click(volver);
+
+        expect(mock_push).toHaveBeenCalledWith('/dashboard/main');
     });
 })
 
