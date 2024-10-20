@@ -4,7 +4,7 @@
    - Production
 
 ## Uso
-   - Clone the repository ["https://github.com/CrackNicolas/Notes-aplication.git"]
+   - Clone the repository ["https://github.com/CrackNicolas/Notes-application.git"]
    - Run the npm install command to install dependencies
    - Run the npm run dev command to run the application
 
