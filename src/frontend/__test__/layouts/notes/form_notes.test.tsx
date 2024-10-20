@@ -47,8 +47,15 @@ jest.mock("next/navigation", () => ({
     useSearchParams: () => params,
 }))
 
+jest.mock('next/image', () => ({
+    __esModule: true,
+    default: (props: any) => {
+        return <img {...props} />;  // Renderiza una imagen HTML normal
+    },
+}));
+
 describe('Componente <Form/> principal', () => {
-    
+
     beforeAll(() => {
         global.URL.createObjectURL = jest.fn();
     });
