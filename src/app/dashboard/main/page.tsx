@@ -5,7 +5,7 @@ import { Context } from "@/context/provider";
 
 import ComponentDashboardMain from "@/frontend/components/layouts/dashboard/main";
 
-import { items_main } from "@/frontend/enums/dashboard"
+import { items_main } from "@/frontend/constant/dashboard"
 import { Props_items_dashboard } from "@/frontend/types/props"
 
 import axios from "axios";

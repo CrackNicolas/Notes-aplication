@@ -4,8 +4,8 @@ import { fireEvent, render, RenderResult } from '@testing-library/react'
 import ComponentDashboardMain from '@/frontend/components/layouts/dashboard/main'
 import ComponentTemplateDashboard from '@/frontend/components/partials/template/dashboard/container'
 
-import { items_main } from '@/frontend/enums/dashboard'
-import { items_config } from '@/frontend/enums/dashboard'
+import { items_main } from '@/frontend/constant/dashboard'
+import { items_config } from '@/frontend/constant/dashboard'
 
 const mock_push = jest.fn();
 
