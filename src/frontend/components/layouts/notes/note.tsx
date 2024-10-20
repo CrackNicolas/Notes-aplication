@@ -72,14 +72,14 @@ export default function ComponentNote(props: Props) {
             }
             <div className="col-span-8 flex flex-col">
                 <span className="flex">
-                    <span className="line-clamp-1 text-md font-normal group-hover:font-semibold tracking-wide dark:text-dark-secondary text-secondary">
+                    <span className="line-clamp-1 mr-1 text-md font-normal group-hover:font-semibold tracking-wide dark:text-dark-secondary text-secondary">
                         {title}
                     </span>
-                    {(priority === "Alta") && <ComponentIcon name="arrow" size={15} description_class="sm:relative absolute sm:right-auto right-[5px] cursor-pointer text-red-500 rotate-[-180deg] mt-[3px] " />}
-                    {(priority === "Media") && <ComponentIcon name="arrow" size={15} description_class="sm:relative absolute sm:right-auto right-[5px] cursor-pointer text-yellow-500 rotate-[-180deg] mt-[3px] " />}
-                    {(priority === "Baja") && <ComponentIcon name="arrow" size={15} description_class="sm:relative absolute sm:right-auto right-[5px] cursor-pointer text-green-500 mt-[2.7px] " />}
-                    {(featured) && <ComponentIcon name="star-fill" size={15} description_class="sm:relative absolute sm:right-auto right-[5px] cursor-pointer dark:text-dark-fifth text-fifth mt-[2.7px] " />}
-                    {(!featured) && <ComponentIcon name="star-half" size={15} description_class="sm:relative absolute sm:right-auto right-[5px] cursor-pointer dark:text-dark-fifth text-fifth mt-[2.7px] " />}
+                    {(priority === "Alta") && <ComponentIcon name="arrow" size={15} description_class="sm:relative absolute sm:right-auto sm:mt-[3px] right-[22px] cursor-pointer text-red-500 rotate-[-180deg] " />}
+                    {(priority === "Media") && <ComponentIcon name="arrow" size={15} description_class="sm:relative absolute sm:right-auto sm:mt-[3px] right-[22px] cursor-pointer text-yellow-500 rotate-[-180deg] " />}
+                    {(priority === "Baja") && <ComponentIcon name="arrow" size={15} description_class="sm:relative absolute sm:right-auto sm:mt-[3px] right-[22px] cursor-pointer text-green-500 " />}
+                    {(featured) && <ComponentIcon name="star-fill" size={15} description_class="sm:relative absolute sm:right-auto sm:mt-[3px] right-[5px] cursor-pointer dark:text-dark-fifth text-fifth " />}
+                    {(!featured) && <ComponentIcon name="star-half" size={15} description_class="sm:relative absolute sm:right-auto sm:mt-[3px] right-[5px] cursor-pointer dark:text-dark-fifth text-fifth " />}
                 </span>
                 <p className="line-clamp-1 text-sm dark:text-dark-tertiary dark:opacity-90 text-tertiary opacity-50">
                     {description}

@@ -1,4 +1,4 @@
-import { Dispatch, Fragment, SetStateAction } from "react";
+import { Dispatch, SetStateAction } from "react";
 
 import ComponentIcon from "@/frontend/components/partials/icon";
 import ComponentModal from "@/frontend/components/partials/modal";
@@ -37,7 +37,7 @@ export default function ComponentView(props: Props) {
                     {
                         (note.file) && (
                             <a href={`/api/images/${note.file.url.split("/").pop()}`} target="_blank" title="Ver imagen" rel="noopener noreferrer" className="group cursor-pointer dark:hover:bg-dark-secondary hover:bg-secondary flex items-center outline-none gap-x-1.5 border-[0.1px] dark:border-dark-secondary border-secondary rounded-md px-1.5">
-                                <ComponentIcon name="upload-file-selected" size={13} description_class="dark:text-dark-secondary text-secondary group-hover:text-primary" />
+                                <ComponentIcon name="upload-file-selected" size={13} description_class="dark:text-dark-secondary text-secondary dark:group-hover:text-dark-primary group-hover:text-primary" />
                                 <span className="dark:text-dark-secondary text-secondary dark:group-hover:text-dark-primary group-hover:text-primary">
                                     Ver imagen
                                 </span>
